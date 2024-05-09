@@ -1,12 +1,14 @@
 package demo;
 
 import java.util.Date;
+import java.util.Map;
 
 public class DemoBoundary {
 	private String id;
 	private String message;
 	private Date messageTimestamp;
-
+	private Map<String, Object> details;
+	
 	public DemoBoundary() {
 	}
 
@@ -38,12 +40,21 @@ public class DemoBoundary {
 		this.messageTimestamp = messageTimestamp;
 	}
 
+	public Map<String, Object> getDetails() {
+		return details;
+	}
+	
+	public void setDetails(Map<String, Object> details) {
+		this.details = details;
+	}
+	
 	@Override
 	public String toString() {
 		return "DemoBoundary ["
 			+ "id=" + id 
 			+ ", message=" + message 
 			+ ", messageTimestamp=" + messageTimestamp 
+			+ ", details=" + details
 			+ "]";
 	}
 

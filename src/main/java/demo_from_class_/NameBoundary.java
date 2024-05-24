@@ -1,4 +1,4 @@
-package demo;
+package demo_from_class_;
 
 public class NameBoundary {
 	private String firstName;

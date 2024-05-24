@@ -1,4 +1,4 @@
-package demo;
+package demo_from_class_;
 
 import java.util.Date;
 import java.util.Map;

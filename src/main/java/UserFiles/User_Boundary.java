@@ -16,7 +16,7 @@ public class User_Boundary {
 
 	private String Name;
 	private RoleEnumBoundary role;
-	private user_id user_id;
+	private User_Id user_id;
 	private URL avatar ;
 	
 	
@@ -37,10 +37,10 @@ public class User_Boundary {
 	}
 
 
-	public user_id getUser_id() {
+	public User_Id getUser_id() {
 		return user_id;
 	}
-	public void setUser_id(user_id user_id) {
+	public void setUser_id(User_Id user_id) {
 		this.user_id = user_id;
 	}
 	public URL getAvatar() {

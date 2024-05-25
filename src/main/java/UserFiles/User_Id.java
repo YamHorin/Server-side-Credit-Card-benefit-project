@@ -1,10 +1,10 @@
 package UserFiles;
 
-public class user_id {
+public class User_Id {
 	private String SuperAPP;
 	private String email;
 	
-	public user_id() {
+	public User_Id() {
 		
 	}
 	public String getSuperAPP() {

@@ -15,7 +15,7 @@ import UserFiles.RoleEnumBoundary;
 import UserFiles.UserDao;
 import UserFiles.User_Boundary;
 import UserFiles.User_Entity;
-import UserFiles.user_id;
+import UserFiles.User_Id;
 
 public class H2Service_the_down_service implements DataService_Business_logic {
 	private StoreDao StoreDao;
@@ -70,7 +70,7 @@ public class H2Service_the_down_service implements DataService_Business_logic {
 	public User_Boundary createUser(User_Boundary UserBoundary) {
 		System.out.println("we get a new user to out data set: \n\n\n "+UserBoundary.toString());
 		if(UserBoundary.getUser_id()==null)
-			UserBoundary.setUser_id(new user_id());
+			UserBoundary.setUser_id(new User_Id());
 		UserBoundary.getUser_id().setSuperAPP(this.name_super_app);
 		if (UserBoundary.getUser_id().getEmail()!=null)
 		{

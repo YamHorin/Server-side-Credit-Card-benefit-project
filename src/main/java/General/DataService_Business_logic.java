@@ -3,42 +3,43 @@ package General;
 import java.util.List;
 import java.util.Optional;
 
-import MIniAppFiles.MiniAppCommand_Boundary;
-import StoreFiles.Store_Boundary;
-import UserFiles.User_Boundary;
+import Boundary.BoundaryCommand;
+import Boundary.BoundaryObject;
+import Boundary.BoundaryUser;
+
 
 public interface DataService_Business_logic  {
 	//user
-	public Optional<User_Boundary> getSpecificUser(String id);
-	public List<User_Boundary> getAllUsers();
+	public Optional<BoundaryUser> getSpecificUser(String id);
+	public List<BoundaryUser> getAllUsers();
 	
-	public User_Boundary createUser (User_Boundary UserBoundary);
+	public BoundaryUser createUser (BoundaryUser UserBoundary);
 	
 	public void deleteAllUsers ();
 	
-	public void updateUser (String id, User_Boundary update);
+	public void updateUser (String id, BoundaryUser update);
 	
-	//store
-	public Optional<Store_Boundary> getSpecificStore(String id);
-	public List<Store_Boundary> getAllStores();
+	//obj
+	public Optional<BoundaryObject> getSpecificObj(String id);
+	public List<BoundaryObject> getAllObjects();
 	
-	public Store_Boundary createStore (Store_Boundary StoreBoundary);
+	public	BoundaryObject createObject (BoundaryObject StoreBoundary);
 	
-	public void deleteAllStores ();
+	public void deleteAllObjs ();
 	
-	public void updateStore (String id, Store_Boundary update);
+	public void updateObj (String id, BoundaryObject update);
 	
 	//miniAppCommands
 	
 	
-	public Optional<MiniAppCommand_Boundary> getSpecificMiniAppCommand(String id);
-	public List<MiniAppCommand_Boundary> getAllMiniAppCommands();
+	public Optional<BoundaryCommand> getSpecificMiniAppCommand(String id);
+	public List<BoundaryCommand> getAllMiniAppCommands();
 	
-	public MiniAppCommand_Boundary createMiniAppCommand (MiniAppCommand_Boundary StoreBoundary);
+	public BoundaryCommand createMiniAppCommand (BoundaryCommand StoreBoundary);
 	
 	public void deleteAlminiAppCommandes ();
 	
-	public void updateminiAppCommand (String id, MiniAppCommand_Boundary update);
+	public void updateminiAppCommand (String id, BoundaryCommand update);
 	
 	
 	

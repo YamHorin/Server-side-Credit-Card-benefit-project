@@ -4,7 +4,9 @@ import java.util.Date;
 import UserFiles.*;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 
+import Boundary.BoundaryCommand;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -21,11 +23,12 @@ import jakarta.persistence.TemporalType;
 
 
 @Entity
-@Table(name = "DEMO_TBL")
+@Table(name = "COMMAND_TBL")
 public class EntityCommand {
 	
 	@Id
 	private String commandId;
+	
 	private String miniAppName;
 	private String command;
 	@Transient
@@ -119,5 +122,25 @@ public class EntityCommand {
 				", commandAttributes=" + commandAttributes +
 				'}';
 	}
-
+	
+	public BoundaryCommand toBoudary(EntityCommand Entity)
+	{
+		BoundaryCommand boun = new BoundaryCommand();
+		boun.setCommand(Entity.getCommand());
+		boun.setCommandAttributes(Entity.getCommandAttributes());
+		CommandId CommandId = new CommandId();
+		CommandId.setId(Entity.getCommandId());
+		CommandId.setMiniApp(Entity.getMiniAppName());
+		CommandId.setSuperApp(get_super_app_name(command));
+		boun.setCommandId(CommandId);
+		boun.setInvocationTimeStamp(Entity.getInvocationTimeStamp());
+		boun.setInvokedBy(Entity.getInvokedBy());
+		boun.setTargetObject(Entity.getTargetObject());
+		return boun;
+	}
+	@Value("${spring.application.name:SuperApppp}")
+	public String get_super_app_name(String name_super_app) {
+		System.err.println("**** reading from configuration default super app name: " + name_super_app);
+		return name_super_app;
+	}
 }

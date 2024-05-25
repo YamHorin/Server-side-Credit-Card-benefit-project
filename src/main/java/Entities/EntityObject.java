@@ -8,11 +8,16 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
+
+import Boundary.BoundaryObject;
+
 @Entity
-@Table(name = "DEMO_TBL")
+@Table(name = "OBJ_TBL")
 public class EntityObject {
 
-    @Id private String objectID;
+    @Id 
+    private String objectID;
     private String type;
     private String alias;
     private Boolean active;
@@ -21,7 +26,7 @@ public class EntityObject {
     private CreatedBy createdBy;
 	@Transient
     private Map<String, Object> objectDetails;
-	public Location location;
+	private Location location;
 
 
     public EntityObject() {
@@ -104,5 +109,26 @@ public class EntityObject {
                 ", objectDetails=" + objectDetails +
                 '}';
     }
-
+    public BoundaryObject toBoundary(EntityObject entity)
+    {
+    	BoundaryObject bounObj = new BoundaryObject();
+    	bounObj.setActive(entity.getActive());
+    	bounObj.setAlias(entity.getAlias());
+    	bounObj.setCreatedBy(entity.getCreatedBy());
+    	bounObj.setCreationTimeStamp(entity.getCreationTimeStamp());
+    	bounObj.setLocation(entity.getLocation());
+    	bounObj.setObjectDetails(entity.getObjectDetails());
+    	ObjectId ObjectId = new ObjectId();
+    	ObjectId.setId(entity.getObjectID());
+    	ObjectId.setSuperApp(get_super_app_name(alias));
+    	bounObj.setObjectID(ObjectId);
+    	bounObj.setType(entity.getType());
+    	return bounObj;
+    	
+    }
+	@Value("${spring.application.name:SuperApppp}")
+	public String get_super_app_name(String name_super_app) {
+		System.err.println("**** reading from configuration default super app name: " + name_super_app);
+		return name_super_app;
+	}
 }

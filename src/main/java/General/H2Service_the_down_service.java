@@ -1,40 +1,38 @@
 package General;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import General.Data_Checks;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
-import MIniAppFiles.MiniAppCommand_Boundary;
-import MIniAppFiles.miniAppCommandDao;
-import StoreFiles.StoreDao;
-import StoreFiles.Store_Boundary;
-import UserFiles.RoleEnumBoundary;
-import UserFiles.UserDao;
-import UserFiles.User_Boundary;
-import UserFiles.User_Entity;
+import Boundary.BoundaryCommand;
+import Boundary.BoundaryObject;
+import Boundary.BoundaryUser;
+import Entities.EntityUser;
+import Entities.EntityObject;
+import Entities.EntityCommand;
 import UserFiles.User_Id;
 
+
 public class H2Service_the_down_service implements DataService_Business_logic {
-	private StoreDao StoreDao;
+	private ObjDao ObjectDao;
 	private UserDao UserDao;
-	private miniAppCommandDao miniAppCommandDao;
+	private MiniAppCommadDao miniAppCommandDao;
 	
-	//get from config data
+	//get from  data
 	private String name_super_app;
 	
 	//converter data from Boundary to Entity 
 	
-	private DataConverter DataConverter;
 
-	public H2Service_the_down_service(StoreFiles.StoreDao storeDao, UserFiles.UserDao userDao,
-			MIniAppFiles.miniAppCommandDao miniAppCommandDao, General.DataConverter dataConverter) {
-		StoreDao = storeDao;
+	public H2Service_the_down_service(ObjDao Objectdao, UserDao userDao,
+			MiniAppCommadDao miniAppCommandDao) {
+		ObjectDao = Objectdao;
 		UserDao = userDao;
 		this.miniAppCommandDao = miniAppCommandDao;
-		DataConverter = dataConverter;
 		setDefaultFirstName("not important because it gets info from the configuration default");
 	}
 	@Value("${spring.application.name:SuperApppp}")
@@ -43,106 +41,222 @@ public class H2Service_the_down_service implements DataService_Business_logic {
 		this.name_super_app = name_super_app;
 	}
 	@Override
-	@Transactional(readOnly = true)
-	public Optional<User_Boundary> getSpecificUser(String id) {
-		Optional <User_Entity> enitityUser = this.UserDao.findById(id);
-		Optional <User_Boundary> boundaryUser = enitityUser.map(this.DataConverter::UserToBoundry);
-		if (boundaryUser.isEmpty()==true)
-			System.out.println("no users to return please check the id");
+    @Transactional(readOnly = true)
+	public Optional<BoundaryUser> getSpecificUser(String id) {
+		Optional <EntityUser> entityUser = this.UserDao.findById(id);
+		//potential to bug?
+		EntityUser entity = new EntityUser();
+		Optional<BoundaryUser> boundaryUser = entityUser.map(entity::toBoundary);
+		if (boundaryUser.isEmpty())
+			System.err.println("* no user to return");
 		else
-			System.err.println(boundaryUser.toString());
-		return boundaryUser;
-				
-			
+			System.out.println(boundaryUser.toString());
+		return boundaryUser;	
 	}
 	@Override
-	public List<User_Boundary> getAllUsers() {
-		List<User_Entity> entities = this.UserDao.findAll();
+	@Transactional(readOnly = true)
+	public List<BoundaryUser> getAllUsers() {
+		List<EntityUser> entities = this.UserDao.findAll();
+		List<BoundaryUser> boundaries = new ArrayList<>();
+		for (EntityUser entity : entities) {
+			boundaries.add(entity.toBoundary(entity));
+		}
 		
-		List <User_Boundary> boundaries_users = new ArrayList<>();
-		for (User_Entity user_Entity : entities) {
-			boundaries_users.add(this.DataConverter.UserToBoundry(user_Entity));
-			System.out.println("got data user: "+user_Entity.toString());
-		}
-		return boundaries_users;
+		System.err.println("* data from database: " + boundaries);
+		return boundaries;
 	}
 	@Override
-	public User_Boundary createUser(User_Boundary UserBoundary) {
-		System.out.println("we get a new user to out data set: \n\n\n "+UserBoundary.toString());
-		if(UserBoundary.getUser_id()==null)
-			UserBoundary.setUser_id(new User_Id());
-		UserBoundary.getUser_id().setSuperAPP(this.name_super_app);
-		if (UserBoundary.getUser_id().getEmail()!=null)
-		{
-			//to do 
-//			if(isValidEmail(UserBoundary.getUser_id().getEmail())==false)
-//				throw new RuntimeException("not valid email");		
-		}
-		if (UserBoundary.getRole()==null)
-			UserBoundary.setRole(RoleEnumBoundary.UNDETERMINED);
-			
+	@Transactional(readOnly = false)
+	public BoundaryUser createUser(BoundaryUser UserBoundary) {
+		System.err.println("* client requested to store: " + UserBoundary);
+		EntityUser entity = UserBoundary.toEntity();
+		entity = this.UserDao.save(entity);
+		BoundaryUser rv  = entity.toBoundary(entity);
+		System.err.println("* server stored: " + rv);
+		return rv;
 	}
 	@Override
+	@Transactional(readOnly = false)
 	public void deleteAllUsers() {
-		// TODO Auto-generated method stub
+		System.err.println("* deleting table for users");
+		this.UserDao.deleteAll();
+	}
+	@Override
+	@Transactional(readOnly = false)
+	public void updateUser(String id, BoundaryUser update) {
+		System.out.println("* updating user with id: " + id + ", with the following details: " + update);
+		EntityUser userEntity = this.UserDao.findById(id).orElseThrow(()->new RuntimeException(
+				"Could not find User for update by id: " + id));
+		if (update.getUserId().getEmail()!=null)
+			userEntity.setId(update.getUserId().getEmail() + "_" + update.getUserId().getSuperAPP());
+		if (update.getRole()!=null)
+			userEntity.setRole(update.getRole());
+		if (update.getUserName()!=null)
+			userEntity.setUserName(update.getUserName());
+		if (update.getAvatar()!=null)
+			userEntity.setAvatar(update.getAvatar());
+//		//TODO maybe we need a version?
+//		if (userEntity.getVersion() ==null)
+//			userEntity.setVersion() = 0;
+		userEntity = this.UserDao.save(userEntity);
+		System.err.println("user has been updated: * " + userEntity);
+	}
+	@Override
+    @Transactional(readOnly = true)
+	public Optional<BoundaryObject> getSpecificObj(String id) {
+		// TODO object
+		Optional <EntityObject> entityObject = this.ObjectDao.findById(id);
+		//potential to bug?
+		EntityObject entity = new EntityObject();
+		Optional<BoundaryObject> boundaryObject = entityObject.map(entity::toBoundary);
+		if (boundaryObject.isEmpty())
+			System.err.println("* no user to return");
+		else
+			System.out.println(boundaryObject.toString());
+		return boundaryObject;	
+	}
+	@Override
+    @Transactional(readOnly = true)
+	public List<BoundaryObject> getAllObjects() {
+		List<EntityObject> entities = this.ObjectDao.findAll();
+		List<BoundaryObject> boundaries = new ArrayList<>();
+		for (EntityObject entity : entities) {
+			boundaries.add(entity.toBoundary(entity));
+		}
+		
+		System.err.println("* data from database: " + boundaries);
+		return boundaries;
+	}
+	@Override
+	@Transactional(readOnly = false)
+	public BoundaryObject createObject(BoundaryObject ObjectBoundary) {
+		System.err.println("* client requested to store: " + ObjectBoundary);
+		EntityObject entity = ObjectBoundary.toEntity();
+		entity = this.ObjectDao.save(entity);
+		BoundaryObject rv  = entity.toBoundary(entity);
+		System.err.println("* server stored: " + rv);
+		return rv;
+	}
+	@Override
+	@Transactional(readOnly = false)
+	public void deleteAllObjs() {
+		System.err.println("* deleting table for objects");
+		this.ObjectDao.deleteAll();
 		
 	}
-	@Override
-	public void updateUser(String id, User_Boundary update) {
-		// TODO Auto-generated method stub
 		
+	@Override
+	@Transactional(readOnly = false)
+	public void updateObj(String id, BoundaryObject update) {
+		System.err.println("* updating obj with id: " + id + ", with the following details: " + update);
+		EntityObject objectEntity = this.ObjectDao.findById(id).orElseThrow(()->new RuntimeException(
+				"Could not find object for update by id: " + id));
+        if (update.getType()!=null)
+        	objectEntity.setType(update.getType());
+        //TODO we don't know how to put time in table
+//       if (update.getCreationTimeStamp()!=null)
+//	        objectEntity.setCreationTimeStamp(update.getCreationTimeStamp());
+        
+        //TODO created by it's just an email? don't understand 
+//        if (update.getCreatedBy()!=null)
+//	        objectEntity.setCreatedBy(update.getCreatedBy());
+	      
+        
+        if (update.getActive()!=null)  
+	        objectEntity.setActive(update.getActive() == null || update.getActive());
+	      
+        if (update.getAlias()!=null)  
+	        objectEntity.setAlias(update.getAlias() == null ? "demo instance" : update.getAlias());
+        
+	      //TODO how to put a map in a table??????? 
+//	      if (update.getObjectDetails()!=null)
+//	        objectEntity.setObjectDetails(update.getObjectDetails() == null ? new HashMap<>() : update.getObjectDetails());
+	    
+        //TODO how to location in a table , just a long String?????  
+//	      if(update.getLocation()!=null)  
+//        objectEntity.setLocation(update.getLocation());
+        objectEntity = this.ObjectDao.save(objectEntity);
+		System.err.println("user has been updated: * " + objectEntity);
 	}
 	@Override
-	public Optional<Store_Boundary> getSpecificStore(String id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+	@Transactional(readOnly = true)
+
+	public Optional<BoundaryCommand> getSpecificMiniAppCommand(String id) {
+		Optional <EntityCommand> entityCommand = this.miniAppCommandDao.findById(id);
+		//potential to bug?
+		EntityCommand entity = new EntityCommand();
+		Optional<BoundaryCommand> boundaryCommand = entityCommand.map(entity::toBoudary);
+		if (boundaryCommand.isEmpty())
+			System.err.println("* no mini app command to return");
+		else
+			System.out.println(boundaryCommand.toString());
+		return boundaryCommand;
 	}
 	@Override
-	public List<Store_Boundary> getAllStores() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public Store_Boundary createStore(Store_Boundary StoreBoundary) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public void deleteAllStores() {
-		// TODO Auto-generated method stub
+	@Transactional(readOnly = true)
+
+	public List<BoundaryCommand> getAllMiniAppCommands() {
+		List<EntityCommand> entities = this.miniAppCommandDao.findAll();
+		List<BoundaryCommand> boundaries = new ArrayList<>();
+		for (EntityCommand entity : entities) {
+			boundaries.add(entity.toBoudary(entity));
+		}
 		
+		System.err.println("* data from database: " + boundaries);
+		return boundaries;
 	}
 	@Override
-	public void updateStore(String id, Store_Boundary update) {
-		// TODO Auto-generated method stub
-		
+	@Transactional(readOnly = false)
+
+	public BoundaryCommand createMiniAppCommand(BoundaryCommand CommandBoundary) {
+		System.err.println("* client requested to store: " + CommandBoundary);
+		EntityCommand entity = CommandBoundary.toEntity();
+		entity = this.miniAppCommandDao.save(entity);
+		BoundaryCommand rv  = entity.toBoudary(entity);
+		System.err.println("* server stored: " + rv);
+		return rv;
 	}
 	@Override
-	public Optional<MiniAppCommand_Boundary> getSpecificMiniAppCommand(String id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
-	}
-	@Override
-	public List<MiniAppCommand_Boundary> getAllMiniAppCommands() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public MiniAppCommand_Boundary createMiniAppCommand(MiniAppCommand_Boundary StoreBoundary) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
+	@Transactional(readOnly = false)
+
 	public void deleteAlminiAppCommandes() {
-		// TODO Auto-generated method stub
+		System.err.println("* deleting table for mini app commands :)");
+		this.miniAppCommandDao.deleteAll();
 		
 	}
 	@Override
-	public void updateminiAppCommand(String id, MiniAppCommand_Boundary update) {
-		// TODO Auto-generated method stub
+	@Transactional(readOnly = false)
+
+	public void updateminiAppCommand(String id, BoundaryCommand update) {
+		System.err.println("* updating mini app command  with id: " + id + "\n, with the following details: " + update);
+		EntityCommand entity = this.miniAppCommandDao.findById(id).orElseThrow(()->new RuntimeException(
+				"Could not find command for update by id: " + id));
+		if (update.getCommand()!=null)
+	        entity.setCommand(update.getCommand());
+		//TODO is targetObject is just the id of the object in the objectTable?
+//		if (update.getTargetObject()!=null)
+//	        entity.setTargetObject(update.getTargetObject());
+		
+		//TODO how to put a map in a table??????? 
+//		if (update.getCommandAttributes()!=null)
+//			entity.setCommandAttributes(update.getCommandAttributes());
+		
+        //TODO is InvokedBy is just an email of the user 
+//		if (update.getInvokedBy()!=null)
+//			entity.setInvokedBy(update.getInvokedBy());
+		
+		//TODO we don't know how to put time in table
+//		if (update.getInvocationTimeStamp()!=null)
+//	        entity.setInvocationTimeStamp(update.getInvocationTimeStamp());
+		
+		entity = this.miniAppCommandDao.save(entity);
+		System.err.println("command has been updated: * " + entity);   
 		
 	}
 	
 	
+	}
 	
-}
+	
+	
+

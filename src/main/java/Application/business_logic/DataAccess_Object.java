@@ -5,18 +5,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
+import java.lang.String;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import Application.DataAccess.EntityObject;
 import Application.DataAccess.ObjDao;
-
+@Service
 public class DataAccess_Object implements ServicesObject{
 	private ObjDao ObjectDao;
-
-
-
-	public DataAccess_Object(ObjDao objectDao, String name_super_app) {
+	public DataAccess_Object(ObjDao objectDao) {
 		this.ObjectDao = objectDao;
 	}
 	@Override
@@ -90,8 +88,13 @@ public class DataAccess_Object implements ServicesObject{
      
       if (update.getObjectDetails()!=null)
     	  objectEntity.setObjectDetails(update.getObjectDetails());
-      if(update.getLocation()!=null)  
-    	  objectEntity.setLocation(update.getLocation());
+      if(update.getLocation()!=null) 
+      {
+    	  objectEntity.setLocation_lan(update.getLocation().getLat());
+
+    	  objectEntity.setLocation_lng(update.getLocation().getLng());
+      }
+    	  
     objectEntity = this.ObjectDao.save(objectEntity);
 		System.err.println("user has been updated: * " + objectEntity);
 	}

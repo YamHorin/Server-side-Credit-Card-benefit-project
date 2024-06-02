@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import Application.DataAccess.EntityUser;
 import Application.DataAccess.UserDao;
-
+@Service
 public class DataAccess_User implements ServicesUser{
 	private UserDao UserDao;
 	private String name_super_app;

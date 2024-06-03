@@ -48,7 +48,7 @@ public class DataAccess_Object implements ServicesObject{
 		System.err.println("* client requested to store: " + ObjectBoundary);
 		ObjectBoundary.setCreationTimeStamp(new Date());
 		ObjectId objId = new ObjectId();
-		objId.setId(UUID.randomUUID().toString());
+		objId.setId(ObjectBoundary.getObjectID().getId());
 		ObjectBoundary.setObjectID(objId);
 		EntityObject entity = ObjectBoundary.toEntity();
 		entity = this.ObjectDao.save(entity);

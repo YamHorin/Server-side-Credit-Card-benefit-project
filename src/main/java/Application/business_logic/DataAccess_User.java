@@ -15,13 +15,10 @@ public class DataAccess_User implements ServicesUser{
 	private String name_super_app;
 	public DataAccess_User(Application.DataAccess.UserDao userDao) {
 		this.UserDao = userDao;
-		setDefaultSuperAppName("not important because it gets info from the configuration default");
-
-		
 	}
 
 	@Value("${spring.application.name:SuperApppp}")
-	public void setDefaultSuperAppName(String name_super_app) {
+	public void setname_super_app(String name_super_app) {
 		System.err.println("**** reading from configuration default super app name: " + name_super_app);
 		this.name_super_app = name_super_app;
 	}

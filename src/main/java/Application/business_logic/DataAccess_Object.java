@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.lang.String;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import Application.DataAccess.ObjDao;
 @Service
 public class DataAccess_Object implements ServicesObject{
 	private ObjDao ObjectDao;
+	private String superAppName;
 	public DataAccess_Object(ObjDao objectDao) {
 		this.ObjectDao = objectDao;
 	}
@@ -49,7 +51,11 @@ public class DataAccess_Object implements ServicesObject{
 		ObjectBoundary.setCreationTimeStamp(new Date());
 		ObjectId objId = new ObjectId();
 		objId.setId(ObjectBoundary.getObjectID().getId());
+		objId.setSuperApp(this.superAppName);
 		ObjectBoundary.setObjectID(objId);
+		System.err.println("******\n\n\n");
+		System.err.println(" "+ObjectBoundary.getObjectID().toString());
+		System.err.println("******\n\n\n");
 		EntityObject entity = ObjectBoundary.toEntity();
 		entity = this.ObjectDao.save(entity);
 		BoundaryObject rv  = entity.toBoundary(entity);
@@ -98,6 +104,11 @@ public class DataAccess_Object implements ServicesObject{
     objectEntity = this.ObjectDao.save(objectEntity);
 		System.err.println("user has been updated: * " + objectEntity);
 	}
+	@Value("${spring.application.name:Jill}")
+    public void setsuperAppName(String superApp) {
+		System.err.println("**** reading from configuration default superAppName: " + superApp);
+        this.superAppName = superApp;
+    }
 
 
 

@@ -1,15 +1,11 @@
 package Application.business_logic;
 
 import java.util.Date;
-
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import Application.DataAccess.EntityObject;
 import Application.DataAccess.Location;
-
 import java.util.Map;
 
 public class BoundaryObject {
@@ -90,7 +86,7 @@ public class BoundaryObject {
     public void setCreatedBy(CreatedBy createdBy) {
         this.createdBy = createdBy;
     }
-
+    
     public Boolean getActive() {
         return active;
     }
@@ -105,8 +101,10 @@ public class BoundaryObject {
 
     public EntityObject toEntity() {
     	EntityObject objectEntity = new EntityObject();
-
-        objectEntity.setObjectID(this.getObjectID().getId() + "_" + this.getObjectID().getSuperApp());
+        objectEntity.setObjectID(this.getObjectID().getId() + "__" + this.getObjectID().getSuperApp());
+		System.err.println("2******\n\n\n");
+		System.err.println(" "+getObjectID().toString());
+		System.err.println("2******\n\n\n");
         objectEntity.setType(this.getType());
         objectEntity.setCreationTimeStamp(this.getCreationTimeStamp());
         objectEntity.setCreatedBy(this.getCreatedBy());
@@ -133,6 +131,6 @@ public class BoundaryObject {
                 ", objectDetails=" + objectDetails +
                 '}';
     }
-
+    
 	
 }

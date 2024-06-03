@@ -127,8 +127,8 @@ public class EntityObject {
     	bounObj.setLocation(new Location(entity.getLocation_lat() , entity.getLocation_lng()));
     	bounObj.setObjectDetails(entity.getObjectDetails());
     	ObjectId ObjectId = new ObjectId();
-    	ObjectId.setId(entity.getObjectID());
-    	ObjectId.setSuperApp(get_super_app_name(alias));
+    	ObjectId.setId(entity.getObjectID().split("__")[0]);
+    	ObjectId.setSuperApp(entity.getObjectID().split("__")[1]);
     	bounObj.setObjectID(ObjectId);
     	bounObj.setType(entity.getType());
     	return bounObj;

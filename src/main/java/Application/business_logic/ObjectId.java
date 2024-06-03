@@ -1,5 +1,7 @@
 package Application.business_logic;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class ObjectId {
     private String superApp;
 
@@ -7,8 +9,10 @@ public class ObjectId {
 
     public ObjectId() {
     }
-
+    
+    @Value("${spring.application.name:Jill}")
     public void setSuperApp(String superApp) {
+		System.err.println("**** reading from configuration default first name: " + superApp);
         this.superApp = superApp;
     }
 
@@ -31,6 +35,5 @@ public class ObjectId {
                 ", superApp='" + superApp + "/n" +
                 '}';
     }
-
 
 }

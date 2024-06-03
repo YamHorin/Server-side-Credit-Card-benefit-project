@@ -1,4 +1,4 @@
-package Application.business_logic;
+package Application.DataAccess;
 
 public class Location {
     private double lat;

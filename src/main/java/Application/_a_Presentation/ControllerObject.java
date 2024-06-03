@@ -16,7 +16,7 @@ import Application.business_logic.BoundaryObject;
 import Application.business_logic.ServicesObject;
 
 @RestController
-@RequestMapping(path = { "/demo" })
+@RequestMapping(path = { "/superapp/objects" })
 public class ControllerObject {
 	private ServicesObject servicesObject;
 	
@@ -27,14 +27,14 @@ public class ControllerObject {
 	@PostMapping(
 		consumes = MediaType.APPLICATION_JSON_VALUE, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryObject store(@RequestBody BoundaryObject message) {
+	public BoundaryObject Create_an_object(@RequestBody BoundaryObject message) {
 		return this.servicesObject.createObject(message);
 	}
 
 	@GetMapping(
-		path = { "/{id}" }, 
+		path = { "/superapp/objects/{Credit_Card_Benefit_app}/{id}" }, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryObject getSpecificMessage(@PathVariable("id") String id) {
+	public BoundaryObject Retrieve_object (@PathVariable("id") String id) {
 		Optional<BoundaryObject> demoOp = this.servicesObject
 			.getSpecificObj(id);
 		
@@ -46,7 +46,7 @@ public class ControllerObject {
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryObject[] getAllMessages() {
+	public BoundaryObject[] Get_all_objects() {
 		return this.servicesObject
 			.getAllObjects()
 			.toArray(new BoundaryObject[0]);
@@ -58,7 +58,7 @@ public class ControllerObject {
 	}
 	
 	@PutMapping(
-		path = {"/{id}"},
+		path = {"/superapp/objects/{Credit_Card_Benefit_app}/{id}"},
 		consumes = {MediaType.APPLICATION_JSON_VALUE})
 	public void update (
 			@PathVariable("id") String id, 

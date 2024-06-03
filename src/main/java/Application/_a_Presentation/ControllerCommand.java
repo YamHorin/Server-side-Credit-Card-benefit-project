@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,7 @@ import Application.business_logic.BoundaryCommand;
 import Application.business_logic.servicesCommand;
 
 @RestController
-@RequestMapping(path = { "/demo" })
+@RequestMapping(path = { "/superapp/miniapp/{MiniAppName}" })
 public class ControllerCommand {
 	private servicesCommand servicesCommand;
 	
@@ -33,7 +32,7 @@ public class ControllerCommand {
 	}
 
 	@GetMapping(
-		path = { "/{id}" }, 
+		path = { "/Credit_Card_Benefit_app/admin/miniapp/{miniAppName}{id}" }, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
 	public BoundaryCommand getSpecificMessage(@PathVariable("id") String id) {
 		Optional<BoundaryCommand> demoOp = this.servicesCommand
@@ -58,15 +57,7 @@ public class ControllerCommand {
 		this.servicesCommand.deleteAllminiAppCommandes();
 	}
 	
-	@PutMapping(
-		path = {"/{id}"},
-		consumes = {MediaType.APPLICATION_JSON_VALUE})
-	public void update (
-			@PathVariable("id") String id, 
-			@RequestBody BoundaryCommand update) {
-		this.servicesCommand
-			.updateminiAppCommand(id, update);
-	}
+
 }
 
 

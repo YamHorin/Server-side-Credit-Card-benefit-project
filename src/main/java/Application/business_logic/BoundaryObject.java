@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Application.DataAccess.EntityObject;
+import Application.DataAccess.Location;
 
 import java.util.Map;
 
@@ -35,7 +36,7 @@ public class BoundaryObject {
         setCreatedBy(objectEntity.getCreatedBy());
         setType(objectEntity.getType());
         setAlias(objectEntity.getAlias());
-        setLocation(objectEntity.getLocation());
+        setLocation(new Location(objectEntity.getLocation_lat() , objectEntity.getLocation_lng()));
     }
 
     public Location getLocation() {
@@ -112,7 +113,8 @@ public class BoundaryObject {
         objectEntity.setActive(this.getActive() == null || this.getActive());
         objectEntity.setAlias(this.getAlias() == null ? "demo instance" : this.getAlias());
         objectEntity.setObjectDetails(this.getObjectDetails() == null ? new HashMap<>() : this.getObjectDetails());
-        objectEntity.setLocation(this.location);
+        objectEntity.setLocation_lat(this.location.getLat());
+        objectEntity.setLocation_lng(this.location.getLng());
 
 
         return objectEntity;

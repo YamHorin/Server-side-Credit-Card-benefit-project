@@ -2,6 +2,7 @@ package Application._a_Presentation;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,7 @@ import Application.business_logic.BoundaryUser;
 import Application.business_logic.ServicesUser;
 
 @RestController
-@RequestMapping(path = { "/demo" })
+@RequestMapping(path = { "/Credit_Card_Benefit_app/users" })
 public class ControllerUser {
 	private ServicesUser servicesUser;
 	
@@ -32,19 +33,26 @@ public class ControllerUser {
 	}
 
 	@GetMapping(
-		path = { "/{id}" }, 
+		path = { "/Credit_Card_Benefit_app/users/login/{superapp}/{email}" }, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryUser getSpecificMessage(@PathVariable("id") String id) {
-		Optional<BoundaryUser> demoOp = this.servicesUser
+	public BoundaryUser getSpecificUser(@PathVariable("email") String email ,@PathVariable("superapp") String superapp ) {
+		String id  = email+"_"+superapp;
+		Optional<BoundaryUser> User = this.servicesUser
 			.getSpecificUser(id);
 		
-		if (demoOp.isPresent()) {
-			return demoOp.get();
+		if (User.isPresent()) {
+			return User.get();
 		}else {
 			throw new RuntimeException("could not find message by id: " + id);
 		}
-	}
 	
+	}
+	@Value("${spring.application.name:Jill}")
+	private String getSuperAppName(String defaultFirstName) {
+		return defaultFirstName;
+		
+	}
+
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public BoundaryUser[] getAllMessages() {
 		return this.servicesUser
@@ -58,11 +66,11 @@ public class ControllerUser {
 	}
 	
 	@PutMapping(
-		path = {"/{id}"},
+		path = {"/Credit_Card_Benefit_app/users/login/{superapp}/{Useremail}"},
 		consumes = {MediaType.APPLICATION_JSON_VALUE})
-	public void update (
-			@PathVariable("id") String id, 
+	public void update (@PathVariable("email") String email ,@PathVariable("superapp") String superapp, 
 			@RequestBody BoundaryUser update) {
+		String id  = email+"_"+superapp;
 		this.servicesUser
 			.updateUser(id, update);
 	}

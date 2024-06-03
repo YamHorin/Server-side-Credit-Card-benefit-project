@@ -14,5 +14,4 @@ public interface servicesCommand {
 	
 	public void deleteAllminiAppCommandes ();
 	
-	public void updateminiAppCommand (String id, BoundaryCommand update);
 }

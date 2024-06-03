@@ -90,7 +90,7 @@ public class DataAccess_Object implements ServicesObject{
     	  objectEntity.setObjectDetails(update.getObjectDetails());
       if(update.getLocation()!=null) 
       {
-    	  objectEntity.setLocation_lan(update.getLocation().getLat());
+    	  objectEntity.setLocation_lat(update.getLocation().getLat());
 
     	  objectEntity.setLocation_lng(update.getLocation().getLng());
       }

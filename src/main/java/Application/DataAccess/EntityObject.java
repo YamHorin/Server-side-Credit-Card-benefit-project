@@ -1,8 +1,11 @@
 package Application.DataAccess;
 
 import java.util.Date;
+
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import java.util.Map;
@@ -11,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 
 import Application.business_logic.BoundaryObject;
 import Application.business_logic.CreatedBy;
-import Application.business_logic.Location;
 import Application.business_logic.ObjectId;
 
 @Entity
@@ -26,21 +28,25 @@ public class EntityObject {
     private Date creationTimeStamp;
 	@Transient
     private CreatedBy createdBy;
-	@Transient
+	@Lob
+	@Convert(converter = ConverterBetweenMapAndString.class)
     private Map<String, Object> objectDetails;
-	private Location location;
+	//private Location location;
+	private double location_lat;
+	private double location_lng;
+	
 
 
     public EntityObject() {
     }
-
-    public Location getLocation() {
-		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
+//
+//    public Location getLocation() {
+//		return location;
+//	}
+//
+//	public void setLocation(Location location) {
+//		this.location = location;
+//	}
 
 	public String getObjectID() {
         return objectID;
@@ -104,7 +110,7 @@ public class EntityObject {
                 "objectID='" + objectID + '\'' +
                 ", type='" + type + '\'' +
                 ", alias='" + alias + '\'' +
-                ", location='" + location + '\'' +
+                ", location='" + location_lat+" "+location_lng + '\'' +
                 ", active=" + active +
                 ", creationTimeStamp=" + creationTimeStamp +
                 ", createdBy=" + createdBy +
@@ -118,7 +124,7 @@ public class EntityObject {
     	bounObj.setAlias(entity.getAlias());
     	bounObj.setCreatedBy(entity.getCreatedBy());
     	bounObj.setCreationTimeStamp(entity.getCreationTimeStamp());
-    	bounObj.setLocation(entity.getLocation());
+    	bounObj.setLocation(new Location(entity.getLocation_lat() , entity.getLocation_lng()));
     	bounObj.setObjectDetails(entity.getObjectDetails());
     	ObjectId ObjectId = new ObjectId();
     	ObjectId.setId(entity.getObjectID());
@@ -132,5 +138,21 @@ public class EntityObject {
 	public String get_super_app_name(String name_super_app) {
 		System.err.println("**** reading from configuration default super app name: " + name_super_app);
 		return name_super_app;
+	}
+
+	public double getLocation_lat() {
+		return location_lat;
+	}
+
+	public void setLocation_lat(double location_lat) {
+		this.location_lat = location_lat;
+	}
+
+	public double getLocation_lng() {
+		return location_lng;
+	}
+
+	public void setLocation_lng(double location_lng) {
+		this.location_lng = location_lng;
 	}
 }

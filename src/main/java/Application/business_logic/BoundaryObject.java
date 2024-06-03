@@ -102,9 +102,6 @@ public class BoundaryObject {
     public EntityObject toEntity() {
     	EntityObject objectEntity = new EntityObject();
         objectEntity.setObjectID(this.getObjectID().getId() + "__" + this.getObjectID().getSuperApp());
-		System.err.println("2******\n\n\n");
-		System.err.println(" "+getObjectID().toString());
-		System.err.println("2******\n\n\n");
         objectEntity.setType(this.getType());
         objectEntity.setCreationTimeStamp(this.getCreationTimeStamp());
         objectEntity.setCreatedBy(this.getCreatedBy());

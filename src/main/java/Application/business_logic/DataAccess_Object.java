@@ -53,9 +53,6 @@ public class DataAccess_Object implements ServicesObject{
 		objId.setId(ObjectBoundary.getObjectID().getId());
 		objId.setSuperApp(this.superAppName);
 		ObjectBoundary.setObjectID(objId);
-		System.err.println("******\n\n\n");
-		System.err.println(" "+ObjectBoundary.getObjectID().toString());
-		System.err.println("******\n\n\n");
 		EntityObject entity = ObjectBoundary.toEntity();
 		entity = this.ObjectDao.save(entity);
 		BoundaryObject rv  = entity.toBoundary(entity);

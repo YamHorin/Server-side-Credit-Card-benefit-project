@@ -37,6 +37,20 @@ public class ControllerCommand {
 		
 	}
 
+
+	
+	
+	@GetMapping(
+		path = { "/Credit_Card_Benefit_app/admin/miniapp/{miniAppName}" }, 
+		produces = MediaType.APPLICATION_JSON_VALUE)
+	public BoundaryCommand[] getSpecificCommandsFromMiniApp(@PathVariable("miniAppName") String id) {
+		
+		return this.servicesCommand.get_All_Mini_App_Commands(id)
+				.toArray(new BoundaryCommand[0]);
+	}
+
+	
+	
 	@GetMapping(
 		path = { "/Credit_Card_Benefit_app/admin/miniapp/{miniAppName}{id}" }, 
 		produces = MediaType.APPLICATION_JSON_VALUE)

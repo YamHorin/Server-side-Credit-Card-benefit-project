@@ -12,6 +12,7 @@ import Application.business_logic.TargetObject;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -40,6 +41,9 @@ public class EntityCommand {
 	private Date invocationTimeStamp;
 	@Transient
 	private CreatedBy invokedBy;
+	
+	
+	@Lob
 	@Convert(converter = ConverterBetweenMapAndString.class)
 	private Map<String, Object> commandAttributes;
 	

@@ -33,7 +33,6 @@ public class DataAccess_Command implements servicesCommand{
 	@Transactional(readOnly = true)
 
 	public Optional<BoundaryCommand> getSpecificMiniAppCommand(String id) {
-		System.err.println("\n\n\n************\n"+id+"\n\n******************\n");
 		Optional <EntityCommand> entityCommand = this.miniAppCommandDao.findById(id);
 		//potential to bug?
 		EntityCommand entity = new EntityCommand();
@@ -64,7 +63,7 @@ public class DataAccess_Command implements servicesCommand{
 		System.err.println("* client requested to store: " + CommandBoundary);
 		CommandId command = new CommandId();
 		command.setSuperApp(this.superAppName);
-		command.setMiniApp("null because we don't have mini app yet");
+		command.setMiniApp(CommandBoundary.getCommandId().getMiniApp());
 		command.setId(UUID.randomUUID().toString());
 		CommandBoundary.setCommandId(command);
 		CommandBoundary.setInvocationTimeStamp(new Date());
@@ -85,6 +84,19 @@ public class DataAccess_Command implements servicesCommand{
 		System.err.println("* deleting table for mini app commands :)");
 		this.miniAppCommandDao.deleteAll();
 		
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<BoundaryCommand> get_All_Mini_App_Commands(String id) {
+		List<EntityCommand> entities = this.miniAppCommandDao.findAllByminiAppName(id);
+		List<BoundaryCommand> boundaries = new ArrayList<>();
+		for (EntityCommand entity : entities) {
+			boundaries.add(entity.toBoudary(entity));
+		}
+		
+		System.err.println("* data from database: " + boundaries);
+		return boundaries;
 	}
 
 

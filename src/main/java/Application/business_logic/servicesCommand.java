@@ -13,5 +13,6 @@ public interface servicesCommand {
 	public BoundaryCommand createMiniAppCommand (BoundaryCommand StoreBoundary);
 	
 	public void deleteAllminiAppCommandes ();
+	public List<BoundaryCommand> get_All_Mini_App_Commands(String id);
 	
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import Application.business_logic.BoundaryUser;
+import Application.business_logic.NewUserBoundary;
 import Application.business_logic.ServicesUser;
 
 @RestController
@@ -28,8 +29,15 @@ public class ControllerUser {
 	@PostMapping(
 		consumes = MediaType.APPLICATION_JSON_VALUE, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryUser store(@RequestBody BoundaryUser message) {
-		return this.servicesUser.createUser(message);
+	public BoundaryUser createUser(@RequestBody NewUserBoundary message) {
+		BoundaryUser user = message.newUserToUserBoundary();
+		try {
+			return this.servicesUser.createUser(user);			
+		}
+		catch (Boundary_is_not_filled_correct e) {
+		}
+		return null;
+		
 	}
 
 	@GetMapping(
@@ -43,7 +51,7 @@ public class ControllerUser {
 		if (User.isPresent()) {
 			return User.get();
 		}else {
-			throw new RuntimeException("could not find message by id: " + id);
+			throw new Boundary_is_not_found_exception("could not find Specific User by id: " + id);
 		}
 	
 	}
@@ -54,7 +62,7 @@ public class ControllerUser {
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryUser[] getAllMessages() {
+	public BoundaryUser[] getAllUsers() {
 		return this.servicesUser
 			.getAllUsers()
 			.toArray(new BoundaryUser[0]);
@@ -68,7 +76,7 @@ public class ControllerUser {
 	@PutMapping(
 		path = {"/Credit_Card_Benefit_app/users/login/{superapp}/{Useremail}"},
 		consumes = {MediaType.APPLICATION_JSON_VALUE})
-	public void update (@PathVariable("email") String email ,@PathVariable("superapp") String superapp, 
+	public void updateUser (@PathVariable("email") String email ,@PathVariable("superapp") String superapp, 
 			@RequestBody BoundaryUser update) {
 		String id  = email+"_"+superapp;
 		this.servicesUser

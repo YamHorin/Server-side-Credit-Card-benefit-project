@@ -7,6 +7,11 @@ public class User_Id {
 	public User_Id() {
 		
 	}
+	public User_Id(String SuperAPP , String email) {
+		this.email = email;
+		this.SuperAPP= SuperAPP;
+	}
+	
 	public String getSuperAPP() {
 		return SuperAPP;
 	}

@@ -27,21 +27,27 @@ public class ControllerCommand {
 	@PostMapping(
 		consumes = MediaType.APPLICATION_JSON_VALUE, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryCommand store(@RequestBody BoundaryCommand message) {
-		return this.servicesCommand.createMiniAppCommand(message);
+	public BoundaryCommand store_command(@RequestBody BoundaryCommand message) {
+		try {
+			return this.servicesCommand.createMiniAppCommand(message);
+		}
+		catch (Boundary_is_not_filled_correct e) {
+		}
+		return null;
+		
 	}
 
 	@GetMapping(
 		path = { "/Credit_Card_Benefit_app/admin/miniapp/{miniAppName}{id}" }, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryCommand getSpecificMessage(@PathVariable("id") String id) {
+	public BoundaryCommand getSpecificCommand(@PathVariable("id") String id) {
 		Optional<BoundaryCommand> demoOp = this.servicesCommand
 			.getSpecificMiniAppCommand(id);
 		
 		if (demoOp.isPresent()) {
 			return demoOp.get();
 		}else {
-			throw new RuntimeException("could not find message by id: " + id);
+			throw new Boundary_is_not_found_exception("could not find Command by id: " + id);
 		}
 	}
 	

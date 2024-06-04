@@ -28,7 +28,13 @@ public class ControllerObject {
 		consumes = MediaType.APPLICATION_JSON_VALUE, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
 	public BoundaryObject Create_an_object(@RequestBody BoundaryObject message) {
-		return this.servicesObject.createObject(message);
+		try {
+			return this.servicesObject.createObject(message);			
+		}
+		catch (Boundary_is_not_filled_correct e) {
+		}
+		return null;
+		
 	}
 
 	@GetMapping(
@@ -41,7 +47,7 @@ public class ControllerObject {
 		if (demoOp.isPresent()) {
 			return demoOp.get();
 		}else {
-			throw new RuntimeException("could not find message by id: " + id);
+			throw new Boundary_is_not_found_exception("could not find object by id: " + id);
 		}
 	}
 	

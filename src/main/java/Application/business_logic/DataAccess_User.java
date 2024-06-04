@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import Application.DataAccess.EntityUser;
 import Application.DataAccess.UserDao;
+import Application._a_Presentation.Boundary_is_not_found_exception;
 @Service
 public class DataAccess_User implements ServicesUser{
 	private UserDao UserDao;
@@ -73,7 +74,7 @@ public class DataAccess_User implements ServicesUser{
 	@Override
 	public void updateUser(String id, BoundaryUser update) {
 		System.out.println("* updating user with id: " + id + ", with the following details: " + update);
-		EntityUser userEntity = this.UserDao.findById(id).orElseThrow(()->new RuntimeException(
+		EntityUser userEntity = this.UserDao.findById(id).orElseThrow(()->new Boundary_is_not_found_exception(
 				"Could not find User for update by id: " + id));
 		if (update.getUserId().getEmail()!=null)
 			userEntity.setId(update.getUserId().getEmail() + "_" + update.getUserId().getSuperAPP());

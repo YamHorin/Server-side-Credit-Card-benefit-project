@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import Application.DataAccess.EntityObject;
 import Application.DataAccess.ObjDao;
+import Application._a_Presentation.Boundary_is_not_found_exception;
 @Service
 public class DataAccess_Object implements ServicesObject{
 	private ObjDao ObjectDao;
@@ -71,7 +72,7 @@ public class DataAccess_Object implements ServicesObject{
 	@Transactional(readOnly = false)
 	public void updateObj(String id, BoundaryObject update) {
 		System.err.println("* updating obj with id: " + id + ", with the following details: " + update);
-		EntityObject objectEntity = this.ObjectDao.findById(id).orElseThrow(()->new RuntimeException(
+		EntityObject objectEntity = this.ObjectDao.findById(id).orElseThrow(()->new Boundary_is_not_found_exception(
 				"Could not find object for update by id: " + id));
         if (update.getType()!=null)
         	objectEntity.setType(update.getType());

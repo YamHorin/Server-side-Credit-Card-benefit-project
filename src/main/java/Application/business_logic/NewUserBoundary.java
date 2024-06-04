@@ -55,7 +55,17 @@ public class NewUserBoundary {
         return entity;
 
     }
+    public BoundaryUser newUserToUserBoundary() {
+    	BoundaryUser  Boundary = new BoundaryUser ();
+    	
+    	Boundary.setRole(this.getRole());
+        Boundary.setUserName(this.getUserName() == null ? "Anonymous" : this.getUserName());
+        Boundary.setAvatar(this.getAvatar() == null ? "F" : this.getAvatar());
+        Boundary.setUserId(new User_Id("" ,this.getEmail()));
 
+        return Boundary;
+
+    }
     @Override
     public String toString() {
         return "NewUserBoundary{" +

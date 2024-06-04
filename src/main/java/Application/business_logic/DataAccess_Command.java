@@ -25,8 +25,6 @@ public class DataAccess_Command implements servicesCommand{
 
 	public DataAccess_Command(MiniAppCommadDao miniAppCommandDao) {
 		this.miniAppCommandDao = miniAppCommandDao;
-		setDefaultSuperAppName("not important because it gets info from the configuration default");
-
 	}
 	
 	@Override

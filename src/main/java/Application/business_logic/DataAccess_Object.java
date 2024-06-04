@@ -23,7 +23,7 @@ public class DataAccess_Object implements ServicesObject{
 	@Override
     @Transactional(readOnly = true)
 	public Optional<BoundaryObject> getSpecificObj(String id) {
-
+		id = id +"__"+this.superAppName;
 		Optional <EntityObject> entityObject = this.ObjectDao.findById(id);
 		EntityObject entity = new EntityObject();
 		Optional<BoundaryObject> boundaryObject = entityObject.map(entity::toBoundary);
@@ -72,8 +72,10 @@ public class DataAccess_Object implements ServicesObject{
 	@Transactional(readOnly = false)
 	public void updateObj(String id, BoundaryObject update) {
 		System.err.println("* updating obj with id: " + id + ", with the following details: " + update);
+		id = id +"__"+this.superAppName;
+		String id2 = id;
 		EntityObject objectEntity = this.ObjectDao.findById(id).orElseThrow(()->new Boundary_is_not_found_exception(
-				"Could not find object for update by id: " + id));
+				"Could not find object for update by id: " + id2));
         if (update.getType()!=null)
         	objectEntity.setType(update.getType());
        if (update.getCreationTimeStamp()!=null)

@@ -36,7 +36,7 @@ public class BoundaryCommand {
     public EntityCommand toEntity() {
         EntityCommand entity = new EntityCommand();
         entity.setCommand(this.getCommand());
-        entity.setCommandId(this.getCommandId().getSuperApp() + "_" + this.getCommandId().getMiniApp() + "_" + this.getCommandId().getId());
+        entity.setCommandId(this.getCommandId().getId());
         entity.setMiniAppName(this.getCommandId().getMiniApp());
         entity.setTargetObject(this.getTargetObject());
         entity.setCommandAttributes(this.getCommandAttributes());

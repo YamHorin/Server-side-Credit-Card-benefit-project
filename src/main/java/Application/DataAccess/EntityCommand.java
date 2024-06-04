@@ -116,14 +116,14 @@ public class EntityCommand {
 
 	@Override
 	public String toString() {
-		return "MiniAppCommandEntity{" +
-				"commandId='" + commandId + '\'' +
-				", miniAppName='" + miniAppName + '\'' +
-				", command='" + command + '\'' +
-				", targetObject=" + targetObject +
-				", invocationTimeStamp=" + invocationTimeStamp +
-				", invokedBy=" + invokedBy +
-				", commandAttributes=" + commandAttributes +
+		return "\nMiniAppCommandEntity{" +
+				"\ncommandId='" + commandId + '\'' +
+				",\n miniAppName='" + miniAppName + '\'' +
+				", \ncommand='" + command + '\'' +
+				", \ntargetObject=" + targetObject +
+				", \ninvocationTimeStamp=" + invocationTimeStamp +
+				", \ninvokedBy=" + invokedBy +
+				", \ncommandAttributes=" + commandAttributes +
 				'}';
 	}
 	
@@ -135,16 +135,10 @@ public class EntityCommand {
 		CommandId CommandId = new CommandId();
 		CommandId.setId(Entity.getCommandId());
 		CommandId.setMiniApp(Entity.getMiniAppName());
-		CommandId.setSuperApp(get_super_app_name(command));
 		boun.setCommandId(CommandId);
 		boun.setInvocationTimeStamp(Entity.getInvocationTimeStamp());
 		boun.setInvokedBy(Entity.getInvokedBy());
 		boun.setTargetObject(Entity.getTargetObject());
 		return boun;
-	}
-	@Value("${spring.application.name:SuperApppp}")
-	public String get_super_app_name(String name_super_app) {
-		System.err.println("**** reading from configuration default super app name: " + name_super_app);
-		return name_super_app;
 	}
 }

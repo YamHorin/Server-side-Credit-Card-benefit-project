@@ -47,7 +47,7 @@ public class ControllerCommand {
 		if (demoOp.isPresent()) {
 			return demoOp.get();
 		}else {
-			throw new Boundary_is_not_found_exception("could not find Command by id: " + id);
+			throw new Boundary_is_not_found_exception("could not find Command by id: \n"+ id);
 		}
 	}
 	

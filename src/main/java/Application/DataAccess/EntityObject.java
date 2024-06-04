@@ -28,7 +28,6 @@ public class EntityObject {
     private Date creationTimeStamp;
 	@Transient
     private CreatedBy createdBy;
-	@Lob
 	@Convert(converter = ConverterBetweenMapAndString.class)
     private Map<String, Object> objectDetails;
 	//private Location location;

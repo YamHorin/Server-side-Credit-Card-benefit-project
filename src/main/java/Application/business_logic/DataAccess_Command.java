@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +17,13 @@ import Application.DataAccess.MiniAppCommadDao;
 @Service
 public class DataAccess_Command implements servicesCommand{
 	private MiniAppCommadDao miniAppCommandDao;
-	private String name_super_app;
-
-	public void setDefaultSuperAppName(String name_super_app) {
-		System.err.println("**** reading from configuration default super app name: " + name_super_app);
-		this.name_super_app = name_super_app;
-	}
+	private String superAppName;
+	
+	@Value("${spring.application.name:Jill}")
+    public void setsuperAppName(String superApp) {
+		System.err.println("**** reading from configuration default superAppName: " + superApp);
+        this.superAppName = superApp;
+    }
 
 	public DataAccess_Command(MiniAppCommadDao miniAppCommandDao) {
 		this.miniAppCommandDao = miniAppCommandDao;
@@ -31,6 +33,7 @@ public class DataAccess_Command implements servicesCommand{
 	@Transactional(readOnly = true)
 
 	public Optional<BoundaryCommand> getSpecificMiniAppCommand(String id) {
+		System.err.println("\n\n\n************\n"+id+"\n\n******************\n");
 		Optional <EntityCommand> entityCommand = this.miniAppCommandDao.findById(id);
 		//potential to bug?
 		EntityCommand entity = new EntityCommand();
@@ -59,16 +62,19 @@ public class DataAccess_Command implements servicesCommand{
 
 	public BoundaryCommand createMiniAppCommand(BoundaryCommand CommandBoundary) {
 		System.err.println("* client requested to store: " + CommandBoundary);
-		//ToDo
 		CommandId command = new CommandId();
-		command.setSuperApp(this.name_super_app);
+		command.setSuperApp(this.superAppName);
 		command.setMiniApp("null because we don't have mini app yet");
 		command.setId(UUID.randomUUID().toString());
 		CommandBoundary.setCommandId(command);
 		CommandBoundary.setInvocationTimeStamp(new Date());
 		EntityCommand entity = CommandBoundary.toEntity();
 		entity = this.miniAppCommandDao.save(entity);
+		System.err.println("***\n"+entity.toString()+"\n\n\n");
 		BoundaryCommand rv  = entity.toBoudary(entity);
+		command = rv.getCommandId();
+		command.setSuperApp(this.superAppName);
+		rv.setCommandId(command);
 		System.err.println("* server stored: " + rv);
 		return rv;
 	}

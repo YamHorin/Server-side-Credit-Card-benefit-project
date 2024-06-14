@@ -3,7 +3,6 @@ package Application._a_Presentation;
 import java.util.Optional;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +26,7 @@ public class ControllerObject {
 	@PostMapping(
 		consumes = MediaType.APPLICATION_JSON_VALUE, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryObject Create_an_object(@RequestBody BoundaryObject message) {
+	public BoundaryObject CreateAnObject(@RequestBody BoundaryObject message) {
 		try {
 			return this.servicesObject.createObject(message);			
 		}
@@ -38,11 +37,11 @@ public class ControllerObject {
 	}
 
 	@GetMapping(
-		path = { "/superapp/objects/{Credit_Card_Benefit_app}/{id}" }, 
+		path = { "/{superapp}/{id}" }, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryObject Retrieve_object (@PathVariable("id") String id) {
+	public BoundaryObject RetrieveAnObject (@PathVariable("id") String id , @PathVariable("superapp") String superapp) {
 		Optional<BoundaryObject> demoOp = this.servicesObject
-			.getSpecificObj(id);
+			.getSpecificObj(id ,superapp);
 		
 		if (demoOp.isPresent()) {
 			return demoOp.get();
@@ -51,26 +50,26 @@ public class ControllerObject {
 		}
 	}
 	
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryObject[] Get_all_objects() {
+	@GetMapping(
+			
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public BoundaryObject[] GetAllObjects() {
 		return this.servicesObject
 			.getAllObjects()
 			.toArray(new BoundaryObject[0]);
 	}
 	
-	@DeleteMapping
-	public void deleteAll() {
-		this.servicesObject.deleteAllObjs();
-	}
+
 	
 	@PutMapping(
-		path = {"/superapp/objects/{Credit_Card_Benefit_app}/{id}"},
+		path = {"/{superapp}/{id}"},
 		consumes = {MediaType.APPLICATION_JSON_VALUE})
-	public void update (
-			@PathVariable("id") String id, 
+	public void updateObject (
+			@PathVariable("id") String id,
+			@PathVariable("superapp") String superapp,
 			@RequestBody BoundaryObject update) {
 		this.servicesObject
-			.updateObj(id, update);
+			.updateObj(id,superapp ,update);
 	}
 }
 

@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,7 @@ import Application.business_logic.NewUserBoundary;
 import Application.business_logic.ServicesUser;
 
 @RestController
-@RequestMapping(path = { "/Credit_Card_Benefit_app/users" })
+@RequestMapping(path = { "/superapp/users" })
 public class ControllerUser {
 	private ServicesUser servicesUser;
 	
@@ -41,7 +40,7 @@ public class ControllerUser {
 	}
 
 	@GetMapping(
-		path = { "/Credit_Card_Benefit_app/users/login/{superapp}/{email}" }, 
+		path = { "/login/{superapp}/{email}" }, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
 	public BoundaryUser getSpecificUser(@PathVariable("email") String email ,@PathVariable("superapp") String superapp ) {
 		String id  = email+"_"+superapp;
@@ -61,22 +60,14 @@ public class ControllerUser {
 		
 	}
 
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryUser[] getAllUsers() {
-		return this.servicesUser
-			.getAllUsers()
-			.toArray(new BoundaryUser[0]);
-	}
+
 	
-	@DeleteMapping
-	public void deleteAll() {
-		this.servicesUser.deleteAllUsers();
-	}
+
 	
 	@PutMapping(
-		path = {"/Credit_Card_Benefit_app/users/login/{superapp}/{Useremail}"},
+		path = {"/{superapp}/{userEmail}"},
 		consumes = {MediaType.APPLICATION_JSON_VALUE})
-	public void updateUser (@PathVariable("email") String email ,@PathVariable("superapp") String superapp, 
+	public void updateUser (@PathVariable("userEmail") String email ,@PathVariable("superapp") String superapp, 
 			@RequestBody BoundaryUser update) {
 		String id  = email+"_"+superapp;
 		this.servicesUser

@@ -7,12 +7,12 @@ import java.util.Optional;
 
 
 public interface ServicesObject {
-	public Optional<BoundaryObject> getSpecificObj(String id);
+	public Optional<BoundaryObject> getSpecificObj(String id , String superApp);
 	public List<BoundaryObject> getAllObjects();
 	
 	public	BoundaryObject createObject (BoundaryObject StoreBoundary);
 	
 	public void deleteAllObjs ();
 	
-	public void updateObj (String id, BoundaryObject update);
+	public void updateObj (String id,String superApp, BoundaryObject update);
 }

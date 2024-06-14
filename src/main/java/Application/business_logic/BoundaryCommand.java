@@ -33,17 +33,7 @@ public class BoundaryCommand {
         this.setCommandAttributes(entity.getCommandAttributes());
     }
 
-    public EntityCommand toEntity() {
-        EntityCommand entity = new EntityCommand();
-        entity.setCommand(this.getCommand());
-        entity.setCommandId(this.getCommandId().getId());
-        entity.setMiniAppName(this.getCommandId().getMiniApp());
-        entity.setTargetObject(this.getTargetObject());
-        entity.setCommandAttributes(this.getCommandAttributes());
-        entity.setInvokedBy(this.getInvokedBy());
-        entity.setInvocationTimeStamp(this.getInvocationTimeStamp());
-        return entity;
-    }
+
 
     public CommandId getCommandId() {
         return commandId;

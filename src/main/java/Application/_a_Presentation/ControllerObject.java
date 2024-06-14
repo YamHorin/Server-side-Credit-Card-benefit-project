@@ -39,7 +39,8 @@ public class ControllerObject {
 	@GetMapping(
 		path = { "/{superapp}/{id}" }, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryObject RetrieveAnObject (@PathVariable("id") String id , @PathVariable("superapp") String superapp) {
+	public BoundaryObject RetrieveAnObject ( @PathVariable("superapp") String superapp , @PathVariable("id") String id ) {
+		
 		Optional<BoundaryObject> demoOp = this.servicesObject
 			.getSpecificObj(id ,superapp);
 		
@@ -69,7 +70,7 @@ public class ControllerObject {
 			@PathVariable("superapp") String superapp,
 			@RequestBody BoundaryObject update) {
 		this.servicesObject
-			.updateObj(id,superapp ,update);
+			.updateObj(id,superapp,update);
 	}
 }
 

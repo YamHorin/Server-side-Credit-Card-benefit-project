@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import Application.DataConvertor;
 import Application.DataAccess.EntityUser;
 import Application.DataAccess.RoleEnumEntity;
 import Application.DataAccess.UserDao;
@@ -16,8 +17,10 @@ import Application._a_Presentation.UnauthorizedException;
 public class DataManagerUser implements ServicesUser{
 	private UserDao UserDao;
 	private String name_super_app;
-	public DataManagerUser(Application.DataAccess.UserDao userDao) {
+	private DataConvertor DataConvertor;
+	public DataManagerUser(UserDao userDao , DataConvertor DataConvertor) {
 		this.UserDao = userDao;
+		this.DataConvertor = DataConvertor;
 	}
 
 	@Value("${spring.application.name:SuperApppp}")
@@ -29,8 +32,7 @@ public class DataManagerUser implements ServicesUser{
 	@Override
 	public Optional<BoundaryUser> getSpecificUser(String id) {
 		Optional <EntityUser> entityUser = this.UserDao.findById(id);
-		EntityUser entity = new EntityUser();
-		Optional<BoundaryUser> boundaryUser = entityUser.map(entity::toBoundary);
+		Optional<BoundaryUser> boundaryUser = entityUser.map(this.DataConvertor::EntityUserToBoundaryUser);
 		if (boundaryUser.isEmpty())
 			System.err.println("* no user to return");
 		else
@@ -43,7 +45,7 @@ public class DataManagerUser implements ServicesUser{
 		List<EntityUser> entities = this.UserDao.findAll();
 		List<BoundaryUser> boundaries = new ArrayList<>();
 		for (EntityUser entity : entities) {
-			boundaries.add(entity.toBoundary(entity));
+			boundaries.add(this.DataConvertor.EntityUserToBoundaryUser(entity));
 		}
 		
 		
@@ -59,9 +61,9 @@ public class DataManagerUser implements ServicesUser{
 		UserBoundary.setUserId(userId);
 		if (UserBoundary.getRole()==null)
 			UserBoundary.setRole(RoleEnumBoundary.UNDETERMINED);
-		EntityUser entity = UserBoundary.toEntity();
+		EntityUser entity = this.DataConvertor.BoundaryUserTOEntityUser(UserBoundary);
 		entity = this.UserDao.save(entity);
-		BoundaryUser rv  = entity.toBoundary(entity);
+		BoundaryUser rv  = this.DataConvertor.EntityUserToBoundaryUser(entity);
 		System.err.println("* server stored: " + rv);
 		return rv;
 	}
@@ -85,8 +87,8 @@ public class DataManagerUser implements ServicesUser{
 				"Could not find User for update by id: " + id));
 		if (update.getUserId().getEmail()!=null)
 			userEntity.setId(update.getUserId().getEmail() + "_" + update.getUserId().getSuperAPP());
-//		if (update.getRole()!=null)
-//			userEntity.setRole(update.getRole());
+		if (update.getRole()!=null)
+			userEntity.setRole(RoleEnumEntity.valueOf(update.getRole().name().toLowerCase()));
 		if (update.getUserName()!=null)
 			userEntity.setUserName(update.getUserName());
 		if (update.getAvatar()!=null)

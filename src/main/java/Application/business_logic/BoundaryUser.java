@@ -63,15 +63,5 @@ public class BoundaryUser {
 				+ avatar + '\'' + '}';
 	}
 
-	public EntityUser toEntity() {
-		EntityUser userEntity = new EntityUser();
 
-		userEntity.setId(this.getUserId().getEmail() + "_" + this.getUserId().getSuperAPP());
-		RoleEnumEntity  role = RoleEnumEntity.valueOf(this.role.name().toLowerCase());
-		userEntity.setRole(role);
-		userEntity.setUserName(this.getUserName());
-		userEntity.setAvatar(this.getAvatar());
-		return userEntity;
-
-	}
 }

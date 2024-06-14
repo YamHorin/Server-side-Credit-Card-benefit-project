@@ -3,10 +3,7 @@ package Application.DataAccess;
 import java.util.Date;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
 
-import Application.business_logic.BoundaryCommand;
-import Application.business_logic.CommandId;
 import Application.business_logic.CreatedBy;
 import Application.business_logic.TargetObject;
 import jakarta.persistence.Convert;
@@ -19,9 +16,7 @@ import jakarta.persistence.Transient;
 //@Entity
 //@Table(name="COMMANDS")
 
-import java.util.HashMap;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
@@ -35,10 +30,15 @@ public class EntityCommand {
 	
 	private String miniAppName;
 	private String command;
+	
+	//TODO
 	@Transient
 	private TargetObject targetObject;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date invocationTimeStamp;
+	
+	//TODO
 	@Transient
 	private CreatedBy invokedBy;
 	
@@ -131,18 +131,5 @@ public class EntityCommand {
 				'}';
 	}
 	
-	public BoundaryCommand toBoudary(EntityCommand Entity)
-	{
-		BoundaryCommand boun = new BoundaryCommand();
-		boun.setCommand(Entity.getCommand());
-		boun.setCommandAttributes(Entity.getCommandAttributes());
-		CommandId CommandId = new CommandId();
-		CommandId.setId(Entity.getCommandId());
-		CommandId.setMiniApp(Entity.getMiniAppName());
-		boun.setCommandId(CommandId);
-		boun.setInvocationTimeStamp(Entity.getInvocationTimeStamp());
-		boun.setInvokedBy(Entity.getInvokedBy());
-		boun.setTargetObject(Entity.getTargetObject());
-		return boun;
-	}
+	
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import Application.DataConvertor;
 import Application.DataAccess.EntityCommand;
 import Application.DataAccess.MiniAppCommadDao;
 
@@ -19,25 +20,29 @@ public class DataManagerCommand implements ServicesCommand{
 	private MiniAppCommadDao miniAppCommandDao;
 	private String superAppName;
 	private String miniAppNameDefault;
+	private DataConvertor DataConvertor;
 	
+	
+	
+	public DataManagerCommand(MiniAppCommadDao miniAppCommandDao , DataConvertor DataConvertor) {
+		this.miniAppCommandDao = miniAppCommandDao;
+		this.DataConvertor = DataConvertor;
+	}
+
 	@Value("${spring.application.name:Jill}")
     public void setsuperAppName(String superApp) {
 		System.err.println("**** reading from configuration default superAppName: " + superApp);
         this.superAppName = superApp;
+
     }
 
-	public DataManagerCommand(MiniAppCommadDao miniAppCommandDao) {
-		this.miniAppCommandDao = miniAppCommandDao;
-	}
 	
 	@Override
 	@Transactional(readOnly = true)
 
 	public Optional<BoundaryCommand> getSpecificMiniAppCommand(String id) {
 		Optional <EntityCommand> entityCommand = this.miniAppCommandDao.findById(id);
-		//potential to bug?
-		EntityCommand entity = new EntityCommand();
-		Optional<BoundaryCommand> boundaryCommand = entityCommand.map(entity::toBoudary);
+		Optional<BoundaryCommand> boundaryCommand = entityCommand.map(this.DataConvertor::EntityCommandToBoundaryCommand);
 		if (boundaryCommand.isEmpty())
 			System.err.println("* no mini app command to return");
 		else
@@ -51,7 +56,7 @@ public class DataManagerCommand implements ServicesCommand{
 		List<EntityCommand> entities = this.miniAppCommandDao.findAll();
 		List<BoundaryCommand> boundaries = new ArrayList<>();
 		for (EntityCommand entity : entities) {
-			boundaries.add(entity.toBoudary(entity));
+			boundaries.add(this.DataConvertor.EntityCommandToBoundaryCommand(entity));
 		}
 		
 		System.err.println("* data from database: " + boundaries);
@@ -68,10 +73,10 @@ public class DataManagerCommand implements ServicesCommand{
 		command.setId(UUID.randomUUID().toString());
 		CommandBoundary.setCommandId(command);
 		CommandBoundary.setInvocationTimeStamp(new Date());
-		EntityCommand entity = CommandBoundary.toEntity();
+		EntityCommand entity = this.DataConvertor.BoundaryCommandToEntityCommand(CommandBoundary);
 		entity = this.miniAppCommandDao.save(entity);
 		System.err.println("***\n"+entity.toString()+"\n\n\n");
-		BoundaryCommand rv  = entity.toBoudary(entity);
+		BoundaryCommand rv  = DataConvertor.EntityCommandToBoundaryCommand(entity);
 		command = rv.getCommandId();
 		command.setSuperApp(this.superAppName);
 		rv.setCommandId(command);
@@ -93,7 +98,7 @@ public class DataManagerCommand implements ServicesCommand{
 		List<EntityCommand> entities = this.miniAppCommandDao.findAllByminiAppName(id);
 		List<BoundaryCommand> boundaries = new ArrayList<>();
 		for (EntityCommand entity : entities) {
-			boundaries.add(entity.toBoudary(entity));
+			boundaries.add(this.DataConvertor.EntityCommandToBoundaryCommand(entity));
 		}
 		
 		System.err.println("* data from database: " + boundaries);

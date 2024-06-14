@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import Application.DataConvertor;
 import Application.DataAccess.EntityObject;
 import Application.DataAccess.ObjDao;
 import Application._a_Presentation.BoundaryIsNotFoundException;
@@ -17,8 +18,12 @@ import Application._a_Presentation.BoundaryIsNotFoundException;
 public class DataManagerObject implements ServicesObject{
 	private ObjDao ObjectDao;
 	private String superAppName;
-	public DataManagerObject(ObjDao objectDao) {
+	private DataConvertor DataConvertor;
+
+	public DataManagerObject(ObjDao objectDao , DataConvertor DataConvertor) {
 		this.ObjectDao = objectDao;
+		this.DataConvertor = DataConvertor;
+
 	}
 	@Override
     @Transactional(readOnly = true)
@@ -28,8 +33,7 @@ public class DataManagerObject implements ServicesObject{
 		id = id +"__"+superApp;
 		
 		Optional <EntityObject> entityObject = this.ObjectDao.findById(id);
-		EntityObject entity = new EntityObject();
-		Optional<BoundaryObject> boundaryObject = entityObject.map(entity::toBoundary);
+		Optional<BoundaryObject> boundaryObject = entityObject.map(this.DataConvertor::EntityObjectTOBoundaryObject);
 		if (boundaryObject.isEmpty())
 			System.err.println("* no user to return");
 		else
@@ -42,7 +46,7 @@ public class DataManagerObject implements ServicesObject{
 		List<EntityObject> entities = this.ObjectDao.findAll();
 		List<BoundaryObject> boundaries = new ArrayList<>();
 		for (EntityObject entity : entities) {
-			boundaries.add(entity.toBoundary(entity));
+			boundaries.add(this.DataConvertor.EntityObjectTOBoundaryObject(entity));
 		}
 		
 		System.err.println("all objects data from database: " + boundaries);
@@ -57,9 +61,9 @@ public class DataManagerObject implements ServicesObject{
 		objId.setId(ObjectBoundary.getObjectID().getId());
 		objId.setSuperApp(this.superAppName);
 		ObjectBoundary.setObjectID(objId);
-		EntityObject entity = ObjectBoundary.toEntity();
+		EntityObject entity = this.DataConvertor.BoundaryObjectTOEntityObject(ObjectBoundary);
 		entity = this.ObjectDao.save(entity);
-		BoundaryObject rv  = entity.toBoundary(entity);
+		BoundaryObject rv  = this.DataConvertor.EntityObjectTOBoundaryObject(entity);
 		System.err.println("all the data objects server stored: " + rv);
 		return rv;
 	}
@@ -74,10 +78,11 @@ public class DataManagerObject implements ServicesObject{
 	@Override
 	@Transactional(readOnly = false)
 	public void updateObj(String id,String superApp ,BoundaryObject update) {
-		System.err.println("* updating obj with id: " + id + ", with the following details: " + update);
+		System.err.println("superApp = "+superApp+" \n this.superApp = "+this.superAppName+"");
 		if (superApp!=this.superAppName)
 			throw new BoundaryIsNotFoundException("super app is not found...");
-		id = id +"__"+superApp;
+		System.err.println("* updating obj with id: " + id + ", with the following details: " + update);
+		id = id +"_"+superApp;
 		
 		String id2 = id;
 		EntityObject objectEntity = this.ObjectDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
@@ -88,7 +93,10 @@ public class DataManagerObject implements ServicesObject{
 	        objectEntity.setCreationTimeStamp(update.getCreationTimeStamp());
        
         if (update.getCreatedBy()!=null)
-	        objectEntity.setCreatedBy(update.getCreatedBy());
+        {
+        	String email = update.getCreatedBy().getUserId().getEmail();
+        	objectEntity.setCreatedBy(email+"_"+this.superAppName);
+        }
 	      
         
         if (update.getActive()!=null)  

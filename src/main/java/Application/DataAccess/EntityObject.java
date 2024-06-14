@@ -26,11 +26,10 @@ public class EntityObject {
     private String alias;
     private Boolean active;
     private Date creationTimeStamp;
-	@Transient
-    private CreatedBy createdBy;
+	
+    private String createdBy;
 	@Convert(converter = ConverterBetweenMapAndString.class)
     private Map<String, Object> objectDetails;
-	//private Location location;
 	private double location_lat;
 	private double location_lng;
 	
@@ -38,14 +37,7 @@ public class EntityObject {
 
     public EntityObject() {
     }
-//
-//    public Location getLocation() {
-//		return location;
-//	}
-//
-//	public void setLocation(Location location) {
-//		this.location = location;
-//	}
+
 
 	public String getObjectID() {
         return objectID;
@@ -87,11 +79,11 @@ public class EntityObject {
         this.creationTimeStamp = creationTimeStamp;
     }
 
-    public CreatedBy getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(CreatedBy createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -116,28 +108,8 @@ public class EntityObject {
                 ", objectDetails=" + objectDetails +
                 '}';
     }
-    public BoundaryObject toBoundary(EntityObject entity)
-    {
-    	BoundaryObject bounObj = new BoundaryObject();
-    	bounObj.setActive(entity.getActive());
-    	bounObj.setAlias(entity.getAlias());
-    	bounObj.setCreatedBy(entity.getCreatedBy());
-    	bounObj.setCreationTimeStamp(entity.getCreationTimeStamp());
-    	bounObj.setLocation(new Location(entity.getLocation_lat() , entity.getLocation_lng()));
-    	bounObj.setObjectDetails(entity.getObjectDetails());
-    	ObjectId ObjectId = new ObjectId();
-    	ObjectId.setId(entity.getObjectID().split("__")[0]);
-    	ObjectId.setSuperApp(entity.getObjectID().split("__")[1]);
-    	bounObj.setObjectID(ObjectId);
-    	bounObj.setType(entity.getType());
-    	return bounObj;
-    	
-    }
-	@Value("${spring.application.name:SuperApppp}")
-	public String get_super_app_name(String name_super_app) {
-		System.err.println("**** reading from configuration default super app name: " + name_super_app);
-		return name_super_app;
-	}
+
+
 
 	public double getLocation_lat() {
 		return location_lat;

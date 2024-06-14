@@ -5,6 +5,10 @@ public class CreatedBy {
 	
 	public CreatedBy() {}
 
+	public CreatedBy(String email , String superApp) {
+		this.userId = new UserId(email ,superApp);
+	}
+
 	public UserId getUserId() {
 		return userId;
 	}

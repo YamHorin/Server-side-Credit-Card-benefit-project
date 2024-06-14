@@ -29,7 +29,7 @@ public class DataManagerObject implements ServicesObject{
 	@Override
     @Transactional(readOnly = true)
 	public Optional<BoundaryObject> getSpecificObj(String id , String superApp) {
-		if (this.superAppName.compareTo(superApp)==0)
+		if (this.superAppName.compareTo(superApp)!=0)
 			throw new BoundaryIsNotFoundException("super app is not found...");
 		id = id +"__"+superApp;
 		
@@ -80,12 +80,14 @@ public class DataManagerObject implements ServicesObject{
 	@Override
 	@Transactional(readOnly = false)
 	public void updateObj(String id,String superApp ,BoundaryObject update) {
-		System.err.println("superApp = "+superApp+" \n this.superApp = "+this.superAppName+"");
-		if (this.superAppName.compareTo(superApp)==0)
+		if (this.superAppName.compareTo(superApp)!=0)
+		{
+			System.err.println("\n"+this.superAppName.compareTo(superApp)+"\n");
+			
 			throw new BoundaryIsNotFoundException("super app is not found...");
+		}
 		System.err.println("* updating obj with id: " + id + ", with the following details: " + update);
 		id = id +"__"+superApp;
-		
 		String id2 = id;
 		EntityObject objectEntity = this.ObjectDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find object for update by id: " + id2));

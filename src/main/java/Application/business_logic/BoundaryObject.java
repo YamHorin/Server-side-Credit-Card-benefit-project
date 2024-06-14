@@ -92,13 +92,13 @@ public class BoundaryObject {
     @Override
     public String toString() {
         return "ObjectBoundary{" +
-                "objectID=" + objectID +
+                "objectID=" + objectID.toString() +
                 ", type='" + type + '\'' +
                 ", alias='" + alias + '\'' +
                 ", loction='" + location + '\'' +
                 ", active=" + active +
                 ", creationTimeStamp=" + creationTimeStamp +
-                ", createdBy=" + createdBy +
+                ", createdBy=" + createdBy.toString() +
                 ", objectDetails=" + objectDetails +
                 '}';
     }

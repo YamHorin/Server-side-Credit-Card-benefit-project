@@ -1,9 +1,5 @@
 package Application.DataAccess;
-import org.springframework.beans.factory.annotation.Value;
 
-import Application.business_logic.BoundaryUser;
-import Application.business_logic.RoleEnumBoundary;
-import Application.business_logic.UserId;
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.Id;

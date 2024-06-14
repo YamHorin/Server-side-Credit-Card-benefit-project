@@ -28,9 +28,10 @@ public class ControllerAdminUser {
 		ServicesCommand = servicesCommand;
 	}
 	@DeleteMapping
-	(path  = {"/users"})
-	public void deleteAll() {
-		this.servicesUser.deleteAllUsers();
+	(path  = {"/users?userSuperapp={userSuperapp}&userEmail={email}"})
+	public void deleteAllUsers(@PathVariable("email") String email , @PathVariable("userSuperapp") String superapp) {
+		String id = email+"_"+superapp;
+		this.servicesUser.deleteAllUsers(id);
 	}
 	@DeleteMapping(path = {"/objects"})
 	public void deleteAllObjects() {
@@ -62,17 +63,5 @@ public class ControllerAdminUser {
 			.getAllMiniAppCommands()
 			.toArray(new BoundaryCommand[0]);
 	}
-	@GetMapping(
-			path = { "/miniapp/{miniAppName}{id}" }, 
-			produces = MediaType.APPLICATION_JSON_VALUE)
-		public BoundaryCommand getSpecificCommand(@PathVariable("id") String id) {
-			Optional<BoundaryCommand> demoOp = this.ServicesCommand
-				.getSpecificMiniAppCommand(id);
-			
-			if (demoOp.isPresent()) {
-				return demoOp.get();
-			}else {
-				throw new BoundaryIsNotFoundException("could not find Command by id: \n"+ id);
-			}
-		}
+	
 }

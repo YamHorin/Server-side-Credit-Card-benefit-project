@@ -12,7 +12,7 @@ public interface ServicesUser {
 	
 	public BoundaryUser createUser (BoundaryUser UserBoundary);
 	
-	public void deleteAllUsers ();
+	public void deleteAllUsers (String id);
 	
 	public void updateUser (String id, BoundaryUser update);
 	

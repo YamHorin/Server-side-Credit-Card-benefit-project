@@ -4,9 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import Application.business_logic.BoundaryUser;
 import Application.business_logic.RoleEnumBoundary;
 import Application.business_logic.UserId;
-
-
-
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.Id;
@@ -20,7 +17,7 @@ public class EntityUser {
     private String id;
     private String email;
     private String userName;
-    private RoleEnumBoundary role;
+    private RoleEnumEntity role;
     private String avatar;
 
     public String getEmail() {
@@ -58,11 +55,11 @@ public class EntityUser {
         this.avatar = avatar;
     }
 
-    public RoleEnumBoundary getRole() {
+    public RoleEnumEntity getRole() {
         return role;
     }
 
-    public void setRole(RoleEnumBoundary role) {
+    public void setRole(RoleEnumEntity role) {
         this.role = role;
     }
 
@@ -83,7 +80,8 @@ public class EntityUser {
     	userId.setEmail(entity.getEmail());
     	BoundaryUser boun = new BoundaryUser();
     	boun.setUserId(userId);
-    	boun.setRole(entity.getRole());
+    	RoleEnumBoundary role =   RoleEnumBoundary.valueOf(entity.getRole().name().toUpperCase());
+    	boun.setRole(role);
     	boun.setAvatar(entity.getAvatar());
     	boun.setUserName(entity.getUserName());
     	return boun;

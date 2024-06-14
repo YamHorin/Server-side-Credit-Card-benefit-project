@@ -1,6 +1,7 @@
 package Application.business_logic;
 
 import Application.DataAccess.EntityUser;
+import Application.DataAccess.RoleEnumEntity;
 
 public class BoundaryUser {
 
@@ -18,7 +19,8 @@ public class BoundaryUser {
 		this.getUserId().setEmail(splitId[0]);
 		this.getUserId().setSuperAPP(splitId[1]);
 		this.setUserName(userEntity.getUserName());
-		this.setRole(userEntity.getRole());
+		RoleEnumBoundary role =RoleEnumBoundary.valueOf(userEntity.getRole().name().toUpperCase());
+		this.setRole(role);
 		this.setAvatar(userEntity.getAvatar());
 
 	}
@@ -65,7 +67,8 @@ public class BoundaryUser {
 		EntityUser userEntity = new EntityUser();
 
 		userEntity.setId(this.getUserId().getEmail() + "_" + this.getUserId().getSuperAPP());
-		userEntity.setRole(this.getRole());
+		RoleEnumEntity  role = RoleEnumEntity.valueOf(this.role.name().toLowerCase());
+		userEntity.setRole(role);
 		userEntity.setUserName(this.getUserName());
 		userEntity.setAvatar(this.getAvatar());
 		return userEntity;

@@ -44,17 +44,7 @@ public class NewUserBoundary {
         this.avatar = avatar;
     }
 
-    public EntityUser toEntity() {
-    	EntityUser entity = new EntityUser();
 
-        entity.setId(this.getEmail());
-        entity.setRole(this.getRole());
-        entity.setUserName(this.getUserName() == null ? "Anonymous" : this.getUserName());
-        entity.setAvatar(this.getAvatar() == null ? "F" : this.getAvatar());
-
-        return entity;
-
-    }
     public BoundaryUser newUserToUserBoundary() {
     	BoundaryUser  Boundary = new BoundaryUser ();
     	

@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import Application.DataAccess.EntityUser;
+import Application.DataAccess.RoleEnumEntity;
 import Application.DataAccess.UserDao;
 import Application._a_Presentation.BoundaryIsNotFoundException;
+import Application._a_Presentation.UnauthorizedException;
 @Service
 public class DataManagerUser implements ServicesUser{
 	private UserDao UserDao;
@@ -65,7 +67,12 @@ public class DataManagerUser implements ServicesUser{
 	}
 
 	@Override
-	public void deleteAllUsers() {
+	public void deleteAllUsers(String id) {
+		EntityUser userEntity = this.UserDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find User for update by id: " + id));
+		RoleEnumEntity role = userEntity.getRole();
+		if (role != RoleEnumEntity.adm_user)
+			throw new UnauthorizedException();
 		System.err.println("* deleting table for users");
 		this.UserDao.deleteAll();
 		
@@ -78,8 +85,8 @@ public class DataManagerUser implements ServicesUser{
 				"Could not find User for update by id: " + id));
 		if (update.getUserId().getEmail()!=null)
 			userEntity.setId(update.getUserId().getEmail() + "_" + update.getUserId().getSuperAPP());
-		if (update.getRole()!=null)
-			userEntity.setRole(update.getRole());
+//		if (update.getRole()!=null)
+//			userEntity.setRole(update.getRole());
 		if (update.getUserName()!=null)
 			userEntity.setUserName(update.getUserName());
 		if (update.getAvatar()!=null)

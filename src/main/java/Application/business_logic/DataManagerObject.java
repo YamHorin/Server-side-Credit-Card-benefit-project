@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.lang.String;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +29,7 @@ public class DataManagerObject implements ServicesObject{
 	@Override
     @Transactional(readOnly = true)
 	public Optional<BoundaryObject> getSpecificObj(String id , String superApp) {
-		if (superApp!=this.superAppName)
+		if (this.superAppName.compareTo(superApp)==0)
 			throw new BoundaryIsNotFoundException("super app is not found...");
 		id = id +"__"+superApp;
 		
@@ -58,9 +59,10 @@ public class DataManagerObject implements ServicesObject{
 		System.err.println("* client requested to store: " + ObjectBoundary);
 		ObjectBoundary.setCreationTimeStamp(new Date());
 		ObjectId objId = new ObjectId();
-		objId.setId(ObjectBoundary.getObjectID().getId());
+		objId.setId(UUID.randomUUID().toString());
 		objId.setSuperApp(this.superAppName);
 		ObjectBoundary.setObjectID(objId);
+		ObjectBoundary.setCreatedBy(new CreatedBy(ObjectBoundary.getCreatedBy().getUserId().getEmail() , this.superAppName));
 		EntityObject entity = this.DataConvertor.BoundaryObjectTOEntityObject(ObjectBoundary);
 		entity = this.ObjectDao.save(entity);
 		BoundaryObject rv  = this.DataConvertor.EntityObjectTOBoundaryObject(entity);
@@ -79,10 +81,10 @@ public class DataManagerObject implements ServicesObject{
 	@Transactional(readOnly = false)
 	public void updateObj(String id,String superApp ,BoundaryObject update) {
 		System.err.println("superApp = "+superApp+" \n this.superApp = "+this.superAppName+"");
-		if (superApp!=this.superAppName)
+		if (this.superAppName.compareTo(superApp)==0)
 			throw new BoundaryIsNotFoundException("super app is not found...");
 		System.err.println("* updating obj with id: " + id + ", with the following details: " + update);
-		id = id +"_"+superApp;
+		id = id +"__"+superApp;
 		
 		String id2 = id;
 		EntityObject objectEntity = this.ObjectDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(

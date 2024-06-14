@@ -61,7 +61,7 @@ public class NewUserBoundary {
     	Boundary.setRole(this.getRole());
         Boundary.setUserName(this.getUserName() == null ? "Anonymous" : this.getUserName());
         Boundary.setAvatar(this.getAvatar() == null ? "F" : this.getAvatar());
-        Boundary.setUserId(new User_Id("" ,this.getEmail()));
+        Boundary.setUserId(new UserId("" ,this.getEmail()));
 
         return Boundary;
 

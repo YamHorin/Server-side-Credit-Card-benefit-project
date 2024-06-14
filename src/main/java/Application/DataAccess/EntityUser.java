@@ -3,7 +3,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import Application.business_logic.BoundaryUser;
 import Application.business_logic.RoleEnumBoundary;
-import Application.business_logic.User_Id;
+import Application.business_logic.UserId;
 
 
 
@@ -78,7 +78,7 @@ public class EntityUser {
     }
     public BoundaryUser toBoundary(EntityUser entity)
     {
-    	User_Id userId  =new User_Id();
+    	UserId userId  =new UserId();
     	userId.setSuperAPP(get_super_app_name(avatar));
     	userId.setEmail(entity.getEmail());
     	BoundaryUser boun = new BoundaryUser();

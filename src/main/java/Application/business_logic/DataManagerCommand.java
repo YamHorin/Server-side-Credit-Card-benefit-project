@@ -15,9 +15,10 @@ import Application.DataAccess.MiniAppCommadDao;
 
 
 @Service
-public class DataAccess_Command implements servicesCommand{
+public class DataManagerCommand implements ServicesCommand{
 	private MiniAppCommadDao miniAppCommandDao;
 	private String superAppName;
+	private String miniAppNameDefault;
 	
 	@Value("${spring.application.name:Jill}")
     public void setsuperAppName(String superApp) {
@@ -25,7 +26,7 @@ public class DataAccess_Command implements servicesCommand{
         this.superAppName = superApp;
     }
 
-	public DataAccess_Command(MiniAppCommadDao miniAppCommandDao) {
+	public DataManagerCommand(MiniAppCommadDao miniAppCommandDao) {
 		this.miniAppCommandDao = miniAppCommandDao;
 	}
 	
@@ -63,7 +64,7 @@ public class DataAccess_Command implements servicesCommand{
 		System.err.println("* client requested to store: " + CommandBoundary);
 		CommandId command = new CommandId();
 		command.setSuperApp(this.superAppName);
-		command.setMiniApp(CommandBoundary.getCommandId().getMiniApp());
+		command.setMiniApp(this.miniAppNameDefault);
 		command.setId(UUID.randomUUID().toString());
 		CommandBoundary.setCommandId(command);
 		CommandBoundary.setInvocationTimeStamp(new Date());
@@ -97,6 +98,12 @@ public class DataAccess_Command implements servicesCommand{
 		
 		System.err.println("* data from database: " + boundaries);
 		return boundaries;
+	}
+	
+	@Value("${spring.MiniAppName:Jill}")
+	public void setMiniAppNameDefault(String miniAppNameDefault) {
+		System.err.println("**** reading from configuration default mini app: " + miniAppNameDefault);
+		this.miniAppNameDefault = miniAppNameDefault;
 	}
 
 

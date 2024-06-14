@@ -5,19 +5,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
 
-public class Boundary_is_not_found_exception extends RuntimeException {
+public class BoundaryIsNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
-	public Boundary_is_not_found_exception() {
+	public BoundaryIsNotFoundException() {
 		super();
 	}
-	public Boundary_is_not_found_exception(String msg) {
+	public BoundaryIsNotFoundException(String msg) {
 		super(msg);
 	}
-	public Boundary_is_not_found_exception(Throwable cause) {
+	public BoundaryIsNotFoundException(Throwable cause) {
 		super(cause);
 	}
-	public Boundary_is_not_found_exception(String message, Throwable cause) {
+	public BoundaryIsNotFoundException(String message, Throwable cause) {
 		super(message  , cause);
 	}
 	

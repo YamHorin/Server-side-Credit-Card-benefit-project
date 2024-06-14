@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 
 import Application.DataAccess.EntityUser;
 import Application.DataAccess.UserDao;
-import Application._a_Presentation.Boundary_is_not_found_exception;
+import Application._a_Presentation.BoundaryIsNotFoundException;
 @Service
-public class DataAccess_User implements ServicesUser{
+public class DataManagerUser implements ServicesUser{
 	private UserDao UserDao;
 	private String name_super_app;
-	public DataAccess_User(Application.DataAccess.UserDao userDao) {
+	public DataManagerUser(Application.DataAccess.UserDao userDao) {
 		this.UserDao = userDao;
 	}
 
@@ -52,7 +52,7 @@ public class DataAccess_User implements ServicesUser{
 	@Override
 	public BoundaryUser createUser(BoundaryUser UserBoundary) {
 		System.err.println("* client requested to store: " + UserBoundary);
-		User_Id userId = UserBoundary.getUserId();
+		UserId userId = UserBoundary.getUserId();
 		userId.setSuperAPP(name_super_app);
 		UserBoundary.setUserId(userId);
 		if (UserBoundary.getRole()==null)
@@ -74,7 +74,7 @@ public class DataAccess_User implements ServicesUser{
 	@Override
 	public void updateUser(String id, BoundaryUser update) {
 		System.out.println("* updating user with id: " + id + ", with the following details: " + update);
-		EntityUser userEntity = this.UserDao.findById(id).orElseThrow(()->new Boundary_is_not_found_exception(
+		EntityUser userEntity = this.UserDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
 		if (update.getUserId().getEmail()!=null)
 			userEntity.setId(update.getUserId().getEmail() + "_" + update.getUserId().getSuperAPP());

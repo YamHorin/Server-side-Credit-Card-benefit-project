@@ -4,7 +4,7 @@ import Application.DataAccess.EntityUser;
 
 public class BoundaryUser {
 
-	private User_Id userId;
+	private UserId userId;
 	private RoleEnumBoundary role;
 	private String userName;
 	private String avatar;
@@ -13,7 +13,7 @@ public class BoundaryUser {
 	}
 
 	public BoundaryUser(EntityUser userEntity) {
-		this.userId = new User_Id();
+		this.userId = new UserId();
 		String[] splitId = userEntity.getId().split("_");
 		this.getUserId().setEmail(splitId[0]);
 		this.getUserId().setSuperAPP(splitId[1]);
@@ -23,11 +23,11 @@ public class BoundaryUser {
 
 	}
 
-	public User_Id getUserId() {
+	public UserId getUserId() {
 		return userId;
 	}
 
-	public void setUserId(User_Id userId) {
+	public void setUserId(UserId userId) {
 		this.userId = userId;
 	}
 

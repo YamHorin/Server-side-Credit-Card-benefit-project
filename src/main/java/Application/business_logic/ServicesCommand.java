@@ -6,7 +6,7 @@ import java.util.Optional;
 
 
 
-public interface servicesCommand {
+public interface ServicesCommand {
 	public Optional<BoundaryCommand> getSpecificMiniAppCommand(String id);
 	public List<BoundaryCommand> getAllMiniAppCommands();
 	

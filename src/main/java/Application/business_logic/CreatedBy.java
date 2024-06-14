@@ -1,15 +1,15 @@
 package Application.business_logic;
 
 public class CreatedBy {
-	private User_Id userId;
+	private UserId userId;
 	
 	public CreatedBy() {}
 
-	public User_Id getUserId() {
+	public UserId getUserId() {
 		return userId;
 	}
 
-	public void setUserId(User_Id userId) {
+	public void setUserId(UserId userId) {
 		this.userId = userId;
 	}
 

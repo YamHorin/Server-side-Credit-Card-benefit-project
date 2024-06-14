@@ -5,18 +5,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
 
-public class Boundary_is_not_filled_correct  extends RuntimeException{
+public class BoundaryIsNotFilledCorrectException  extends RuntimeException{
 	private static final long serialVersionUID = -209132244199139633L;
-	public Boundary_is_not_filled_correct() {
+	public BoundaryIsNotFilledCorrectException() {
 		super();
 	}
-	public Boundary_is_not_filled_correct(String msg) {
+	public BoundaryIsNotFilledCorrectException(String msg) {
 		super(msg);
 	}
-	public Boundary_is_not_filled_correct(Throwable cause) {
+	public BoundaryIsNotFilledCorrectException(Throwable cause) {
 		super(cause);
 	}
-	public Boundary_is_not_filled_correct(String message, Throwable cause) {
+	public BoundaryIsNotFilledCorrectException(String message, Throwable cause) {
 		super(message  , cause);
 	}
 }

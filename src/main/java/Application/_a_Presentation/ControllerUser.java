@@ -34,7 +34,7 @@ public class ControllerUser {
 		try {
 			return this.servicesUser.createUser(user);			
 		}
-		catch (Boundary_is_not_filled_correct e) {
+		catch (BoundaryIsNotFilledCorrectException e) {
 		}
 		return null;
 		
@@ -51,7 +51,7 @@ public class ControllerUser {
 		if (User.isPresent()) {
 			return User.get();
 		}else {
-			throw new Boundary_is_not_found_exception("could not find Specific User by id: " + id);
+			throw new BoundaryIsNotFoundException("could not find Specific User by id: " + id);
 		}
 	
 	}

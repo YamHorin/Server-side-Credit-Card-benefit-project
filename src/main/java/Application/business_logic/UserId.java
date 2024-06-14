@@ -1,13 +1,13 @@
 package Application.business_logic;
 
-public class User_Id {
+public class UserId {
 	private String SuperAPP;
 	private String email;
 	
-	public User_Id() {
+	public UserId() {
 		
 	}
-	public User_Id(String SuperAPP , String email) {
+	public UserId(String SuperAPP , String email) {
 		this.email = email;
 		this.SuperAPP= SuperAPP;
 	}

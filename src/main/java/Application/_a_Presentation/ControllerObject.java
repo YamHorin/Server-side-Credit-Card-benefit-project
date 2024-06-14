@@ -31,7 +31,7 @@ public class ControllerObject {
 		try {
 			return this.servicesObject.createObject(message);			
 		}
-		catch (Boundary_is_not_filled_correct e) {
+		catch (BoundaryIsNotFilledCorrectException e) {
 		}
 		return null;
 		
@@ -47,7 +47,7 @@ public class ControllerObject {
 		if (demoOp.isPresent()) {
 			return demoOp.get();
 		}else {
-			throw new Boundary_is_not_found_exception("could not find object by id: " + id);
+			throw new BoundaryIsNotFoundException("could not find object by id: " + id);
 		}
 	}
 	

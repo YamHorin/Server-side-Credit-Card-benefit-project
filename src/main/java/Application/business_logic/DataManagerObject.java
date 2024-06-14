@@ -12,12 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import Application.DataAccess.EntityObject;
 import Application.DataAccess.ObjDao;
-import Application._a_Presentation.Boundary_is_not_found_exception;
+import Application._a_Presentation.BoundaryIsNotFoundException;
 @Service
-public class DataAccess_Object implements ServicesObject{
+public class DataManagerObject implements ServicesObject{
 	private ObjDao ObjectDao;
 	private String superAppName;
-	public DataAccess_Object(ObjDao objectDao) {
+	public DataManagerObject(ObjDao objectDao) {
 		this.ObjectDao = objectDao;
 	}
 	@Override
@@ -74,7 +74,7 @@ public class DataAccess_Object implements ServicesObject{
 		System.err.println("* updating obj with id: " + id + ", with the following details: " + update);
 		id = id +"__"+this.superAppName;
 		String id2 = id;
-		EntityObject objectEntity = this.ObjectDao.findById(id).orElseThrow(()->new Boundary_is_not_found_exception(
+		EntityObject objectEntity = this.ObjectDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find object for update by id: " + id2));
         if (update.getType()!=null)
         	objectEntity.setType(update.getType());

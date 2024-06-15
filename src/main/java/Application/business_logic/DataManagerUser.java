@@ -61,13 +61,10 @@ public class DataManagerUser implements ServicesUser{
 	public BoundaryUser createUser(BoundaryUser UserBoundary) {
 		System.err.println("\n\n* client requested to store: " + UserBoundary.toString());
 		//check email
-		//isValidEmail(UserBoundary.getUserId().getEmail());
+		isValidEmail(UserBoundary.getUserId().getEmail());
 		//check for null \empty Strings
 		checkStringIsNullOrEmpty(UserBoundary.getUserName(), "userName");
 		checkStringIsNullOrEmpty(UserBoundary.getAvatar(), "avatar");
-
-
-		
 		UserId userId = UserBoundary.getUserId();
 		userId.setSuperAPP(name_super_app);
 		UserBoundary.setUserId(userId);
@@ -95,8 +92,20 @@ public class DataManagerUser implements ServicesUser{
 		System.out.println("* updating user with id: " + id + ", with the following details: " + update);
 		EntityUser userEntity = this.UserDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
+		//check email
+		isValidEmail(update.getUserId().getEmail());
+		//check for null \empty Strings
+		checkStringIsNullOrEmpty(update.getUserName(), "userName");
+		checkStringIsNullOrEmpty(update.getAvatar(), "avatar");
 		if (update.getUserId().getEmail()!=null)
-			userEntity.setId(update.getUserId().getEmail() + "_" + update.getUserId().getSuperAPP());
+		{
+			String id_new = update.getUserId().getEmail() + "_" + this.name_super_app;
+			if (!userEntity.getId().equalsIgnoreCase(id_new))
+			{
+				this.UserDao.deleteById(id);
+				userEntity.setId(update.getUserId().getEmail() + "_" + this.name_super_app);				
+			}
+		}
 		if (update.getRole()!=null)
 			userEntity.setRole(RoleEnumEntity.valueOf(update.getRole().name().toLowerCase()));
 		if (update.getUserName()!=null)
@@ -117,13 +126,13 @@ public class DataManagerUser implements ServicesUser{
 				"^[a-zA-Z0-9_+&-]+(?:\\.[a-zA-Z0-9_+&-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 		if (email == null || email == "") {
-			throw new BoundaryIsNotFilledCorrectException();
+			throw new BoundaryIsNotFilledCorrectException("email is empty..");
 		}
 		Matcher matcher = pattern.matcher(email);
 		if(matcher.matches()==false)
 		{
-			System.err.println("enter chekck\n");
-			throw new BoundaryIsNotFilledCorrectException();
+			System.err.println("enter check\n");
+			throw new BoundaryIsNotFilledCorrectException("email is not filled correctly");
 			
 		}
 

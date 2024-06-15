@@ -30,12 +30,7 @@ public class ControllerUser {
 		produces = MediaType.APPLICATION_JSON_VALUE)
 	public BoundaryUser createUser(@RequestBody NewUserBoundary message) {
 		BoundaryUser user = message.newUserToUserBoundary();
-		try {
-			return this.servicesUser.createUser(user);			
-		}
-		catch (RuntimeException e) {
-		}
-		return null;
+		return this.servicesUser.createUser(user);			
 		
 	}
 

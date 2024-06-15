@@ -27,12 +27,8 @@ public class ControllerObject {
 		consumes = MediaType.APPLICATION_JSON_VALUE, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
 	public BoundaryObject CreateAnObject(@RequestBody BoundaryObject message) {
-		try {
-			return this.servicesObject.createObject(message);			
-		}
-		catch (BoundaryIsNotFilledCorrectException e) {
-		}
-		return null;
+		return this.servicesObject.createObject(message);			
+		
 		
 	}
 

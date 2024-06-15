@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.lang.String;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +24,11 @@ public class DataManagerObject implements ServicesObject{
 	private ObjDao ObjectDao;
 	private String superAppName;
 	private DataConvertor DataConvertor;
+	
+	//a value for max location value , could be change in the future
 	private final double limit_location = 100;
+	
+	
 	public DataManagerObject(ObjDao objectDao , DataConvertor DataConvertor) {
 		this.ObjectDao = objectDao;
 		this.DataConvertor = DataConvertor;
@@ -115,6 +121,7 @@ public class DataManagerObject implements ServicesObject{
         if (update.getCreatedBy()!=null)
         {
         	String email = update.getCreatedBy().getUserId().getEmail();
+        	isValidEmail(email);
         	objectEntity.setCreatedBy(email+"_"+this.superAppName);
         }
 	      
@@ -123,7 +130,7 @@ public class DataManagerObject implements ServicesObject{
 	        objectEntity.setActive(update.getActive() == null || update.getActive());
 	      
         if (update.getAlias()!=null)  
-	        objectEntity.setAlias(update.getAlias() == null ? "demo instance" : update.getAlias());
+	        objectEntity.setAlias(update.getAlias() == null ? "object instance" : update.getAlias());
         
      
       if (update.getObjectDetails()!=null)
@@ -131,7 +138,6 @@ public class DataManagerObject implements ServicesObject{
       if(update.getLocation()!=null) 
       {
     	  objectEntity.setLocation_lat(update.getLocation().getLat());
-
     	  objectEntity.setLocation_lng(update.getLocation().getLng());
       }
     	  
@@ -149,7 +155,22 @@ public class DataManagerObject implements ServicesObject{
 		if (str ==null || str  =="")
 			throw new BoundaryIsNotFilledCorrectException("\nvalue String in the boundary is empty or null  :"+value);
 	}
-	
+	public void isValidEmail(String email) {
+		String EMAIL_PATTERN =
+				"^[a-zA-Z0-9_+&-]+(?:\\.[a-zA-Z0-9_+&-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		if (email == null || email == "") {
+			throw new BoundaryIsNotFilledCorrectException("email is empty..");
+		}
+		Matcher matcher = pattern.matcher(email);
+		if(matcher.matches()==false)
+		{
+			System.err.println("enter check\n");
+			throw new BoundaryIsNotFilledCorrectException("email is not filled correctly");
+			
+		}
+
+	}
 
 
 

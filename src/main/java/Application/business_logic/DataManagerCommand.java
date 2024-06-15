@@ -94,6 +94,7 @@ public class DataManagerCommand implements ServicesCommand{
 
 	@Override
 	@Transactional(readOnly = true)
+	//get all mini app commands by a specific mini app 
 	public List<BoundaryCommand> get_All_Mini_App_Commands(String id) {
 		List<EntityCommand> entities = this.miniAppCommandDao.findAllByminiAppName(id);
 		List<BoundaryCommand> boundaries = new ArrayList<>();

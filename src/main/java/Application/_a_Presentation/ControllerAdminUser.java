@@ -33,9 +33,10 @@ public class ControllerAdminUser {
 		String id = email+"_"+superapp;
 		this.servicesUser.deleteAllUsers(id);
 	}
-	@DeleteMapping(path = {"/objects"})
-	public void deleteAllObjects() {
-		this.servicesObject.deleteAllObjs();
+	@DeleteMapping(path = {"/objects?userSuperapp={userSuperapp}&userEmail={email}"})
+	public void deleteAllObjects(@PathVariable("email") String email , @PathVariable("userSuperapp") String superapp) {
+		String id = email+"_"+superapp;
+		this.servicesObject.deleteAllObjs(id);
 	}
 	@DeleteMapping(path = {"/miniapp"})
 	public void deleteAllMiniAppsCommands() {

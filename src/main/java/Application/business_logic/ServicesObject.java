@@ -12,7 +12,7 @@ public interface ServicesObject {
 	
 	public	BoundaryObject createObject (BoundaryObject StoreBoundary);
 	
-	public void deleteAllObjs ();
+	public void deleteAllObjs (String id);
 	
 	public void updateObj (String id,String superApp, BoundaryObject update);
 }

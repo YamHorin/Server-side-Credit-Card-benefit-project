@@ -71,10 +71,9 @@ public class DataManagerObject implements ServicesObject{
 	}
 	@Override
 	@Transactional(readOnly = false)
-	public void deleteAllObjs() {
+	public void deleteAllObjs(String id) {
 		System.err.println("* deleting table for objects");
 		this.ObjectDao.deleteAll();
-		
 	}
 		
 	@Override

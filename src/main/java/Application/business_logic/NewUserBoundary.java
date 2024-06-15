@@ -5,7 +5,7 @@ import Application.DataAccess.EntityUser;
 public class NewUserBoundary {
 
     private String email;
-    private RoleEnumBoundary role;
+    private String role;
     private String userName;
     private String avatar;
 
@@ -19,11 +19,11 @@ public class NewUserBoundary {
         this.email = email;
     }
 
-    public void setRole(RoleEnumBoundary role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
-    public RoleEnumBoundary getRole() {
+    public String getRole() {
         return role;
     }
 
@@ -47,12 +47,19 @@ public class NewUserBoundary {
 
     public BoundaryUser newUserToUserBoundary() {
     	BoundaryUser  Boundary = new BoundaryUser ();
-    	
-    	Boundary.setRole(this.getRole());
+    	RoleEnumBoundary Role;
+    	try {
+    		
+		Role = this.getRole()==null || RoleEnumBoundary.valueOf(this.getRole().toUpperCase()) ==null ? 
+    	RoleEnumBoundary.UNDETERMINED :RoleEnumBoundary.valueOf(this.getRole().toUpperCase()); 
+    	Boundary.setRole(Role);
+    	}
+    	catch (IllegalArgumentException e) {
+    	    Role = RoleEnumBoundary.UNDETERMINED;
+    	}
         Boundary.setUserName(this.getUserName() == null ? "Anonymous" : this.getUserName());
         Boundary.setAvatar(this.getAvatar() == null ? "F" : this.getAvatar());
-        Boundary.setUserId(new UserId("" ,this.getEmail()));
-
+        Boundary.setUserId(new UserId("",this.getEmail()));
         return Boundary;
 
     }

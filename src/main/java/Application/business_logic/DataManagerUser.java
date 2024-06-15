@@ -55,7 +55,7 @@ public class DataManagerUser implements ServicesUser{
 
 	@Override
 	public BoundaryUser createUser(BoundaryUser UserBoundary) {
-		System.err.println("* client requested to store: " + UserBoundary);
+		System.err.println("\n\n* client requested to store: " + UserBoundary.toString());
 		UserId userId = UserBoundary.getUserId();
 		userId.setSuperAPP(name_super_app);
 		UserBoundary.setUserId(userId);

@@ -46,20 +46,19 @@ public class NewUserBoundary {
 
 
     public BoundaryUser newUserToUserBoundary() {
-    	BoundaryUser  Boundary = new BoundaryUser ();
+    	BoundaryUser  Boundary = new BoundaryUser ();    	
     	RoleEnumBoundary Role;
     	try {
-    		
-		Role = this.getRole()==null || RoleEnumBoundary.valueOf(this.getRole().toUpperCase()) ==null ? 
-    	RoleEnumBoundary.UNDETERMINED :RoleEnumBoundary.valueOf(this.getRole().toUpperCase()); 
-    	Boundary.setRole(Role);
+		Role = RoleEnumBoundary.valueOf(this.getRole().toUpperCase());
     	}
     	catch (IllegalArgumentException e) {
     	    Role = RoleEnumBoundary.UNDETERMINED;
     	}
+    	Boundary.setRole(Role);
         Boundary.setUserName(this.getUserName() == null ? "Anonymous" : this.getUserName());
         Boundary.setAvatar(this.getAvatar() == null ? "F" : this.getAvatar());
         Boundary.setUserId(new UserId("",this.getEmail()));
+        
         return Boundary;
 
     }

@@ -3,6 +3,8 @@ package Application.business_logic;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,12 @@ import Application.DataConvertor;
 import Application.DataAccess.EntityUser;
 import Application.DataAccess.RoleEnumEntity;
 import Application.DataAccess.UserDao;
+import Application._a_Presentation.BoundaryIsNotFilledCorrectException;
 import Application._a_Presentation.BoundaryIsNotFoundException;
 import Application._a_Presentation.UnauthorizedException;
 @Service
 public class DataManagerUser implements ServicesUser{
+	
 	private UserDao UserDao;
 	private String name_super_app;
 	private DataConvertor DataConvertor;
@@ -56,11 +60,17 @@ public class DataManagerUser implements ServicesUser{
 	@Override
 	public BoundaryUser createUser(BoundaryUser UserBoundary) {
 		System.err.println("\n\n* client requested to store: " + UserBoundary.toString());
+		//check email
+		//isValidEmail(UserBoundary.getUserId().getEmail());
+		//check for null \empty Strings
+		checkStringIsNullOrEmpty(UserBoundary.getUserName(), "userName");
+		checkStringIsNullOrEmpty(UserBoundary.getAvatar(), "avatar");
+
+
+		
 		UserId userId = UserBoundary.getUserId();
 		userId.setSuperAPP(name_super_app);
 		UserBoundary.setUserId(userId);
-		if (UserBoundary.getRole()==null)
-			UserBoundary.setRole(RoleEnumBoundary.UNDETERMINED);
 		EntityUser entity = this.DataConvertor.BoundaryUserTOEntityUser(UserBoundary);
 		entity = this.UserDao.save(entity);
 		BoundaryUser rv  = this.DataConvertor.EntityUserToBoundaryUser(entity);
@@ -99,4 +109,30 @@ public class DataManagerUser implements ServicesUser{
 		System.err.println("user has been updated: * " + userEntity);
 		
 	}
+
+
+	
+	public void isValidEmail(String email) {
+		String EMAIL_PATTERN =
+				"^[a-zA-Z0-9_+&-]+(?:\\.[a-zA-Z0-9_+&-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		if (email == null || email == "") {
+			throw new BoundaryIsNotFilledCorrectException();
+		}
+		Matcher matcher = pattern.matcher(email);
+		if(matcher.matches()==false)
+		{
+			System.err.println("enter chekck\n");
+			throw new BoundaryIsNotFilledCorrectException();
+			
+		}
+
+	}
+	
+	public void checkStringIsNullOrEmpty(String str , String value)
+	{
+		if (str ==null || str  =="")
+			throw new BoundaryIsNotFilledCorrectException("\nvalue String in the boundary is empty or null "+value);
+	}
+	
 }

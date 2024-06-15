@@ -6,10 +6,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
 
 public class BoundaryIsNotFilledCorrectException  extends RuntimeException{
-	private static final long serialVersionUID = -209132244199139633L;
+private static final long serialVersionUID = -7533602087483109573L;
+	
 	public BoundaryIsNotFilledCorrectException() {
-		super();
-	}
+	super();
+}
 	public BoundaryIsNotFilledCorrectException(String msg) {
 		super(msg);
 	}

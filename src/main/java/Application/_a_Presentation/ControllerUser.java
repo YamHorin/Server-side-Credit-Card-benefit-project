@@ -33,7 +33,7 @@ public class ControllerUser {
 		try {
 			return this.servicesUser.createUser(user);			
 		}
-		catch (BoundaryIsNotFilledCorrectException e) {
+		catch (RuntimeException e) {
 		}
 		return null;
 		

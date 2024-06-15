@@ -59,7 +59,7 @@ public class BoundaryUser {
 
 	@Override
 	public String toString() {
-		return "UserBoundary{" + "userId=" + userId + ", role=" + role + ", userName='" + userName + '\'' + ", avatar='"
+		return "UserBoundary{" + "userId=" + userId.toString()+"\n\n" + ", role=" + role + ", userName='" + userName + '\'' + ", avatar='"
 				+ avatar + '\'' + '}';
 	}
 

@@ -16,6 +16,7 @@ import Application.business_logic.CommandId;
 import Application.business_logic.CreatedBy;
 import Application.business_logic.ObjectId;
 import Application.business_logic.RoleEnumBoundary;
+import Application.business_logic.UserId;
 
 
 @Component
@@ -27,7 +28,10 @@ public class DataConvertor {
     	RoleEnumBoundary role =   RoleEnumBoundary.valueOf(entity.getRole().name().toUpperCase());
     	boun.setRole(role);
     	boun.setAvatar(entity.getAvatar());
+    	String email = entity.getId().split("_")[0];
+    	String superAppName = entity.getId().split("_")[1];
     	boun.setUserName(entity.getUserName());
+    	boun.setUserId(new UserId(superAppName, email));
     	return boun;
     }
     public  BoundaryObject EntityObjectTOBoundaryObject (EntityObject entity)
@@ -98,7 +102,6 @@ public class DataConvertor {
     
 	public EntityUser BoundaryUserTOEntityUser(BoundaryUser bUser) {
 		EntityUser userEntity = new EntityUser();
-
 		userEntity.setId(bUser.getUserId().getEmail() + "_" + bUser.getUserId().getSuperAPP());
 		RoleEnumEntity  role = RoleEnumEntity.valueOf(bUser.getRole().name().toLowerCase());
 		userEntity.setRole(role);

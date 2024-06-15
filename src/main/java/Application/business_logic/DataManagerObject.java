@@ -13,14 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import Application.DataConvertor;
 import Application.DataAccess.EntityObject;
+import Application.DataAccess.Location;
 import Application.DataAccess.ObjDao;
+import Application._a_Presentation.BoundaryIsNotFilledCorrectException;
 import Application._a_Presentation.BoundaryIsNotFoundException;
 @Service
 public class DataManagerObject implements ServicesObject{
 	private ObjDao ObjectDao;
 	private String superAppName;
 	private DataConvertor DataConvertor;
-
+	private final double limit_location = 100;
 	public DataManagerObject(ObjDao objectDao , DataConvertor DataConvertor) {
 		this.ObjectDao = objectDao;
 		this.DataConvertor = DataConvertor;
@@ -57,6 +59,13 @@ public class DataManagerObject implements ServicesObject{
 	@Transactional(readOnly = false)
 	public BoundaryObject createObject(BoundaryObject ObjectBoundary) {
 		System.err.println("* client requested to store: " + ObjectBoundary);
+		//check for null \empty Strings
+		checkStringIsNullOrEmpty(ObjectBoundary.getType(), "type object");
+		checkStringIsNullOrEmpty(ObjectBoundary.getAlias(), "Alias object");
+		checkStringIsNullOrEmpty(ObjectBoundary.getCreatedBy().getUserId().getEmail(), "user email who created the object");
+		//check for normal location
+		checkLocationOfObject(ObjectBoundary.getLocation());
+		
 		ObjectBoundary.setCreationTimeStamp(new Date());
 		ObjectId objId = new ObjectId();
 		objId.setId(UUID.randomUUID().toString());
@@ -68,6 +77,12 @@ public class DataManagerObject implements ServicesObject{
 		BoundaryObject rv  = this.DataConvertor.EntityObjectTOBoundaryObject(entity);
 		System.err.println("all the data objects server stored: " + rv);
 		return rv;
+	}
+	private void checkLocationOfObject(Location location) {
+		double lat =location.getLat();
+		double lng = location.getLng();
+		if (lat<=0 || lng<=0 || lat>limit_location ||lng>limit_location  )
+			throw new BoundaryIsNotFilledCorrectException("location of boundary is not filled correctly");
 	}
 	@Override
 	@Transactional(readOnly = false)
@@ -88,6 +103,8 @@ public class DataManagerObject implements ServicesObject{
 		System.err.println("* updating obj with id: " + id + ", with the following details: " + update);
 		id = id +"__"+superApp;
 		String id2 = id;
+		checkLocationOfObject(update.getLocation());
+
 		EntityObject objectEntity = this.ObjectDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find object for update by id: " + id2));
         if (update.getType()!=null)
@@ -127,6 +144,12 @@ public class DataManagerObject implements ServicesObject{
         this.superAppName = superApp;
     }
 
+	public void checkStringIsNullOrEmpty(String str , String value)
+	{
+		if (str ==null || str  =="")
+			throw new BoundaryIsNotFilledCorrectException("\nvalue String in the boundary is empty or null  :"+value);
+	}
+	
 
 
 

@@ -216,11 +216,9 @@ public class DataManagerObject implements ServicesObject{
 	@Override
 	public List<BoundaryObject> searchByType(String type, int size, int page) { 
 		return this.objectDao
-		.findAllByMessage(type, PageRequest.of(page, size, Direction.ASC, 
-				"lastName", "firstName",
-				"id"))
+		.findAllByType(type, PageRequest.of(page, size, Direction.ASC))
 		.stream()
-		.map(entity->this.demoConverter.toBoundary(entity))
+		.map(this.DataConvertor::EntityObjectTOBoundaryObject)
 		.toList();
 	}
 	@Override
@@ -228,11 +226,7 @@ public class DataManagerObject implements ServicesObject{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	@Override
-	public List<BoundaryObject> searchByPattern(String pattern, int size, int page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	@Override
 	public List<BoundaryObject> searchByLat(String lat, int size, int page) {
 		// TODO Auto-generated method stub
@@ -270,6 +264,12 @@ public class DataManagerObject implements ServicesObject{
     	  objectEntity.setLocation_lat(update.getLocation().getLat());
     	  objectEntity.setLocation_lng(update.getLocation().getLng());
       }
+	}
+	@Override
+	public List<BoundaryObject> searchByPattern(String pattern, int size, int page, String email, String superapp,
+			String superAppUser) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

@@ -34,7 +34,7 @@ public class DataManagerObject implements ServicesObject{
 	private DataConvertor DataConvertor;
 	
 	//a value for max location value , could be change in the future
-	private final double limit_location = 100;
+	private final double limit_location = 1000;
 	
 	
 	public DataManagerObject(UserDao userDao, ObjDao objectDao , DataConvertor DataConvertor) {
@@ -59,7 +59,7 @@ public class DataManagerObject implements ServicesObject{
 		{
 		case adm_user:
 			throw new UnauthorizedException("admin can't get a Specific object ");
-		case minapp_user:
+		case miniapp_user:
 			entityObject = this.objectDao.findById(id_object);
 			//check if the object is active 
 			entityObject = entityObject.filter(EntityObject::getActive);
@@ -98,7 +98,7 @@ public class DataManagerObject implements ServicesObject{
 		{
 		case adm_user:
 			throw new UnauthorizedException("adm_user can't get objects....");
-		case minapp_user:
+		case miniapp_user:
 			boolean active = true;
 			entities = this.objectDao.findAllByActive(active ,PageRequest.of(page, size, Direction.ASC, "objectID"));
 			for (EntityObject entity : entities) {
@@ -126,7 +126,6 @@ public class DataManagerObject implements ServicesObject{
 	@Override
 	@Transactional(readOnly = false)
 	public BoundaryObject createObject(BoundaryObject ObjectBoundary) {
-		System.err.println("* client requested to store: " + ObjectBoundary);
 		//check for null \empty Strings
 		checkStringIsNullOrEmpty(ObjectBoundary.getType(), "type object");
 		checkStringIsNullOrEmpty(ObjectBoundary.getAlias(), "Alias object");
@@ -190,7 +189,7 @@ public class DataManagerObject implements ServicesObject{
 		case adm_user:
 			throw new UnauthorizedException("admin can't update object");
 			
-		case minapp_user:
+		case miniapp_user:
 			if (objectEntity.getActive()==false)
 				throw new BoundaryIsNotFoundException("Could not find object for update by id: " + id2);
 			updateObjectInAction(objectEntity, update);
@@ -209,6 +208,7 @@ public class DataManagerObject implements ServicesObject{
     objectEntity = this.objectDao.save(objectEntity);
 		System.err.println("\n\nuser has been updated: * \n" + objectEntity);
 	}
+	
 	@Value("${spring.application.name:Jill}")
     public void setsuperAppName(String superApp) {
 		System.err.println("**** reading from configuration default superAppName: " + superApp);

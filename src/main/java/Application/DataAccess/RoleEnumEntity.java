@@ -1,5 +1,5 @@
 package Application.DataAccess;
 
 public enum RoleEnumEntity {
-	adm_user , superapp_user , minapp_user , undetermined;
+	adm_user , superapp_user , miniapp_user , undetermined;
 }

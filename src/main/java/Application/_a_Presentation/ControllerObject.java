@@ -1,5 +1,6 @@
 package Application._a_Presentation;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.MediaType;
@@ -28,7 +29,6 @@ public class ControllerObject {
 		produces = MediaType.APPLICATION_JSON_VALUE)
 	public BoundaryObject CreateAnObject(@RequestBody BoundaryObject message) {
 		return this.servicesObject.createObject(message);			
-		
 		
 	}
 
@@ -62,7 +62,65 @@ public class ControllerObject {
 	}
 	
 
+	@GetMapping(
+			path = { "/search/byType/{type}?userSuperapp={superapp}&userEmail={email} &size={size}&page={page}"},
+			produces = MediaType.APPLICATION_JSON_VALUE)
+		public BoundaryObject[] getObjectsByType (
+			@PathVariable("type") String type , 
+			@PathVariable("superapp") String superapp ,
+			@PathVariable("email") String email, 
+			@PathVariable("size") int size , 
+			@PathVariable("page") int page) {
+			BoundaryObject[] demoOp = this.servicesObject
+				.searchByType(type).toArray(new BoundaryObject[0]);
+			return demoOp;
+		}	
+
+	@GetMapping(
+			path = { "/search/byAlias/{alias}?userSuperapp={superapp}&userEmail={email}\n"
+					+ "&size={size}&page={page}" }, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+		public BoundaryObject[] getObjectsByExactAlias ( 
+				@PathVariable("alias") String alias , 
+				@PathVariable("superapp") String superapp , 
+				@PathVariable("email") String email, 
+				@PathVariable("size") int size , 
+				@PathVariable("page") int page) {
+				BoundaryObject[] demoOp = this.servicesObject
+					.searchByAlias(alias).toArray(new BoundaryObject[0]);
+				return demoOp;
+		}	
+	@GetMapping(
+			path = { "/search/byAliasPattern/{pattern}??userSuperapp={superapp}&userEmail={email}\n"
+					+ "&size={size}&page={page}" }, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+		public BoundaryObject[] getObjectsByAliasPattern ( 
+				@PathVariable("pattern") String pattern , 
+				@PathVariable("superapp") String superapp , 
+				@PathVariable("email") String email, 
+				@PathVariable("size") int size , 
+				@PathVariable("page") int page) {
+				BoundaryObject[] demoOp = this.servicesObject
+					.searchByPattern(pattern).toArray(new BoundaryObject[0]);
+				return demoOp;
+		}
 	
+	@GetMapping(
+			path = { "/search/byLocation/{lat}/{lng}/{distance}?units={distanceUnits}&userSuperapp={superapp} &userEmail-{email}&size={size}&page={page}"},
+			produces = MediaType.APPLICATION_JSON_VALUE)
+		public BoundaryObject[] getObjectsByType (
+			@PathVariable("lat") String lat , 
+			@PathVariable("distance") String distance ,
+			@PathVariable("distanceUnits") String distanceUnits, 
+			@PathVariable("superapp") String superapp , 
+			@PathVariable("email") String email,
+			@PathVariable("size") int size,
+			@PathVariable("page") int page) {
+			BoundaryObject[] demoOp = this.servicesObject
+				.searchByLat(lat).toArray(new BoundaryObject[0]);
+			return demoOp;
+		}	
+
 	@PutMapping(
 		path = {"/{superapp}/{id}"},
 		consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -74,6 +132,7 @@ public class ControllerObject {
 		this.servicesObject
 			.updateObj(id,superapp,update);
 	}
+	
 }
 
 

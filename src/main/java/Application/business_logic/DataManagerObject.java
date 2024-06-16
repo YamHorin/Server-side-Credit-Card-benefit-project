@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 import java.lang.String;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -212,6 +214,31 @@ public class DataManagerObject implements ServicesObject{
 			
 		}
 
+	}
+	@Override
+	public List<BoundaryObject> searchByType(String type, int size, int page) { 
+		return this.objectDao
+		.findAllByMessage(type, PageRequest.of(page, size, Direction.ASC, 
+				"lastName", "firstName",
+				"id"))
+		.stream()
+		.map(entity->this.demoConverter.toBoundary(entity))
+		.toList();
+	}
+	@Override
+	public List<BoundaryObject> searchByAlias(String alias, int size, int page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<BoundaryObject> searchByPattern(String pattern, int size, int page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<BoundaryObject> searchByLat(String lat, int size, int page) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

@@ -45,7 +45,7 @@ public class DataManagerUser implements ServicesUser{
 	}
 
 	@Override
-	public List<BoundaryUser> getAllUsers() {
+	public List<BoundaryUser> getAllUsers(String id) {
 		List<EntityUser> entities = this.UserDao.findAll();
 		List<BoundaryUser> boundaries = new ArrayList<>();
 		for (EntityUser entity : entities) {

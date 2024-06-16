@@ -43,26 +43,35 @@ public class ControllerAdminUser {
 		this.ServicesCommand.deleteAllminiAppCommandes(id);
 	}
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
-			path = {"/users"})
-	public BoundaryUser[] getAllUsers() {
+				path = {"/users?userSuperapp={userSuperapp}&userEmail={email}&size={size}&page={page}"})
+	public BoundaryUser[] getAllUsers 
+	(@PathVariable("email") String email , @PathVariable("userSuperapp") String superapp,@PathVariable("size") int size,@PathVariable("page")int page) {
+		//add  		String id = email+"_"+superapp;
+		String id = email+"_"+superapp;
 		return this.servicesUser
-			.getAllUsers()
+			.getAllUsers(id)
 			.toArray(new BoundaryUser[0]);
 	}
-	@GetMapping(
-			path = { "/miniapp/{miniAppName}" }, 
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryCommand[] getSpecificCommandsFromMiniApp(@PathVariable("miniAppName") String id) {
-		
-		return this.ServicesCommand.get_All_Mini_App_Commands(id)
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+				path = {"/miniapp?userSuperapp={userSuperapp}&userEmail={email}&size={size}&page={page}"})
+	public BoundaryCommand[] getAllMiniAppsCommands
+	(@PathVariable("email") String email , @PathVariable("userSuperapp") String superapp,@PathVariable("size") int size,@PathVariable("page")int page) {
+		//add  		String id = email+"_"+superapp;
+		String id = email+"_"+superapp;
+		return this.ServicesCommand
+				.getAllMiniAppCommands(id)
 				.toArray(new BoundaryCommand[0]);
 	}
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
-			path = {"/miniapp"})
-	public BoundaryCommand[] getAllMiniAppsCommands() {
+	@GetMapping(
+			path = { "/miniapp/{miniAppName}?userSuperapp={userSuperapp}&userEmail={email}&size={size}&page={page}" }, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public BoundaryCommand[] getSpecificCommandsFromMiniApp
+	(@PathVariable("miniAppName") String idMiniAppName, @PathVariable("email") String email , @PathVariable("userSuperapp") String superapp,@PathVariable("size") int size,@PathVariable("page")int page) {
+		//add  		String id = email+"_"+superapp;
+		String idUser = email+"_"+superapp;
 		return this.ServicesCommand
-			.getAllMiniAppCommands()
-			.toArray(new BoundaryCommand[0]);
+				.get_All_Mini_App_Commands(idMiniAppName,idUser)
+				.toArray(new BoundaryCommand[0]);
 	}
 	
 }

@@ -59,7 +59,7 @@ public class DataManagerCommand implements ServicesCommand{
 	@Override
 	@Transactional(readOnly = true)
 
-	public List<BoundaryCommand> getAllMiniAppCommands() {
+	public List<BoundaryCommand> getAllMiniAppCommands(String id) {
 		List<EntityCommand> entities = this.miniAppCommandDao.findAll();
 		List<BoundaryCommand> boundaries = new ArrayList<>();
 		for (EntityCommand entity : entities) {
@@ -108,7 +108,7 @@ public class DataManagerCommand implements ServicesCommand{
 	@Override
 	@Transactional(readOnly = true)
 	//get all mini app commands by a specific mini app 
-	public List<BoundaryCommand> get_All_Mini_App_Commands(String id) {
+	public List<BoundaryCommand> get_All_Mini_App_Commands(String id, String idUser) {
 		List<EntityCommand> entities = this.miniAppCommandDao.findAllByminiAppName(id);
 		List<BoundaryCommand> boundaries = new ArrayList<>();
 		for (EntityCommand entity : entities) {

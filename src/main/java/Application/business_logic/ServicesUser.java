@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ServicesUser {
 	public Optional<BoundaryUser> getSpecificUser(String id);
-	public List<BoundaryUser> getAllUsers();
+	public List<BoundaryUser> getAllUsers(String id);
 	
 	public BoundaryUser createUser (BoundaryUser UserBoundary);
 	

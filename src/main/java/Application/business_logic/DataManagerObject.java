@@ -15,13 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import Application.DataConvertor;
 import Application.DataAccess.EntityObject;
+import Application.DataAccess.EntityUser;
 import Application.DataAccess.Location;
 import Application.DataAccess.ObjDao;
+import Application.DataAccess.RoleEnumEntity;
+import Application.DataAccess.UserDao;
 import Application._a_Presentation.BoundaryIsNotFilledCorrectException;
 import Application._a_Presentation.BoundaryIsNotFoundException;
+import Application._a_Presentation.UnauthorizedException;
 @Service
 public class DataManagerObject implements ServicesObject{
-	private ObjDao ObjectDao;
+	private ObjDao objectDao;
+	private UserDao userDao;
 	private String superAppName;
 	private DataConvertor DataConvertor;
 	
@@ -29,8 +34,9 @@ public class DataManagerObject implements ServicesObject{
 	private final double limit_location = 100;
 	
 	
-	public DataManagerObject(ObjDao objectDao , DataConvertor DataConvertor) {
-		this.ObjectDao = objectDao;
+	public DataManagerObject(UserDao userDao, ObjDao objectDao , DataConvertor DataConvertor) {
+		this.objectDao = objectDao;
+		this.userDao = userDao;
 		this.DataConvertor = DataConvertor;
 
 	}
@@ -41,7 +47,7 @@ public class DataManagerObject implements ServicesObject{
 			throw new BoundaryIsNotFoundException("super app is not found...");
 		id = id +"__"+superApp;
 		
-		Optional <EntityObject> entityObject = this.ObjectDao.findById(id);
+		Optional <EntityObject> entityObject = this.objectDao.findById(id);
 		Optional<BoundaryObject> boundaryObject = entityObject.map(this.DataConvertor::EntityObjectTOBoundaryObject);
 		if (boundaryObject.isEmpty())
 			System.err.println("* no user to return");
@@ -52,7 +58,7 @@ public class DataManagerObject implements ServicesObject{
 	@Override
     @Transactional(readOnly = true)
 	public List<BoundaryObject> getAllObjects() {
-		List<EntityObject> entities = this.ObjectDao.findAll();
+		List<EntityObject> entities = this.objectDao.findAll();
 		List<BoundaryObject> boundaries = new ArrayList<>();
 		for (EntityObject entity : entities) {
 			boundaries.add(this.DataConvertor.EntityObjectTOBoundaryObject(entity));
@@ -79,7 +85,7 @@ public class DataManagerObject implements ServicesObject{
 		ObjectBoundary.setObjectID(objId);
 		ObjectBoundary.setCreatedBy(new CreatedBy(ObjectBoundary.getCreatedBy().getUserId().getEmail() , this.superAppName));
 		EntityObject entity = this.DataConvertor.BoundaryObjectTOEntityObject(ObjectBoundary);
-		entity = this.ObjectDao.save(entity);
+		entity = this.objectDao.save(entity);
 		BoundaryObject rv  = this.DataConvertor.EntityObjectTOBoundaryObject(entity);
 		System.err.println("all the data objects server stored: " + rv);
 		return rv;
@@ -93,8 +99,15 @@ public class DataManagerObject implements ServicesObject{
 	@Override
 	@Transactional(readOnly = false)
 	public void deleteAllObjs(String id) {
-		System.err.println("* deleting table for objects");
-		this.ObjectDao.deleteAll();
+		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find User for update by id: " + id));
+		RoleEnumEntity role = userEntity.getRole();
+		if (role != RoleEnumEntity.adm_user)
+			throw new UnauthorizedException();
+		else {			
+			System.err.println("* deleting table for objects");
+			this.objectDao.deleteAll();
+		}
 	}
 		
 	@Override
@@ -111,7 +124,7 @@ public class DataManagerObject implements ServicesObject{
 		String id2 = id;
 		checkLocationOfObject(update.getLocation());
 
-		EntityObject objectEntity = this.ObjectDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
+		EntityObject objectEntity = this.objectDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find object for update by id: " + id2));
         if (update.getType()!=null)
         	objectEntity.setType(update.getType());
@@ -141,7 +154,7 @@ public class DataManagerObject implements ServicesObject{
     	  objectEntity.setLocation_lng(update.getLocation().getLng());
       }
     	  
-    objectEntity = this.ObjectDao.save(objectEntity);
+    objectEntity = this.objectDao.save(objectEntity);
 		System.err.println("user has been updated: * " + objectEntity);
 	}
 	@Value("${spring.application.name:Jill}")

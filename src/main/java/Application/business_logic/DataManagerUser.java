@@ -82,9 +82,10 @@ public class DataManagerUser implements ServicesUser{
 		RoleEnumEntity role = userEntity.getRole();
 		if (role != RoleEnumEntity.adm_user)
 			throw new UnauthorizedException();
-		System.err.println("* deleting table for users");
-		this.UserDao.deleteAll();
-		
+		else {
+			System.err.println("* deleting table for users");
+			this.UserDao.deleteAll();			
+		}
 	}
 
 	@Override

@@ -12,20 +12,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 import Application.DataConvertor;
 import Application.DataAccess.EntityCommand;
+import Application.DataAccess.EntityUser;
 import Application.DataAccess.MiniAppCommadDao;
+import Application.DataAccess.RoleEnumEntity;
+import Application.DataAccess.UserDao;
+import Application._a_Presentation.BoundaryIsNotFoundException;
+import Application._a_Presentation.UnauthorizedException;
 
 
 @Service
 public class DataManagerCommand implements ServicesCommand{
 	private MiniAppCommadDao miniAppCommandDao;
+	private UserDao userDao;
 	private String superAppName;
 	private String miniAppNameDefault;
 	private DataConvertor DataConvertor;
 	
 	
 	
-	public DataManagerCommand(MiniAppCommadDao miniAppCommandDao , DataConvertor DataConvertor) {
+	public DataManagerCommand(UserDao userDao, MiniAppCommadDao miniAppCommandDao , DataConvertor DataConvertor) {
 		this.miniAppCommandDao = miniAppCommandDao;
+		this.userDao = userDao;
 		this.DataConvertor = DataConvertor;
 	}
 
@@ -86,10 +93,16 @@ public class DataManagerCommand implements ServicesCommand{
 	@Override
 	@Transactional(readOnly = false)
 
-	public void deleteAllminiAppCommandes() {
-		System.err.println("* deleting table for mini app commands :)");
-		this.miniAppCommandDao.deleteAll();
-		
+	public void deleteAllminiAppCommandes(String id) {
+		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find User for update by id: " + id));
+		RoleEnumEntity role = userEntity.getRole();
+		if (role != RoleEnumEntity.adm_user)
+			throw new UnauthorizedException();
+		else {			
+			System.err.println("* deleting table for mini app commands :)");
+			this.miniAppCommandDao.deleteAll();
+		}		
 	}
 
 	@Override

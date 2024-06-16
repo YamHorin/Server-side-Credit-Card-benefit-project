@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import Application.business_logic.BoundaryObject;
@@ -34,13 +35,13 @@ public class ControllerObject {
 
 	//get specific object updated
 	@GetMapping(
-		path = { "/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}" }, 
+		path = { "/{superapp}/{id}" }, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
 	public BoundaryObject RetrieveAnObject ( 
 			@PathVariable("superapp") String superapp , 
 			@PathVariable("id") String id,
-			@PathVariable("userSuperapp") String userSuperapp , 
-			@PathVariable("email") String email) {
+			@RequestParam("userSuperapp") String userSuperapp , 
+			@RequestParam("email") String email) {
 		
 		Optional<BoundaryObject> demoOp = this.servicesObject
 			.getSpecificObj(id ,superapp  , userSuperapp , email);

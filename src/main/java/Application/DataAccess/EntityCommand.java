@@ -31,14 +31,14 @@ public class EntityCommand {
 	private String miniAppName;
 	private String command;
 	
-	//TODO
+	//TODO to change to a string 
 	@Transient
 	private TargetObject targetObject;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date invocationTimeStamp;
 	
-	//TODO
+	//TODO to change to a string 
 	@Transient
 	private CreatedBy invokedBy;
 	

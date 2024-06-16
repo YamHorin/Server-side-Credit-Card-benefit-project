@@ -68,7 +68,7 @@ public class ControllerObject {
 			.toArray(new BoundaryObject[0]);
 	}
 	
-//
+
 //	@GetMapping(
 //			path = { "/search/byType/{type}"},
 //			produces = MediaType.APPLICATION_JSON_VALUE)
@@ -111,6 +111,7 @@ public class ControllerObject {
 					.searchByPattern(pattern, size, page,email,superapp , superAppUser).toArray(new BoundaryObject[0]);
 				return demoOp;
 		}
+
 	
 //	@GetMapping(
 //			path = { "/search/byLocation/{lat}/{lng}/{distance}"},
@@ -128,6 +129,9 @@ public class ControllerObject {
 //			return demoOp;
 //		}	
 
+	
+	
+	
 	@PutMapping(
 		path = {"/{superapp}/{id}"},
 		consumes = {MediaType.APPLICATION_JSON_VALUE})

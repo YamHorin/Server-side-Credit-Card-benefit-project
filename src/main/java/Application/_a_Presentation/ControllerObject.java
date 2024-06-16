@@ -64,15 +64,17 @@ public class ControllerObject {
 
 	
 	@PutMapping(
-		path = {"/{superapp}/{id}"},
+		path = {"/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}"},
 		consumes = {MediaType.APPLICATION_JSON_VALUE})
 	public void updateObject (
 			@PathVariable("id") String id,
 			@PathVariable("superapp") String superapp,
-			@RequestBody BoundaryObject update) {
+			@RequestBody BoundaryObject update , 
+			@PathVariable("userSuperapp") String userSuperapp , 
+			@PathVariable("email") String email) {
 		
 		this.servicesObject
-			.updateObj(id,superapp,update);
+			.updateObj(id,superapp,update ,email , userSuperapp );
 	}
 }
 

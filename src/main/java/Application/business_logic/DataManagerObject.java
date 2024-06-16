@@ -87,14 +87,38 @@ public class DataManagerObject implements ServicesObject{
 	}
 	@Override
     @Transactional(readOnly = true)
-	public List<BoundaryObject> getAllObjects() {
-		List<EntityObject> entities = this.objectDao.findAll();
+	public List<BoundaryObject> getAllObjects(String id_user, int size, int page){
+		//check role
+		EntityUser EntityUser = this.userDao.findById(id_user).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find User for update by id: " + id_user));
 		List<BoundaryObject> boundaries = new ArrayList<>();
-		for (EntityObject entity : entities) {
-			boundaries.add(this.DataConvertor.EntityObjectTOBoundaryObject(entity));
-		}
+		List<EntityObject> entities;
+		switch(EntityUser.getRole())
+		{
+		case adm_user:
+			throw new UnauthorizedException("adm_user can't get objects....");
+		case minapp_user:
+			boolean active = true;
+			entities = this.objectDao.findAllByActive(active ,PageRequest.of(page, size, Direction.ASC, "id"));
+			for (EntityObject entity : entities) {
+				boundaries.add(this.DataConvertor.EntityObjectTOBoundaryObject(entity));
+			}
+			System.err.println("all objects data from database: " + boundaries);
+			return boundaries;
+		case superapp_user:
+			entities = this.objectDao.findAllPagination(PageRequest.of(page, size, Direction.ASC, "id"));
+			for (EntityObject entity : entities) {
+				boundaries.add(this.DataConvertor.EntityObjectTOBoundaryObject(entity));
+			}
+			System.err.println("all objects data from database: " + boundaries);
+			return boundaries;
+		case undetermined:
+			throw new UnauthorizedException("undetermined can't get objects....");
+			
+		default:
+			break;
 		
-		System.err.println("all objects data from database: " + boundaries);
+		}
 		return boundaries;
 	}
 	@Override
@@ -213,26 +237,8 @@ public class DataManagerObject implements ServicesObject{
 		
 
 	}
-	@Override
-	public List<BoundaryObject> searchByType(String type, int size, int page) { 
-		return this.objectDao
-		.findAllByType(type, PageRequest.of(page, size, Direction.ASC))
-		.stream()
-		.map(this.DataConvertor::EntityObjectTOBoundaryObject)
-		.toList();
-	}
-	@Override
-	public List<BoundaryObject> searchByAlias(String alias, int size, int page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public List<BoundaryObject> searchByLat(String lat, int size, int page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+
+
 	//copy to an own function to avoid Repeated code
 	public void updateObjectInAction(EntityObject objectEntity , BoundaryObject update)
 	{
@@ -268,6 +274,21 @@ public class DataManagerObject implements ServicesObject{
 	@Override
 	public List<BoundaryObject> searchByPattern(String pattern, int size, int page, String email, String superapp,
 			String superAppUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<BoundaryObject> searchByType(String type, int size, int page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<BoundaryObject> searchByAlias(String alias, int size, int page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<BoundaryObject> searchByLat(String lat, int size, int page) {
 		// TODO Auto-generated method stub
 		return null;
 	}

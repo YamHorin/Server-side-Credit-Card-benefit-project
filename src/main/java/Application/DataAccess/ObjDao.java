@@ -15,4 +15,6 @@ public interface ObjDao extends JpaRepository<EntityObject, String> {
 		Pageable pageable);
 
 	public List<EntityObject> findAllByType(@Param("type") String type, Pageable pageable);
+
+	public List<EntityObject> findAllPagination(Pageable pageable);
 }

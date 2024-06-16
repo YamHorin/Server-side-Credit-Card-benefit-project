@@ -53,12 +53,18 @@ public class ControllerObject {
 		}
 	}
 	
-	@GetMapping(
-			
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryObject[] GetAllObjects() {
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public BoundaryObject[] GetAllObjects(
+			@RequestParam("userSuperapp") String userSuperapp , 
+			@RequestParam("email") String email,	
+			@RequestParam("size") int size , 
+			@RequestParam("page") int page
+			) 
+	{
+		
+		String id_user = email+"_"+userSuperapp;
 		return this.servicesObject
-			.getAllObjects()
+			.getAllObjects(id_user, size , page)
 			.toArray(new BoundaryObject[0]);
 	}
 	
@@ -92,8 +98,7 @@ public class ControllerObject {
 //				return demoOp;
 //		}	
 	@GetMapping(
-			path = { "/search/byAliasPattern/{pattern}"
-					+ "&size={size}&page={page}" }, 
+			path = { "/search/byAliasPattern/{pattern}" }, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 		public BoundaryObject[] getObjectsByAliasPattern ( 
 				@PathVariable("pattern") String pattern , 

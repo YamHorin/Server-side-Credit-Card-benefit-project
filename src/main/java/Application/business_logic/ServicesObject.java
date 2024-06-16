@@ -7,7 +7,7 @@ import java.util.Optional;
 
 
 public interface ServicesObject {
-	public Optional<BoundaryObject> getSpecificObj(String id , String superApp);
+	public Optional<BoundaryObject> getSpecificObj(String id , String superApp, String userSuperapp, String email);
 	public List<BoundaryObject> getAllObjects();
 	
 	public	BoundaryObject createObject (BoundaryObject StoreBoundary);

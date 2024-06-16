@@ -32,13 +32,18 @@ public class ControllerObject {
 		
 	}
 
+	//get specific object updated
 	@GetMapping(
-		path = { "/{superapp}/{id}" }, 
+		path = { "/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}" }, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryObject RetrieveAnObject ( @PathVariable("superapp") String superapp , @PathVariable("id") String id ) {
+	public BoundaryObject RetrieveAnObject ( 
+			@PathVariable("superapp") String superapp , 
+			@PathVariable("id") String id,
+			@PathVariable("userSuperapp") String userSuperapp , 
+			@PathVariable("email") String email) {
 		
 		Optional<BoundaryObject> demoOp = this.servicesObject
-			.getSpecificObj(id ,superapp);
+			.getSpecificObj(id ,superapp  , userSuperapp , email);
 		
 		if (demoOp.isPresent()) {
 			return demoOp.get();

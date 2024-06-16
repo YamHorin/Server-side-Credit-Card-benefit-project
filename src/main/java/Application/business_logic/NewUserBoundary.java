@@ -48,6 +48,7 @@ public class NewUserBoundary {
     public BoundaryUser newUserToUserBoundary() {
     	BoundaryUser  Boundary = new BoundaryUser ();    	
     	RoleEnumBoundary Role;
+    	System.err.println("this.getRole() = "+this.getRole());
     	try {
 		Role = RoleEnumBoundary.valueOf(this.getRole().toUpperCase());
     	}

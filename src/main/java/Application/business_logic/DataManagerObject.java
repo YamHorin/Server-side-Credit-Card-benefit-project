@@ -42,18 +42,46 @@ public class DataManagerObject implements ServicesObject{
 	}
 	@Override
     @Transactional(readOnly = true)
-	public Optional<BoundaryObject> getSpecificObj(String id , String superApp) {
+	public Optional<BoundaryObject> getSpecificObj(String id , String superApp ,String userSuperapp, String email) {
 		if (this.superAppName.compareTo(superApp)!=0)
 			throw new BoundaryIsNotFoundException("super app is not found...");
-		id = id +"__"+superApp;
+		//check what the role of the user
+		String id_user = email+"_"+userSuperapp;
+		EntityUser userEntity = this.userDao.findById(id_user).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find User for update by id: " + id_user));
+		String id_object = id +"__"+superApp;
+		Optional <EntityObject> entityObject;
+		Optional<BoundaryObject> boundaryObject = java.util.Optional.empty();
+		switch (userEntity.getRole())
+		{
+		case adm_user:
+			throw new UnauthorizedException("admin can't get a Specific object ");
+		case minapp_user:
+			entityObject = this.objectDao.findById(id_object);
+			//check if the object is active 
+			entityObject = entityObject.filter(EntityObject::getActive);
+			boundaryObject = entityObject.map(this.DataConvertor::EntityObjectTOBoundaryObject);
+			if (boundaryObject.isEmpty())
+				System.err.println("* no user to return");
+			else
+				System.out.println(boundaryObject.toString());
+			return boundaryObject;	
+		case superapp_user:
+				entityObject = this.objectDao.findById(id_object);
+				boundaryObject = entityObject.map(this.DataConvertor::EntityObjectTOBoundaryObject);
+			if (boundaryObject.isEmpty())
+				System.err.println("* no user to return");
+			else
+				System.out.println(boundaryObject.toString());
+			return boundaryObject;
+		case undetermined:
+			throw new UnauthorizedException("undetermined can't get a Specific object ");
+		default:
+			break;
 		
-		Optional <EntityObject> entityObject = this.objectDao.findById(id);
-		Optional<BoundaryObject> boundaryObject = entityObject.map(this.DataConvertor::EntityObjectTOBoundaryObject);
-		if (boundaryObject.isEmpty())
-			System.err.println("* no user to return");
-		else
-			System.out.println(boundaryObject.toString());
-		return boundaryObject;	
+		}
+		return boundaryObject;
+	
 	}
 	@Override
     @Transactional(readOnly = true)
@@ -103,7 +131,7 @@ public class DataManagerObject implements ServicesObject{
 				"Could not find User for update by id: " + id));
 		RoleEnumEntity role = userEntity.getRole();
 		if (role != RoleEnumEntity.adm_user)
-			throw new UnauthorizedException();
+			throw new UnauthorizedException("only admin users can delet all users..");
 		else {			
 			System.err.println("* deleting table for objects");
 			this.objectDao.deleteAll();
@@ -168,6 +196,7 @@ public class DataManagerObject implements ServicesObject{
 		if (str ==null || str  =="")
 			throw new BoundaryIsNotFilledCorrectException("\nvalue String in the boundary is empty or null  :"+value);
 	}
+	
 	public void isValidEmail(String email) {
 		String EMAIL_PATTERN =
 				"^[a-zA-Z0-9_+&-]+(?:\\.[a-zA-Z0-9_+&-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
@@ -184,6 +213,7 @@ public class DataManagerObject implements ServicesObject{
 		}
 
 	}
+	
 
 
 

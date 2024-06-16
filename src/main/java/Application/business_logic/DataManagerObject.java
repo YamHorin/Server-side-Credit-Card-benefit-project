@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.lang.String;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -99,14 +100,15 @@ public class DataManagerObject implements ServicesObject{
 			throw new UnauthorizedException("adm_user can't get objects....");
 		case minapp_user:
 			boolean active = true;
-			entities = this.objectDao.findAllByActive(active ,PageRequest.of(page, size, Direction.ASC, "id"));
+			entities = this.objectDao.findAllByActive(active ,PageRequest.of(page, size, Direction.ASC, "objectID"));
 			for (EntityObject entity : entities) {
 				boundaries.add(this.DataConvertor.EntityObjectTOBoundaryObject(entity));
 			}
 			System.err.println("all objects data from database: " + boundaries);
 			return boundaries;
 		case superapp_user:
-			entities = this.objectDao.findAllPagination(PageRequest.of(page, size, Direction.ASC, "id"));
+			entities = this.objectDao.findAll(PageRequest.of(page, size, Direction.ASC, "objectID"))
+			.stream().collect(Collectors.toList());
 			for (EntityObject entity : entities) {
 				boundaries.add(this.DataConvertor.EntityObjectTOBoundaryObject(entity));
 			}

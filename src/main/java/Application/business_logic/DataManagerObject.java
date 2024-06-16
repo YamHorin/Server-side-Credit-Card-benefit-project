@@ -142,7 +142,7 @@ public class DataManagerObject implements ServicesObject{
 		
 	@Override
 	@Transactional(readOnly = false)
-	public void updateObj(String id,String superApp ,BoundaryObject update) {
+	public void updateObj(String id,String superApp, BoundaryObject update, String email, String userSuperapp) {
 		if (this.superAppName.compareTo(superApp)!=0)
 		{
 			System.err.println("\n"+this.superAppName.compareTo(superApp)+"\n");
@@ -152,40 +152,36 @@ public class DataManagerObject implements ServicesObject{
 		System.err.println("* updating obj with id: " + id + ", with the following details: " + update);
 		id = id +"__"+superApp;
 		String id2 = id;
-		checkLocationOfObject(update.getLocation());
 
 		EntityObject objectEntity = this.objectDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find object for update by id: " + id2));
-        if (update.getType()!=null)
-        	objectEntity.setType(update.getType());
-       if (update.getCreationTimeStamp()!=null)
-	        objectEntity.setCreationTimeStamp(update.getCreationTimeStamp());
-       
-        if (update.getCreatedBy()!=null)
-        {
-        	String email = update.getCreatedBy().getUserId().getEmail();
-        	isValidEmail(email);
-        	objectEntity.setCreatedBy(email+"_"+this.superAppName);
-        }
-	      
-        
-        if (update.getActive()!=null)  
-	        objectEntity.setActive(update.getActive() == null || update.getActive());
-	      
-        if (update.getAlias()!=null)  
-	        objectEntity.setAlias(update.getAlias() == null ? "object instance" : update.getAlias());
-        
-     
-      if (update.getObjectDetails()!=null)
-    	  objectEntity.setObjectDetails(update.getObjectDetails());
-      if(update.getLocation()!=null) 
-      {
-    	  objectEntity.setLocation_lat(update.getLocation().getLat());
-    	  objectEntity.setLocation_lng(update.getLocation().getLng());
-      }
+		//check role
+		String id_user = email+"_"+userSuperapp;
+		EntityUser EntityUser  = this.userDao.findById(id_user).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find user for update by id: " + id_user));
+		switch(EntityUser.getRole())
+		{
+		case adm_user:
+			throw new UnauthorizedException("admin can't update object");
+			
+		case minapp_user:
+			if (objectEntity.getActive()==false)
+				throw new BoundaryIsNotFoundException("Could not find object for update by id: " + id2);
+			updateObjectInAction(objectEntity, update);
+			break;
+		case superapp_user:
+			updateObjectInAction(objectEntity, update);
+			break;
+		case undetermined:
+			throw new UnauthorizedException("admin can't update object");
+		default:
+			break;
+			
+		
+		}
     	  
     objectEntity = this.objectDao.save(objectEntity);
-		System.err.println("user has been updated: * " + objectEntity);
+		System.err.println("\n\nuser has been updated: * \n" + objectEntity);
 	}
 	@Value("${spring.application.name:Jill}")
     public void setsuperAppName(String superApp) {
@@ -213,6 +209,8 @@ public class DataManagerObject implements ServicesObject{
 			throw new BoundaryIsNotFilledCorrectException("email is not filled correctly");
 			
 		}
+		
+		
 
 	}
 	@Override
@@ -241,7 +239,38 @@ public class DataManagerObject implements ServicesObject{
 		return null;
 	}
 	
-
+	//copy to an own function to avoid Repeated code
+	public void updateObjectInAction(EntityObject objectEntity , BoundaryObject update)
+	{
+		checkLocationOfObject(update.getLocation());
+		if (update.getType()!=null)
+        	objectEntity.setType(update.getType());
+       if (update.getCreationTimeStamp()!=null)
+	        objectEntity.setCreationTimeStamp(update.getCreationTimeStamp());
+       
+        if (update.getCreatedBy()!=null)
+        {
+        	String email1 = update.getCreatedBy().getUserId().getEmail();
+        	isValidEmail(email1);
+        	objectEntity.setCreatedBy(email1+"_"+this.superAppName);
+        }
+	      
+        
+        if (update.getActive()!=null)  
+	        objectEntity.setActive(update.getActive() == null || update.getActive());
+	      
+        if (update.getAlias()!=null)  
+	        objectEntity.setAlias(update.getAlias() == null ? "object instance" : update.getAlias());
+        
+     
+      if (update.getObjectDetails()!=null)
+    	  objectEntity.setObjectDetails(update.getObjectDetails());
+      if(update.getLocation()!=null) 
+      {
+    	  objectEntity.setLocation_lat(update.getLocation().getLat());
+    	  objectEntity.setLocation_lng(update.getLocation().getLng());
+      }
+	}
 
 
 }

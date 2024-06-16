@@ -26,7 +26,6 @@ public class EntityObject {
     private String alias;
     private Boolean active;
     private Date creationTimeStamp;
-	
     private String createdBy;
 	@Convert(converter = ConverterBetweenMapAndString.class)
     private Map<String, Object> objectDetails;

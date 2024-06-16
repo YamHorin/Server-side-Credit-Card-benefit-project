@@ -18,5 +18,5 @@ public interface ServicesObject {
 	public List<BoundaryObject> searchByLat(String lat, int size, int page);
 	public void deleteAllObjs (String id);
 	
-	public void updateObj (String id,String superApp, BoundaryObject update);
+	public void updateObj (String id,String superApp, BoundaryObject update, String email, String userSuperapp);
 }

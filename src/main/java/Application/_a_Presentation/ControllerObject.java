@@ -69,6 +69,7 @@ public class ControllerObject {
 	}
 	
 
+// yam : i put thouse on note because the compiler didn't let me to going up sorry gal and shaked 
 //	@GetMapping(
 //			path = { "/search/byType/{type}"},
 //			produces = MediaType.APPLICATION_JSON_VALUE)
@@ -82,7 +83,7 @@ public class ControllerObject {
 //				.searchByType(type).toArray(new BoundaryObject[0]);
 //			return demoOp;
 //		}	
-
+//
 //	@GetMapping(
 //			path = { "/search/byAlias/{alias}"
 //					+ "&size={size}&page={page}" }, 
@@ -112,6 +113,7 @@ public class ControllerObject {
 				return demoOp;
 		}
 
+	// yam : i put thouse on note because the compiler didn't let me to going up sorry gal and shaked 
 	
 //	@GetMapping(
 //			path = { "/search/byLocation/{lat}/{lng}/{distance}"},

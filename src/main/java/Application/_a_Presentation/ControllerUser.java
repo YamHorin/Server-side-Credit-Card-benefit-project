@@ -55,9 +55,6 @@ public class ControllerUser {
 		
 	}
 
-
-	
-
 	
 	@PutMapping(
 		path = {"/{superapp}/{userEmail}"},

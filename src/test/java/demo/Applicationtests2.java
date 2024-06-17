@@ -120,6 +120,99 @@ class Applicationtests2 {
 
 		
 	}
+	public void testGetAllObjectsToUserMiniApp()throws Exception
+	{
+		// GIVEN the server is up
+		// AND the database contains 4 active objects
+		// AND the database contains 4 non active objects
+		// AND the database contains 1 mini app user
+		String username = "miniAppUser";
+		BoundaryUser user  = new BoundaryUser();
+		user.setUserName(username);
+		user.setRole(RoleEnumBoundary.MINIAPP_USER);
+		UserId UserId = new UserId();
+		UserId.setEmail(username+"@aa.com");
+		user.setUserId(UserId);
+		//post a super app user 
+		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+		List<BoundaryObject> actives = new ArrayList<>();
+		String type = "type_test";
+		String alias = "alias_test";
+		String createdBy = "yam_test_@yam.com";
+		for (int i = 0; i < 4; i++) {
+			BoundaryObject obj = new BoundaryObject();
+			obj.setActive(true);
+			obj.setLocation(new Location(0.2+i , 0.2+i));
+			obj.setType(type+" "+i);
+			obj.setAlias(alias+" "+i);
+			CreatedBy CreatedBy  = new CreatedBy();
+			UserId UserId1 = new UserId();
+			UserId1.setEmail(createdBy+i);
+			UserId1.setSuperAPP("");
+			CreatedBy.setUserId(UserId1);
+			obj.setCreatedBy(CreatedBy);
+			obj.setObjectDetails(Collections.singletonMap("person", "Jane #" + i));
+			// POST Objects to server
+
+			obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
+			actives.add(obj);
+		}
+		List<BoundaryObject> non_actives = new ArrayList<>();
+		for (int i = 0; i < 4; i++) {
+			BoundaryObject obj = new BoundaryObject();
+			obj.setActive(false);
+			obj.setLocation(new Location(0.2+i , 0.2+i));
+			obj.setType(type+" "+i);
+			obj.setAlias(alias+" "+i);
+			CreatedBy CreatedBy  = new CreatedBy();
+			UserId UserId1 = new UserId();
+			UserId1.setEmail(createdBy+i+"non_active");
+			UserId1.setSuperAPP("");
+			CreatedBy.setUserId(UserId1);
+			obj.setCreatedBy(CreatedBy);
+			obj.setObjectDetails(Collections.singletonMap("non_active", "non_active #" + i));
+			// POST Objects to server
+
+			obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
+			non_actives.add(obj);
+		}
+		// /superapp/objects?userSuperApp ={userSuperApp}&userEmail = {email}&size = {size}&page = {page}
+		// WHEN I invoke GET /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}&size = {10}&page = {1}
+		BoundaryObject [] actual = this.restClientObj.get().uri("/superapp/objects?userSuperApp ={userSuperApp}&userEmail = {email}&size = {size}&page = {page}"
+				,this.superAppName ,username+"@aa.com" , 10,0 )
+				.retrieve().body(BoundaryObject [].class);
+		
+		// THEN the server responds with  4 objects
+		assertThat(actual).hasSize(4)
+						.usingRecursiveFieldByFieldElementComparator()
+						.containsExactlyInAnyOrderElementsOf(actives);
+		
+	}
+	public void testGetSpecificObjectForUserSuperApp()throws Exception
+	{
+		// GIVEN the server is up
+		// AND the database contains 1 active objects
+		// AND the database contains 1 non active objects
+		// AND the database contains 1 mini app user
+		
+		String username = "miniAppUser";
+		BoundaryUser user  = new BoundaryUser();
+		user.setUserName(username);
+		user.setRole(RoleEnumBoundary.MINIAPP_USER);
+		UserId UserId = new UserId();
+		UserId.setEmail(username+"@aa.com");
+		user.setUserId(UserId);
+		//post a mini app user 
+		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+		String type = "type_test";
+		String alias = "alias_test";
+		String createdBy = "yam_test_@yam.com";
+		
+		
+		
+		
+	}
+	
 	
 	
 	

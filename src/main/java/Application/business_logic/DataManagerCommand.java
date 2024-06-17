@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,19 +58,83 @@ public class DataManagerCommand implements ServicesCommand{
 			System.out.println(boundaryCommand.toString());
 		return boundaryCommand;
 	}
+	
+//	old //
+//	@Override
+//	@Transactional(readOnly = true)
+//
+//	public List<BoundaryCommand> getAllMiniAppCommands(String id, int page, int size) {
+//		List<EntityCommand> entities = this.miniAppCommandDao.findAll();
+//		List<BoundaryCommand> boundaries = new ArrayList<>();
+//		for (EntityCommand entity : entities) {
+//			boundaries.add(this.DataConvertor.EntityCommandToBoundaryCommand(entity));
+//		}
+//		
+//		System.err.println("* data from database: " + boundaries);
+//		return boundaries;
+//	}
+	
+	
 	@Override
 	@Transactional(readOnly = true)
-
-	public List<BoundaryCommand> getAllMiniAppCommands(String id) {
-		List<EntityCommand> entities = this.miniAppCommandDao.findAll();
-		List<BoundaryCommand> boundaries = new ArrayList<>();
-		for (EntityCommand entity : entities) {
-			boundaries.add(this.DataConvertor.EntityCommandToBoundaryCommand(entity));
+	public List<BoundaryCommand> getAllMiniAppsCommands(String id, int page, int size) {
+		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find User for update by id: " + id));
+		RoleEnumEntity role = userEntity.getRole();
+		if (role != RoleEnumEntity.adm_user)
+			throw new UnauthorizedException("only admin users can get all miniApp commandes..");
+		else {
+			return this.miniAppCommandDao
+					.findAll(PageRequest.of(page, size, Direction.DESC, "messageTimestamp", "id"))
+					.stream()
+					.map(this.DataConvertor::EntityCommandToBoundaryCommand)
+					.peek(System.err::println)
+					.toList();			
 		}
-		
-		System.err.println("* data from database: " + boundaries);
-		return boundaries;
 	}
+	
+	
+//	old		
+//	@Override
+//	@Transactional(readOnly = true)
+//	//get all mini app commands by a specific mini app 
+//	public List<BoundaryCommand> getAllCommandsOfSpecificMiniApp(String id, String idUser) {
+//		List<EntityCommand> entities = this.miniAppCommandDao.findAllByminiAppName(id);
+//		List<BoundaryCommand> boundaries = new ArrayList<>();
+//		for (EntityCommand entity : entities) {
+//			boundaries.add(this.DataConvertor.EntityCommandToBoundaryCommand(entity));
+//		}
+//		
+//		System.err.println("* data from database: " + boundaries);
+//		return boundaries;
+//	}
+	
+//	@Override
+//	@Deprecated
+//	public List<BoundaryCommand> getAllCommandsOfSpecificMiniApp() {
+//		throw new DemoDeprecationException("You should not invoke this method, use the pagaination supporting method instead");
+//	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	//get all mini app commands by a specific mini app 
+	public List<BoundaryCommand> getAllCommandsOfSpecificMiniApp(String id, String idUser, int page, int size) {
+		EntityUser userEntity = this.userDao.findById(idUser).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find User for update by id: " + idUser));
+		RoleEnumEntity role = userEntity.getRole();
+		
+		if (role != RoleEnumEntity.adm_user)
+			throw new UnauthorizedException("only admin users can get all commands of specific MiniApp");
+		else {
+			return this.miniAppCommandDao
+					.findAllByminiAppName(PageRequest.of(page, size, Direction.DESC, "messageTimestamp", "id"))
+					.stream()
+					.map(this.DataConvertor::EntityCommandToBoundaryCommand)
+					.peek(System.err::println)
+					.toList();			
+		}
+	}
+	
 	@Override
 	@Transactional(readOnly = false)
 
@@ -90,6 +156,9 @@ public class DataManagerCommand implements ServicesCommand{
 		System.err.println("* server stored: " + rv);
 		return rv;
 	}
+	
+	
+	
 	@Override
 	@Transactional(readOnly = false)
 
@@ -98,26 +167,13 @@ public class DataManagerCommand implements ServicesCommand{
 				"Could not find User for update by id: " + id));
 		RoleEnumEntity role = userEntity.getRole();
 		if (role != RoleEnumEntity.adm_user)
-			throw new UnauthorizedException();
+			throw new UnauthorizedException("only admin users can delet all miniApp commandes..");
 		else {			
 			System.err.println("* deleting table for mini app commands :)");
 			this.miniAppCommandDao.deleteAll();
 		}		
 	}
 
-	@Override
-	@Transactional(readOnly = true)
-	//get all mini app commands by a specific mini app 
-	public List<BoundaryCommand> get_All_Mini_App_Commands(String id, String idUser) {
-		List<EntityCommand> entities = this.miniAppCommandDao.findAllByminiAppName(id);
-		List<BoundaryCommand> boundaries = new ArrayList<>();
-		for (EntityCommand entity : entities) {
-			boundaries.add(this.DataConvertor.EntityCommandToBoundaryCommand(entity));
-		}
-		
-		System.err.println("* data from database: " + boundaries);
-		return boundaries;
-	}
 	
 	@Value("${spring.MiniAppName:Jill}")
 	public void setMiniAppNameDefault(String miniAppNameDefault) {

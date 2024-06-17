@@ -49,7 +49,7 @@ public class ControllerAdminUser {
 		//add  		String id = email+"_"+superapp;
 		String id = email+"_"+superapp;
 		return this.servicesUser
-			.getAllUsers(id)
+			.getAllUsers(id, page, size)
 			.toArray(new BoundaryUser[0]);
 	}
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
@@ -59,7 +59,7 @@ public class ControllerAdminUser {
 		//add  		String id = email+"_"+superapp;
 		String id = email+"_"+superapp;
 		return this.ServicesCommand
-				.getAllMiniAppCommands(id)
+				.getAllMiniAppsCommands(id, page, size)
 				.toArray(new BoundaryCommand[0]);
 	}
 	@GetMapping(
@@ -70,7 +70,7 @@ public class ControllerAdminUser {
 		//add  		String id = email+"_"+superapp;
 		String idUser = email+"_"+superapp;
 		return this.ServicesCommand
-				.get_All_Mini_App_Commands(idMiniAppName,idUser)
+				.getAllCommandsOfSpecificMiniApp(idMiniAppName,idUser, page, size)
 				.toArray(new BoundaryCommand[0]);
 	}
 	

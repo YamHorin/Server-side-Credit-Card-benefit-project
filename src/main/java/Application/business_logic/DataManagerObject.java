@@ -25,6 +25,7 @@ import Application.DataAccess.RoleEnumEntity;
 import Application.DataAccess.UserDao;
 import Application._a_Presentation.BoundaryIsNotFilledCorrectException;
 import Application._a_Presentation.BoundaryIsNotFoundException;
+import Application._a_Presentation.DeprecationException;
 import Application._a_Presentation.UnauthorizedException;
 @Service
 public class DataManagerObject implements ServicesObject{
@@ -158,7 +159,7 @@ public class DataManagerObject implements ServicesObject{
 				"Could not find User for update by id: " + id));
 		RoleEnumEntity role = userEntity.getRole();
 		if (role != RoleEnumEntity.adm_user)
-			throw new UnauthorizedException("only admin users can delet all users..");
+			throw new UnauthorizedException("only admin users can delet all objects..");
 		else {			
 			System.err.println("* deleting table for objects");
 			this.objectDao.deleteAll();
@@ -276,24 +277,35 @@ public class DataManagerObject implements ServicesObject{
 	@Override
 	public List<BoundaryObject> searchByPattern(String pattern, int size, int page, String email, String superapp,
 			String superAppUser) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.objectDao.findAllByPattern(pattern, PageRequest.of(page, size, Direction.ASC, "id"))
+				.stream()
+				.map(entity->this.DataConvertor.EntityObjectTOBoundaryObject(entity))
+				.toList();
 	}
+
 	@Override
 	public List<BoundaryObject> searchByType(String type, int size, int page) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.objectDao.findAllByType(type, PageRequest.of(page, size, Direction.ASC, "id"))
+				.stream()
+				.map(entity->this.DataConvertor.EntityObjectTOBoundaryObject(entity))
+				.toList();
 	}
 	@Override
 	public List<BoundaryObject> searchByAlias(String alias, int size, int page) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.objectDao.findAllByAlias(alias, PageRequest.of(page, size, Direction.ASC, "id"))
+				.stream()
+				.map(entity->this.DataConvertor.EntityObjectTOBoundaryObject(entity))
+				.toList();
 	}
 	@Override
 	public List<BoundaryObject> searchByLat(String lat, int size, int page) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.objectDao.findAllByLat(lat, PageRequest.of(page, size, Direction.ASC, "id"))
+				.stream()
+				.map(entity->this.DataConvertor.EntityObjectTOBoundaryObject(entity))
+				.toList();
 	}
 
 
+
+	
 }

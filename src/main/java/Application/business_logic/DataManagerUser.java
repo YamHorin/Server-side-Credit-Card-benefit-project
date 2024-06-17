@@ -7,6 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import Application.DataConvertor;
@@ -44,19 +46,35 @@ public class DataManagerUser implements ServicesUser{
 		return boundaryUser;	
 	}
 
-	@Override
-	public List<BoundaryUser> getAllUsers(String id) {
-		List<EntityUser> entities = this.UserDao.findAll();
-		List<BoundaryUser> boundaries = new ArrayList<>();
-		for (EntityUser entity : entities) {
-			boundaries.add(this.DataConvertor.EntityUserToBoundaryUser(entity));
-		}
-		
-		
-		System.err.println("* data from database: " + boundaries);
-		return boundaries;
-	}
+//	@Override
+//	public List<BoundaryUser> getAllUsers(String id, int page,int size) {
+//		List<EntityUser> entities = this.UserDao.findAll();
+//		List<BoundaryUser> boundaries = new ArrayList<>();
+//		for (EntityUser entity : entities) {
+//			boundaries.add(this.DataConvertor.EntityUserToBoundaryUser(entity));
+//		}
+//		
+//		
+//		System.err.println("* data from database: " + boundaries);
+//		return boundaries;
+//	}
 
+	public List<BoundaryUser> getAllUsers(String id, int page, int size) {
+		EntityUser userEntity = this.UserDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find User for update by id: " + id));
+		RoleEnumEntity role = userEntity.getRole();
+		if (role != RoleEnumEntity.adm_user)
+			throw new UnauthorizedException("only admin users can get all users..");
+		else {
+			return this.UserDao
+					.findAll(PageRequest.of(page, size, Direction.DESC, "messageTimestamp", "id"))
+					.stream()
+					.map(this.DataConvertor::EntityUserToBoundaryUser)
+					.peek(System.err::println)
+					.toList();			
+		}
+	}
+	
 	@Override
 	public BoundaryUser createUser(BoundaryUser UserBoundary) {
 		System.err.println("\n\n* client requested to store: " + UserBoundary.toString());
@@ -81,7 +99,7 @@ public class DataManagerUser implements ServicesUser{
 				"Could not find User for update by id: " + id));
 		RoleEnumEntity role = userEntity.getRole();
 		if (role != RoleEnumEntity.adm_user)
-			throw new UnauthorizedException();
+			throw new UnauthorizedException("only admin users can delet all users..");
 		else {
 			System.err.println("* deleting table for users");
 			this.UserDao.deleteAll();			

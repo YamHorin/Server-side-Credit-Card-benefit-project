@@ -10,8 +10,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.web.client.RestClient;
 
+@SpringBootTest(webEnvironment = WebEnvironment.NONE)
 class Applicationtests2 {
 	private RestClient restClientObj;
 	private RestClient restClientUser;
@@ -23,31 +26,28 @@ class Applicationtests2 {
 	
 	@Value("${server.port:8080}")
 	public void setPort(int port, String superAppName) {
-		this.restClientObj = RestClient.create(
-			"http://localhost:" + port + "/superapp/users");
+		this.restClientObj = RestClient.create("http://localhost:" + port + "/superapp/objects");
 		this.restClientAdmin = RestClient.create("http://localhost:" + port +"/superapp/admin" );
 		this.restClientUser = RestClient.create("http://localhost:" + port +"/superapp/users" );
+		this.restClientCommand = RestClient.create("http://localhost:" + port +"/superapp/commands");
 		this.superAppName =superAppName;
 	
 	}
 
 	@BeforeEach
 	public void setup() {
-		// DO NOTHING
 	}
 	
 	@AfterEach
 	public void tearDown() {
-		// invoke DELETE
-		this.restClientAdmin
-			.delete()
-			.retrieve();
+
 	}
 	
 	@Test
 	public void contextLoads() {
 		
 	}
+	@Test
 	public void testGetAllObjectsToUserSuperApp()throws Exception
 	{
 		// GIVEN the server is up
@@ -120,6 +120,7 @@ class Applicationtests2 {
 
 		
 	}
+	@Test
 	public void testGetAllObjectsToUserMiniApp()throws Exception
 	{
 		// GIVEN the server is up
@@ -188,6 +189,7 @@ class Applicationtests2 {
 						.containsExactlyInAnyOrderElementsOf(actives);
 		
 	}
+	@Test
 	public void testGetSpecificObjectForUserSuperApp()throws Exception
 	{
 		// GIVEN the server is up

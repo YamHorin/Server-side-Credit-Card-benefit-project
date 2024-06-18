@@ -83,6 +83,7 @@ public class DataManagerUser implements ServicesUser{
 		//check for null \empty Strings
 		checkStringIsNullOrEmpty(UserBoundary.getUserName(), "userName");
 		checkStringIsNullOrEmpty(UserBoundary.getAvatar(), "avatar");
+		
 		UserId userId = UserBoundary.getUserId();
 		userId.setSuperAPP(name_super_app);
 		UserBoundary.setUserId(userId);

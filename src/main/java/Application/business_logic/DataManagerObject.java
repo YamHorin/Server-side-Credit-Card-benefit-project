@@ -61,9 +61,8 @@ public class DataManagerObject implements ServicesObject{
 		case adm_user:
 			throw new UnauthorizedException("admin can't get a Specific object ");
 		case miniapp_user:
-			entityObject = this.objectDao.findById(id_object);
-			//check if the object is active 
-			entityObject = entityObject.filter(EntityObject::getActive);
+			entityObject = this.objectDao.findByobjectIDAndActiveIsTrue(id_object);
+			//entityObject = entityObject.filter(EntityObject::getActive);
 			boundaryObject = entityObject.map(this.DataConvertor::EntityObjectTOBoundaryObject);
 			if (boundaryObject.isEmpty())
 				System.err.println("* no user to return");
@@ -284,7 +283,7 @@ public class DataManagerObject implements ServicesObject{
 	@Override
 	public List<BoundaryObject> searchByPattern(String pattern, int size, int page, String email, String superapp,
 			String superAppUser) {
-		return this.objectDao.findAllByPattern(pattern, PageRequest.of(page, size, Direction.ASC, "id"))
+		return this.objectDao.findAllBypattern(pattern, PageRequest.of(page, size, Direction.ASC, "id"))
 				.stream()
 				.map(entity->this.DataConvertor.EntityObjectTOBoundaryObject(entity))
 				.toList();
@@ -292,21 +291,21 @@ public class DataManagerObject implements ServicesObject{
 
 	@Override
 	public List<BoundaryObject> searchByType(String type, int size, int page) {
-		return this.objectDao.findAllByType(type, PageRequest.of(page, size, Direction.ASC, "id"))
+		return this.objectDao.findAllBytype(type, PageRequest.of(page, size, Direction.ASC, "id"))
 				.stream()
 				.map(entity->this.DataConvertor.EntityObjectTOBoundaryObject(entity))
 				.toList();
 	}
 	@Override
 	public List<BoundaryObject> searchByAlias(String alias, int size, int page) {
-		return this.objectDao.findAllByAlias(alias, PageRequest.of(page, size, Direction.ASC, "id"))
+		return this.objectDao.findAllByalias(alias, PageRequest.of(page, size, Direction.ASC, "id"))
 				.stream()
 				.map(entity->this.DataConvertor.EntityObjectTOBoundaryObject(entity))
 				.toList();
 	}
 	@Override
 	public List<BoundaryObject> searchByLat(String lat, int size, int page) {
-		return this.objectDao.findAllByLat(lat, PageRequest.of(page, size, Direction.ASC, "id"))
+		return this.objectDao.findAllBylat(lat, PageRequest.of(page, size, Direction.ASC, "id"))
 				.stream()
 				.map(entity->this.DataConvertor.EntityObjectTOBoundaryObject(entity))
 				.toList();

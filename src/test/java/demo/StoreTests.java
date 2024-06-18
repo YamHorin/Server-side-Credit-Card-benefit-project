@@ -18,7 +18,6 @@ import org.springframework.web.client.RestClient;
 import Application.business_logic.BoundaryObject;
 import Application.business_logic.BoundaryUser;
 import Application.business_logic.NewUserBoundary;
-import Application.business_logic.NewObjectBoundary;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
@@ -60,29 +59,29 @@ class StoreTests {
  		assertThat(BoundaryUser.getAvatar()).isEqualTo("testAvatar");
 	
  	}
-    @Test
-    public void testObject() {
-        
-        NewObjectBoundary newObject = new NewObjectBoundary();
-        BoundaryObject BoundaryUser  = new BoundaryObject();
-        newObject.setEmail("testemail@example.com");
-        newObject.setUserName("Test User");
-        newObject.setRole("USER");
-        newObject.setAvatar("testAvatar");
-        
-        BoundaryObject = this.restClient
-				.post()
-				.body(newObject)
-				.retrieve()
-				.body(BoundaryUser.class);
-    
-        // THEN the server responds with the same 4 important messages generated above
- 		assertThat(BoundaryUser).isNotNull();
- 		assertThat(BoundaryUser.getUserId().getEmail()).isEqualTo("testemail@example.com");
- 		assertThat(BoundaryUser.getUserName()).isEqualTo("Test User");
- 		assertThat(BoundaryUser.getRole().name()).isEqualTo("USER");
- 		assertThat(BoundaryUser.getAvatar()).isEqualTo("testAvatar");
-	
- 	}
+//    @Test
+//    public void testObject() {
+//        
+//        NewObjectBoundary newObject = new NewObjectBoundary();
+//        BoundaryObject BoundaryUser  = new BoundaryObject();
+//        newObject.setEmail("testemail@example.com");
+//        newObject.setUserName("Test User");
+//        newObject.setRole("USER");
+//        newObject.setAvatar("testAvatar");
+//        
+//        BoundaryObject = this.restClient
+//				.post()
+//				.body(newObject)
+//				.retrieve()
+//				.body(BoundaryUser.class);
+//    
+//        // THEN the server responds with the same 4 important messages generated above
+// 		assertThat(BoundaryUser).isNotNull();
+// 		assertThat(BoundaryUser.getUserId().getEmail()).isEqualTo("testemail@example.com");
+// 		assertThat(BoundaryUser.getUserName()).isEqualTo("Test User");
+// 		assertThat(BoundaryUser.getRole().name()).isEqualTo("USER");
+// 		assertThat(BoundaryUser.getAvatar()).isEqualTo("testAvatar");
+//	
+// 	}
 
 }

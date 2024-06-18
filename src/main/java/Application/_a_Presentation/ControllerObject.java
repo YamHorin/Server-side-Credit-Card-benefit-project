@@ -115,22 +115,22 @@ public class ControllerObject {
 
 	// yam : i put thouse on note because the compiler didn't let me to going up sorry gal and shaked 
 	
-	@GetMapping(
-			path = { "/search/byLocation/{lat)/{Ing/{distance}?units={distanceUnits)&userSuperapp={superapp} &userEmail-(email}&size={size}&page={page}"},
-			produces = MediaType.APPLICATION_JSON_VALUE)
-		public BoundaryObject[] getObjectsInRadius (
-			@RequestParam("lat") double lat , 
-			@RequestParam("lat") double lng , 
-			@PathVariable("distance") double distance ,
-			@RequestParam("distanceUnits") String distanceUnits, 
-			@RequestParam("superapp") String superapp , 
-			@RequestParam("email") String email,
-			@RequestParam("size") int size,
-			@RequestParam("page") int page) {
-			BoundaryObject[] demoOp = this.servicesObject
-				.searchByLat(lat, lng, distance).toArray(new BoundaryObject[0]);
-			return demoOp;
-		}	
+//	@GetMapping(
+//			path = { "/search/byLocation/{lat)/{Ing/{distance}?units={distanceUnits)&userSuperapp={superapp} &userEmail-(email}&size={size}&page={page}"},
+//			produces = MediaType.APPLICATION_JSON_VALUE)
+//		public BoundaryObject[] getObjectsInRadius (
+//			@RequestParam("lat") double lat , 
+//			@RequestParam("lat") double lng , 
+//			@PathVariable("distance") double distance ,
+//			@RequestParam("distanceUnits") String distanceUnits, 
+//			@RequestParam("superapp") String superapp , 
+//			@RequestParam("email") String email,
+//			@RequestParam("size") int size,
+//			@RequestParam("page") int page) {
+//			BoundaryObject[] demoOp = this.servicesObject
+//				.searchByLat(lat, lng, distance).toArray(new BoundaryObject[0]);
+//			return demoOp;
+//		}	
 
 	
 	

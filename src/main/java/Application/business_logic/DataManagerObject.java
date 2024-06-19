@@ -303,9 +303,10 @@ public class DataManagerObject implements ServicesObject{
 				.map(entity->this.DataConvertor.EntityObjectTOBoundaryObject(entity))
 				.toList();
 	}
+
 	@Override
-	public List<BoundaryObject> searchByLat(String lat, int size, int page) {
-		return this.objectDao.findAllBylat(lat, PageRequest.of(page, size, Direction.ASC, "id"))
+	public List<BoundaryObject> searchByLat(double lat, double lng, double distance, int size, int page) {
+		return this.objectDao.findAllWithinRadius(lat,lng,distance,  PageRequest.of(page, size, Direction.ASC, "id"))
 				.stream()
 				.map(entity->this.DataConvertor.EntityObjectTOBoundaryObject(entity))
 				.toList();

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import Application.DataAccess.Location;
+import Application._a_Presentation.BoundaryIsNotFoundException;
 import Application.business_logic.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -190,11 +191,11 @@ class Applicationtests2 {
 		
 	}
 	@Test
-	public void testGetSpecificObjectForUserSuperApp()throws Exception
+	public void testGetSpecificObjectForUserMiniApp()throws Exception
 	{
 		// GIVEN the server is up
+		// AND the database contains 1  non active objects
 		// AND the database contains 1 active objects
-		// AND the database contains 1 non active objects
 		// AND the database contains 1 mini app user
 		
 		String username = "miniAppUser";
@@ -204,19 +205,179 @@ class Applicationtests2 {
 		UserId UserId = new UserId();
 		UserId.setEmail(username+"@aa.com");
 		user.setUserId(UserId);
-		//post a mini app user 
+		
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
 		String type = "type_test";
 		String alias = "alias_test";
-		String createdBy = "yam_test_@yam.com";
+		String createdBy = username+"@aa.com";
 		
+		BoundaryObject obj = new BoundaryObject();
+		obj.setActive(true);
+		obj.setLocation(new Location(0.2 , 0.2));
+		obj.setType(type+" ");
+		obj.setAlias(alias+" ");
+		CreatedBy CreatedBy  = new CreatedBy();
+		UserId UserId1 = new UserId();
+		UserId1.setEmail(createdBy);
+		UserId1.setSuperAPP("");
+		CreatedBy.setUserId(UserId1);
+		obj.setCreatedBy(CreatedBy);
+		obj.setObjectDetails(Collections.singletonMap("person", "Jane #"));
+		// POST Objects to server
+		obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
 		
+		BoundaryObject obj1 = new BoundaryObject();
+		obj1.setActive(false);
+		obj1.setLocation(new Location(0.2 , 0.2));
+		obj1.setType(type+" ");
+		obj1.setAlias(alias+" ");
+		CreatedBy CreatedBy1  = new CreatedBy();
+		UserId UserId11 = new UserId();
+		UserId11.setEmail(createdBy);
+		UserId11.setSuperAPP("");
+		CreatedBy1.setUserId(UserId11);
+		obj1.setCreatedBy(CreatedBy1);
+		obj1.setObjectDetails(Collections.singletonMap("person", "Jane #"));
+		// POST Objects to server
+		obj1 = this.restClientObj.post().body(obj1).retrieve().body(BoundaryObject.class);
 		
+		// WHEN I invoke GET on the false active object  /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}
+		// THEN I get an BoundaryIsNotFoundException
+		try {
+		BoundaryObject obj_return  = this.restClientObj.get().uri("/superapp/objects/{superapp}/{id}?userSuperApp ={userSuperApp}&userEmail = {email}",
+				this.superAppName,obj1.getObjectID().getId(),this.superAppName ,username+"@aa.com").retrieve().body(BoundaryObject.class);
 		
+		}
+		
+		catch (BoundaryIsNotFoundException e)
+		{
+			System.out.println("we got a BoundaryIsNotFoundException yayyyyyyyyyyyy ");
+		}
+		// WHEN I invoke GET on the false active object  /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}
+		// THEN I get an BoundaryIsNotFoundException
+		BoundaryObject obj_return  = this.restClientObj.get().uri("/superapp/objects/{superapp}/{id}?userSuperApp ={userSuperApp}&userEmail = {email}",
+				this.superAppName,obj.getObjectID().getId(),this.superAppName ,username+"@aa.com").retrieve().body(BoundaryObject.class);
+		assertThat(obj_return).isNotNull();
+		assertThat(obj_return.getObjectID().getId()).isEqualTo(obj.getObjectID().getId());
 	}
 	
-	
-	
+	@Test
+	public void testGetSpecificObjectForUserSuperApp()throws Exception
+	{
+		// GIVEN the server is up
+		// AND the database contains 1  non active objects
+		// AND the database contains 1 active objects
+		// AND the database contains 1 super app user
+		
+		String username = "SuperAppUser";
+		BoundaryUser user  = new BoundaryUser();
+		user.setUserName(username);
+		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
+		UserId UserId = new UserId();
+		UserId.setEmail(username+"@aa.com");
+		user.setUserId(UserId);
+		
+		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+		String type = "type_test";
+		String alias = "alias_test";
+		String createdBy = username+"@aa.com";
+		
+		BoundaryObject obj = new BoundaryObject();
+		obj.setActive(true);
+		obj.setLocation(new Location(0.2 , 0.2));
+		obj.setType(type+" ");
+		obj.setAlias(alias+" ");
+		CreatedBy CreatedBy  = new CreatedBy();
+		UserId UserId1 = new UserId();
+		UserId1.setEmail(createdBy);
+		UserId1.setSuperAPP("");
+		CreatedBy.setUserId(UserId1);
+		obj.setCreatedBy(CreatedBy);
+		obj.setObjectDetails(Collections.singletonMap("person", "Jane #"));
+		// POST Objects to server
+		obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
+		
+		BoundaryObject obj1 = new BoundaryObject();
+		obj1.setActive(false);
+		obj1.setLocation(new Location(0.2 , 0.2));
+		obj1.setType(type+" ");
+		obj1.setAlias(alias+" ");
+		CreatedBy CreatedBy1  = new CreatedBy();
+		UserId UserId11 = new UserId();
+		UserId11.setEmail(createdBy);
+		UserId11.setSuperAPP("");
+		CreatedBy1.setUserId(UserId11);
+		obj1.setCreatedBy(CreatedBy1);
+		obj1.setObjectDetails(Collections.singletonMap("person", "Jane #"));
+		// POST Objects to server
+		obj1 = this.restClientObj.post().body(obj1).retrieve().body(BoundaryObject.class);
+		
+		// WHEN I invoke GET on the false active object  /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}
+		// THEN I get an object
+
+		BoundaryObject obj_return  = this.restClientObj.get().uri("/superapp/objects/{superapp}/{id}?userSuperApp ={userSuperApp}&userEmail = {email}",
+				this.superAppName,obj1.getObjectID().getId(),this.superAppName ,username+"@aa.com").retrieve().body(BoundaryObject.class);
+		assertThat(obj_return).isNotNull();
+		assertThat(obj_return.getObjectID().getId()).isEqualTo(obj.getObjectID().getId());
+	}
+	public void testAdminGetAllMiniAppCommands()
+	{
+		// GIVEN the server is up
+		// AND the database contains 1  non active objects
+		// AND the database contains 1 active objects
+		// AND the database contains 1 super app user
+		
+		String username = "AdminAppUser";
+		BoundaryUser user  = new BoundaryUser();
+		user.setUserName(username);
+		user.setRole(RoleEnumBoundary.ADM_USER);
+		UserId UserId = new UserId();
+		UserId.setEmail(username+"@aa.com");
+		user.setUserId(UserId);
+		
+		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+		String type = "type_test";
+		String alias = "alias_test";
+		String createdBy = username+"@aa.com";
+		
+		BoundaryObject obj = new BoundaryObject();
+		obj.setActive(true);
+		obj.setLocation(new Location(0.2 , 0.2));
+		obj.setType(type+" ");
+		obj.setAlias(alias+" ");
+		CreatedBy CreatedBy  = new CreatedBy();
+		UserId UserId1 = new UserId();
+		UserId1.setEmail(createdBy);
+		UserId1.setSuperAPP("");
+		CreatedBy.setUserId(UserId1);
+		obj.setCreatedBy(CreatedBy);
+		obj.setObjectDetails(Collections.singletonMap("person", "Jane #"));
+		// POST Objects to server
+		obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
+		
+		BoundaryObject obj1 = new BoundaryObject();
+		obj1.setActive(false);
+		obj1.setLocation(new Location(0.2 , 0.2));
+		obj1.setType(type+" ");
+		obj1.setAlias(alias+" ");
+		CreatedBy CreatedBy1  = new CreatedBy();
+		UserId UserId11 = new UserId();
+		UserId11.setEmail(createdBy);
+		UserId11.setSuperAPP("");
+		CreatedBy1.setUserId(UserId11);
+		obj1.setCreatedBy(CreatedBy1);
+		obj1.setObjectDetails(Collections.singletonMap("person", "Jane #"));
+		// POST Objects to server
+		obj1 = this.restClientObj.post().body(obj1).retrieve().body(BoundaryObject.class);
+		
+		// WHEN I invoke GET on the false active object  /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}
+		// THEN I get an object
+
+		BoundaryObject obj_return  = this.restClientObj.get().uri("/superapp/objects/{superapp}/{id}?userSuperApp ={userSuperApp}&userEmail = {email}",
+				this.superAppName,obj1.getObjectID().getId(),this.superAppName ,username+"@aa.com").retrieve().body(BoundaryObject.class);
+		assertThat(obj_return).isNotNull();
+		assertThat(obj_return.getObjectID().getId()).isEqualTo(obj.getObjectID().getId());
+	}
 	
 	
 	

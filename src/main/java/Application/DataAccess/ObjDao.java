@@ -27,13 +27,21 @@ public interface ObjDao extends JpaRepository<EntityObject, String> {
 	
 	public Optional<EntityObject> findByobjectIDAndActiveIsTrue(@Param("objectID") String objectID);
 
-	//yam: guy pattern in SQL is like not by pattern...
 	public List<EntityObject> findAllBypattern(@Param("pattern") String pattern, Pageable pageable);
 
 	public List<EntityObject> findAllBylat(@Param("lat") int lat, PageRequest of);
+	public List<EntityObject> findAllBylat(@Param("lat") String lat, Pageable pageable);
 
-	public List<EntityObject> findAllByalias(@Param("alias") String alias, PageRequest of);
+	public List<EntityObject> findAllByalias(@Param("alias") String alias, Pageable pageable);
+	@Query(value = "SELECT *, " +
+                   "(6371 * ACOS(COS(RADIANS(:centerLat)) * COS(RADIANS(lat)) * COS(RADIANS(lng) - RADIANS(:centerLng)) + SIN(RADIANS(:centerLat)) * SIN(RADIANS(lat)))) AS distance " +
+                   "FROM locations " +
+                   "HAVING distance <= :radius " +
+                   "ORDER BY distance", nativeQuery = true)
+    public List<EntityObject> findAllWithinRadius(@Param("centerLat") double centerLat, 
+                                                  @Param("centerLng") double centerLng, 
+                                                  @Param("radius") double radius  , Pageable pageable);
+
 	
-	@Query("SELECT e FROM EntityObject e WHERE ST_DWithin(e.geom, ST_MakePoint(:x, :y), :radius) = true")
-    List<EntityObject> findAllWithinRadius(@Param("x") double x, @Param("y") double y, @Param("radius") double radius , Pageable pageable);
+
 }

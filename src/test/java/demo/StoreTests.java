@@ -20,11 +20,17 @@ import Application.business_logic.*;
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 class StoreTests {
 	private RestClient restClient;
+	private RestClient restClientObj;
+	private RestClient restClientAdmin;
+	private RestClient restClientUser;
+	private RestClient restClientCommand;
 	
 	@Value("${server.port:8080}")
 	public void setPort(int port) {
-		this.restClient = RestClient.create(
-			"http://localhost:" + port + "/superapp/users");
+		this.restClientObj = RestClient.create("http://localhost:" + port + "/superapp/objects");
+		this.restClientAdmin = RestClient.create("http://localhost:" + port +"/superapp/admin" );
+		this.restClientUser = RestClient.create("http://localhost:" + port +"/superapp/users" );
+		this.restClientCommand = RestClient.create("http://localhost:" + port +"/superapp/commands");
 	}
 	
     @BeforeEach
@@ -42,7 +48,7 @@ class StoreTests {
         newUser.setRole("USER");
         newUser.setAvatar("testAvatar");
         
-        BoundaryUser = this.restClient
+        BoundaryUser = this.restClientUser
 				.post()
 				.body(newUser)
 				.retrieve()
@@ -77,7 +83,7 @@ class StoreTests {
 		CreatedBy.setUserId(UserId1);
 		BoundaryObject.setObjectDetails(new HashMap<>());
         
-       BoundaryObject = this.restClient
+       BoundaryObject = this.restClientObj
 			.post()
 			.body(BoundaryObject)
 			.retrieve()
@@ -102,14 +108,14 @@ class StoreTests {
        BoundaryCommand.setCommand("Test Command");
        BoundaryCommand.setTargetObject(new TargetObject());
        String createdBy = "yam_test_@yam.com";
-		CreatedBy CreatedBy  = new CreatedBy();
-		UserId UserId1 = new UserId();
-		UserId1.setEmail(createdBy);
-		UserId1.setSuperAPP("");
-		CreatedBy.setUserId(UserId1);
+	   CreatedBy CreatedBy  = new CreatedBy();
+	   UserId UserId1 = new UserId();
+	   UserId1.setEmail(createdBy);
+	   UserId1.setSuperAPP("");
+	   CreatedBy.setUserId(UserId1);
        BoundaryCommand.setCommandAttributes(new HashMap<>());
         
-       BoundaryCommand = this.restClient
+       BoundaryCommand = this.restClientCommand
 			.post()
 			.body(BoundaryCommand)
 			.retrieve()
@@ -120,4 +126,57 @@ class StoreTests {
        assertThat(BoundaryCommand.getCommand()).isEqualTo("Test Command");
        assertThat(BoundaryCommand.getTargetObject()).isNotNull();
  	}
+    
+    @Test
+    public void putUser() {
+        NewUserBoundary newUser = new NewUserBoundary();
+        BoundaryUser BoundaryUser  = new BoundaryUser();
+        newUser.setAvatar("testAvatar");
+        
+        BoundaryUser = this.restClientUser
+				.put()
+				.body(newUser)
+				.retrieve()
+				.body(BoundaryUser.class);
+        
+
+        assertThat(BoundaryUser).isNotNull();
+ 		assertThat(BoundaryUser.getAvatar()).isEqualTo("testAvatar");
+
+    }
+    @Test
+    public void putCommand() {
+        BoundaryCommand BoundaryCommand  = new BoundaryCommand();
+        BoundaryCommand.setCommand("Test Command");
+        
+        BoundaryCommand = this.restClientCommand
+    			.put()
+    			.body(BoundaryCommand)
+    			.retrieve()
+    			.body(BoundaryCommand.class);
+        
+
+        assertThat(BoundaryCommand).isNotNull();
+        assertThat(BoundaryCommand.getCommand()).isEqualTo("Test Command");
+
+    }
+    
+    @Test
+    public void putObject() {
+    	BoundaryObject BoundaryObject  = new BoundaryObject();
+    	BoundaryObject.setType("Type");
+        
+        BoundaryObject = this.restClientObj
+    			.post()
+    			.body(BoundaryObject)
+    			.retrieve()
+    			.body(BoundaryObject.class);
+        
+
+        assertThat(BoundaryObject).isNotNull();
+        assertThat(BoundaryObject.getType()).isEqualTo("Type");
+
+    }
+    
+    
 }

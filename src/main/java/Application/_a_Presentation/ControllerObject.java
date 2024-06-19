@@ -68,73 +68,66 @@ public class ControllerObject {
 			.toArray(new BoundaryObject[0]);
 	}
 	
-
-// yam : i put thouse on note because the compiler didn't let me to going up sorry gal and shaked 
-//	@GetMapping(
-//			path = { "/search/byType/{type}"},
-//			produces = MediaType.APPLICATION_JSON_VALUE)
-//		public BoundaryObject[] getObjectsByType (
-//			@PathVariable("type") String type , 
-//			@RequestParam("superapp") String superapp ,
-//			@RequestParam("email") String email, 
-//			@RequestParam("size") int size , 
-//			@RequestParam("page") int page) {
-//			BoundaryObject[] demoOp = this.servicesObject
-//				.searchByType(type).toArray(new BoundaryObject[0]);
-//			return demoOp;
-//		}	
-//
-//	@GetMapping(
-//			path = { "/search/byAlias/{alias}"
-//					+ "&size={size}&page={page}" }, 
-//			produces = MediaType.APPLICATION_JSON_VALUE)
-//		public BoundaryObject[] getObjectsByExactAlias ( 
-//				@PathVariable("alias") String alias , 
-//				@RequestParam("superapp") String superapp , 
-//				@RequestParam("email") String email, 
-//				@RequestParam("size") int size , 
-//				@RequestParam("page") int page) {
-//				BoundaryObject[] demoOp = this.servicesObject
-//					.searchByAlias(alias).toArray(new BoundaryObject[0]);
-//				return demoOp;
-//		}	
 	@GetMapping(
-			path = { "/search/byAliasPattern/{pattern}" }, 
+			path = {"/search/byType/{type}?userSuperapp={superapp}&userEmail={email}&size={size}&page={page}"},
 			produces = MediaType.APPLICATION_JSON_VALUE)
-		public BoundaryObject[] getObjectsByAliasPattern ( 
+		public BoundaryObject[] searchObjectsByType (
+			@PathVariable("type") String type , 
+			@RequestParam("superapp") String superapp ,
+			@RequestParam("email") String email, 
+			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+			BoundaryObject[] demoOp = this.servicesObject
+				.searchByType(type, size, page).toArray(new BoundaryObject[0]);
+			return demoOp;
+		}	
+
+	@GetMapping(
+			path = {"/search/byAlias/{alias}?userSuperapp={superapp}&userEmail={email}&size={size}&page={page}"}, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+		public BoundaryObject[] searchObjectsByExactAlias ( 
+				@PathVariable("alias") String alias , 
+				@RequestParam("superapp") String superapp , 
+				@RequestParam("email") String email, 
+				@RequestParam(name = "size", required = false, defaultValue = "10") int size,
+				@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+				BoundaryObject[] demoOp = this.servicesObject
+					.searchByAlias(alias, size, page).toArray(new BoundaryObject[0]);
+				return demoOp;
+		}	
+	@GetMapping(
+			path = { "/search/byAliasPattern/{pattern}?userSuperapp={superapp}&userEmail={email}&size={size}&page={page}"}, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+		public BoundaryObject[] searchObjectsByAliasPattern ( 
 				@PathVariable("pattern") String pattern , 
 				@RequestParam("superapp") String superapp , 
 				@RequestParam("email") String email, 
 				@RequestParam("email") String superAppUser, 
-				@RequestParam("size") int size , 
-				@RequestParam("page") int page) {
+				@RequestParam(name = "size", required = false, defaultValue = "10") int size,
+				@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
 				BoundaryObject[] demoOp = this.servicesObject
-					.searchByPattern(pattern, size, page,email,superapp , superAppUser).toArray(new BoundaryObject[0]);
+					.searchObjectsByAliasPattern(pattern, size, page).toArray(new BoundaryObject[0]);
 				return demoOp;
 		}
+	
+	@GetMapping(
+			path = { "/search/byLocation/{lat}/{Ing}/{distance}?units={distanceUnits}&userSuperapp={superapp} &userEmail-{email}&size={size}&page={page}"},
+			produces = MediaType.APPLICATION_JSON_VALUE)
+		public BoundaryObject[] getObjectsInRadius (
+			@PathVariable("lat") double lat , 
+			@PathVariable("lat") double lng , 
+			@PathVariable("distance") double distance ,
+			@RequestParam(name = "distanceUnits", required = false, defaultValue = "km") String distanceUnits, 
+			@RequestParam("superapp") String superapp , 
+			@RequestParam("email") String email,
+			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+			BoundaryObject[] demoOp = this.servicesObject
+				.searchByLocation(lat, lng, distance, size, page).toArray(new BoundaryObject[0]);
+			return demoOp;
+		}	
 
-	// yam : i put thouse on note because the compiler didn't let me to going up sorry gal and shaked 
-	
-//	@GetMapping(
-//			path = { "/search/byLocation/{lat)/{Ing/{distance}?units={distanceUnits)&userSuperapp={superapp} &userEmail-(email}&size={size}&page={page}"},
-//			produces = MediaType.APPLICATION_JSON_VALUE)
-//		public BoundaryObject[] getObjectsInRadius (
-//			@RequestParam("lat") double lat , 
-//			@RequestParam("lat") double lng , 
-//			@PathVariable("distance") double distance ,
-//			@RequestParam("distanceUnits") String distanceUnits, 
-//			@RequestParam("superapp") String superapp , 
-//			@RequestParam("email") String email,
-//			@RequestParam("size") int size,
-//			@RequestParam("page") int page) {
-//			BoundaryObject[] demoOp = this.servicesObject
-//				.searchByLat(lat, lng, distance).toArray(new BoundaryObject[0]);
-//			return demoOp;
-//		}	
 
-	
-	
-	
 	@PutMapping(
 		path = {"/{superapp}/{id}"},
 		consumes = {MediaType.APPLICATION_JSON_VALUE})

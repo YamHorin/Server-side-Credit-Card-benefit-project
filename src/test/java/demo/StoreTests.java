@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.web.client.RestClient;
-
-import Application.business_logic.BoundaryObject;
-import Application.business_logic.BoundaryUser;
-import Application.business_logic.NewUserBoundary;
+import Application.business_logic.*;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
@@ -50,8 +47,8 @@ class StoreTests {
 				.body(newUser)
 				.retrieve()
 				.body(BoundaryUser.class);
-    
-        // THEN the server responds with the same 4 important messages generated above
+        
+        // Check if the user is initialized correctly
  		assertThat(BoundaryUser).isNotNull();
  		assertThat(BoundaryUser.getUserId().getEmail()).isEqualTo("testemail@example.com");
  		assertThat(BoundaryUser.getUserName()).isEqualTo("Test User");
@@ -59,29 +56,68 @@ class StoreTests {
  		assertThat(BoundaryUser.getAvatar()).isEqualTo("testAvatar");
 	
  	}
-//    @Test
-//    public void testObject() {
-//        
-//        NewObjectBoundary newObject = new NewObjectBoundary();
-//        BoundaryObject BoundaryUser  = new BoundaryObject();
-//        newObject.setEmail("testemail@example.com");
-//        newObject.setUserName("Test User");
-//        newObject.setRole("USER");
-//        newObject.setAvatar("testAvatar");
-//        
-//        BoundaryObject = this.restClient
-//				.post()
-//				.body(newObject)
-//				.retrieve()
-//				.body(BoundaryUser.class);
-//    
-//        // THEN the server responds with the same 4 important messages generated above
-// 		assertThat(BoundaryUser).isNotNull();
-// 		assertThat(BoundaryUser.getUserId().getEmail()).isEqualTo("testemail@example.com");
-// 		assertThat(BoundaryUser.getUserName()).isEqualTo("Test User");
-// 		assertThat(BoundaryUser.getRole().name()).isEqualTo("USER");
-// 		assertThat(BoundaryUser.getAvatar()).isEqualTo("testAvatar");
-//	
-// 	}
+    
+    @Test
+    public void testObject() {
+    	//Create a Object
+    	BoundaryObject BoundaryObject  = new BoundaryObject();
+    	//Set values for the object's attributes
+    	ObjectId ob = new ObjectId();
+    	ob.setId("1245");
+    	BoundaryObject.setObjectID(ob);
+    	BoundaryObject.setType("Type");
+    	BoundaryObject.setAlias("Alias");
+    	BoundaryObject.setActive(true);
+    	CreatedBy cb = new CreatedBy();
+		String createdBy = "yam_test_@yam.com";
+		CreatedBy CreatedBy  = new CreatedBy();
+		UserId UserId1 = new UserId();
+		UserId1.setEmail(createdBy);
+		UserId1.setSuperAPP("");
+		CreatedBy.setUserId(UserId1);
+		BoundaryObject.setObjectDetails(new HashMap<>());
+        
+       BoundaryObject = this.restClient
+			.post()
+			.body(BoundaryObject)
+			.retrieve()
+			.body(BoundaryObject.class);
 
+        //Check if the object is initialized correctly
+        assertThat(BoundaryObject).isNotNull();
+        assertThat(BoundaryObject.getObjectID().toString()).isEqualTo("12345");
+        assertThat(BoundaryObject.getType()).isEqualTo("Type");
+        assertThat(BoundaryObject.getAlias()).isEqualTo("Alias");
+        assertThat(BoundaryObject.getActive()).isTrue();
+ 	}
+
+    @Test
+    public void testcommand() {
+      //Create a command
+       BoundaryCommand BoundaryCommand  = new BoundaryCommand();
+     //Set values for the object's attributes
+       CommandId ci = new CommandId();
+       ci.setId("1234567");
+       BoundaryCommand.setCommandId(ci);
+       BoundaryCommand.setCommand("Test Command");
+       BoundaryCommand.setTargetObject(new TargetObject());
+       String createdBy = "yam_test_@yam.com";
+		CreatedBy CreatedBy  = new CreatedBy();
+		UserId UserId1 = new UserId();
+		UserId1.setEmail(createdBy);
+		UserId1.setSuperAPP("");
+		CreatedBy.setUserId(UserId1);
+       BoundaryCommand.setCommandAttributes(new HashMap<>());
+        
+       BoundaryCommand = this.restClient
+			.post()
+			.body(BoundaryCommand)
+			.retrieve()
+			.body(BoundaryCommand.class);
+
+     //Check if the object is initialized correctly
+       assertThat(BoundaryCommand).isNotNull();
+       assertThat(BoundaryCommand.getCommand()).isEqualTo("Test Command");
+       assertThat(BoundaryCommand.getTargetObject()).isNotNull();
+ 	}
 }

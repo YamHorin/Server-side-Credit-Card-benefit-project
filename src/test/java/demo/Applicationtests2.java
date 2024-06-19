@@ -2,6 +2,7 @@ package demo;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import Application.DataAccess.Location;
@@ -320,12 +321,13 @@ class Applicationtests2 {
 		assertThat(obj_return).isNotNull();
 		assertThat(obj_return.getObjectID().getId()).isEqualTo(obj.getObjectID().getId());
 	}
+	
+	//no finish yet -yam 
 	public void testAdminGetAllMiniAppCommands()
 	{
 		// GIVEN the server is up
-		// AND the database contains 1  non active objects
-		// AND the database contains 1 active objects
-		// AND the database contains 1 super app user
+		// AND 5 miniApp commands
+		// AND the database contains 1 admin app user
 		
 		String username = "AdminAppUser";
 		BoundaryUser user  = new BoundaryUser();
@@ -336,47 +338,33 @@ class Applicationtests2 {
 		user.setUserId(UserId);
 		
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
-		String type = "type_test";
-		String alias = "alias_test";
-		String createdBy = username+"@aa.com";
+		for (int i = 0; i < 5; i++) {
+			 BoundaryCommand BoundaryCommand  = new BoundaryCommand();
+		     //Set values for the object's attributes
+		       CommandId ci = new CommandId();
+		       ci.setId("1234567");
+		       BoundaryCommand.setCommandId(ci);
+		       BoundaryCommand.setCommand("Test Command "+i);
+		       BoundaryCommand.setTargetObject(new TargetObject());
+		       String createdBy = "yam_test_@yam.com";
+				CreatedBy CreatedBy  = new CreatedBy();
+				UserId UserId1 = new UserId();
+				UserId1.setEmail(createdBy);
+				UserId1.setSuperAPP("");
+				CreatedBy.setUserId(UserId1);
+		       BoundaryCommand.setCommandAttributes(new HashMap<>());
+		        
+		       BoundaryCommand = this.restClientCommand
+					.post()
+					.body(BoundaryCommand)
+					.retrieve()
+					.body(BoundaryCommand.class);
+		}
 		
-		BoundaryObject obj = new BoundaryObject();
-		obj.setActive(true);
-		obj.setLocation(new Location(0.2 , 0.2));
-		obj.setType(type+" ");
-		obj.setAlias(alias+" ");
-		CreatedBy CreatedBy  = new CreatedBy();
-		UserId UserId1 = new UserId();
-		UserId1.setEmail(createdBy);
-		UserId1.setSuperAPP("");
-		CreatedBy.setUserId(UserId1);
-		obj.setCreatedBy(CreatedBy);
-		obj.setObjectDetails(Collections.singletonMap("person", "Jane #"));
-		// POST Objects to server
-		obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
-		
-		BoundaryObject obj1 = new BoundaryObject();
-		obj1.setActive(false);
-		obj1.setLocation(new Location(0.2 , 0.2));
-		obj1.setType(type+" ");
-		obj1.setAlias(alias+" ");
-		CreatedBy CreatedBy1  = new CreatedBy();
-		UserId UserId11 = new UserId();
-		UserId11.setEmail(createdBy);
-		UserId11.setSuperAPP("");
-		CreatedBy1.setUserId(UserId11);
-		obj1.setCreatedBy(CreatedBy1);
-		obj1.setObjectDetails(Collections.singletonMap("person", "Jane #"));
-		// POST Objects to server
-		obj1 = this.restClientObj.post().body(obj1).retrieve().body(BoundaryObject.class);
-		
-		// WHEN I invoke GET on the false active object  /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}
-		// THEN I get an object
 
-		BoundaryObject obj_return  = this.restClientObj.get().uri("/superapp/objects/{superapp}/{id}?userSuperApp ={userSuperApp}&userEmail = {email}",
-				this.superAppName,obj1.getObjectID().getId(),this.superAppName ,username+"@aa.com").retrieve().body(BoundaryObject.class);
-		assertThat(obj_return).isNotNull();
-		assertThat(obj_return.getObjectID().getId()).isEqualTo(obj.getObjectID().getId());
+		
+		
+		
 	}
 	
 	

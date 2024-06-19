@@ -10,5 +10,5 @@ import org.springframework.data.repository.query.Param;
 
 public interface MiniAppCommadDao extends JpaRepository<EntityCommand, String> {
 
-	List<EntityCommand> findAllByminiAppName(@Param("miniAppName") Pageable pageRequest);
+	List<EntityCommand> findAllByMiniAppName(@Param("miniAppName")String miniAppName, Pageable pageRequest);
 }

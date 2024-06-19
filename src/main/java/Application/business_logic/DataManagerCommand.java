@@ -127,7 +127,7 @@ public class DataManagerCommand implements ServicesCommand{
 			throw new UnauthorizedException("only admin users can get all commands of specific MiniApp");
 		else {
 			return this.miniAppCommandDao
-					.findAllByminiAppName(PageRequest.of(page, size, Direction.DESC, "messageTimestamp", "id"))
+					.findAllByMiniAppName(id , PageRequest.of(page, size, Direction.DESC, "messageTimestamp", "id"))
 					.stream()
 					.map(this.DataConvertor::EntityCommandToBoundaryCommand)
 					.peek(System.err::println)

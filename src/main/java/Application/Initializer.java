@@ -1,5 +1,6 @@
 package Application;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.IntStream;
 
@@ -14,10 +15,12 @@ import Application.business_logic.BoundaryObject;
 import Application.business_logic.BoundaryUser;
 import Application.business_logic.CommandId;
 import Application.business_logic.CreatedBy;
+import Application.business_logic.ObjectId;
 import Application.business_logic.RoleEnumBoundary;
 import Application.business_logic.ServicesCommand;
 import Application.business_logic.ServicesObject;
 import Application.business_logic.ServicesUser;
+import Application.business_logic.TargetObject;
 import Application.business_logic.UserId;
 
 @Component
@@ -62,7 +65,8 @@ public class Initializer implements CommandLineRunner{
 		//make 20 objects
 		String type = "type";
 		String alias = "alias";
-		String createdBy = "yam@yam.com";
+		ArrayList<String > ids_of_objects = new ArrayList<>();
+		CreatedBy CreatedBy  = new CreatedBy();
 		for (int j =0 ;j<=20 ;j++)
 		{
 			System.err.println(j);
@@ -72,15 +76,14 @@ public class Initializer implements CommandLineRunner{
 			obj.setLocation(new Location(0.2+j , 0.2+j));
 			obj.setType(type+" "+j);
 			obj.setAlias(alias+" "+j);
-			CreatedBy CreatedBy  = new CreatedBy();
 			UserId UserId = new UserId();
-			UserId.setEmail(createdBy+j);
+			UserId.setEmail(username+j+"@aa.com");
 			UserId.setSuperAPP(this.name_super_app);
 			CreatedBy.setUserId(UserId);
 			obj.setCreatedBy(CreatedBy);
 			obj.setObjectDetails(Collections.singletonMap("person", "Jane #" + j));
-			this.ServicesObject.createObject(obj);
-				
+			BoundaryObject BoundaryObject = this.ServicesObject.createObject(obj);
+			ids_of_objects.add( BoundaryObject.getObjectID().getId());	
 			
 		}
 		//make 10 mini app commands
@@ -90,8 +93,6 @@ public class Initializer implements CommandLineRunner{
 		//TODO change the String in CommandEntity of invokedBy and targetObject to string 
 		//so i will get the id of the user and object 
 		//and after come back to change here 
-		String targetObject  = "123";
-		String invokedBy = username;
 		for (int i =0; i<10 ; i++) {
 			BoundaryCommand Command = new BoundaryCommand();
 			Command.setCommand(command+" number "+i);
@@ -99,6 +100,8 @@ public class Initializer implements CommandLineRunner{
 			CommandId CommandId =new CommandId();
 			CommandId.setId(id+i);
 			Command.setCommandId(CommandId);
+			Command.setInvokedBy(CreatedBy);
+			Command.setTargetObject(new TargetObject(new ObjectId(ids_of_objects.get(i))));
 			this.ServicesCommand.createMiniAppCommand(Command);
 		}
 		

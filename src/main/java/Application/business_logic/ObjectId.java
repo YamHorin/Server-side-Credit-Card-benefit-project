@@ -15,6 +15,11 @@ public class ObjectId {
 		this.id = id;
 	}
 
+	public ObjectId(String string) {
+		this.id = string;	
+		
+	}
+
 	public void setSuperApp(String superApp) {
         this.superApp = superApp;
     }

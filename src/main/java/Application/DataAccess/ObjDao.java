@@ -33,10 +33,10 @@ public interface ObjDao extends JpaRepository<EntityObject, String> {
 
 	public List<EntityObject> findAllByalias(@Param("alias") String alias, Pageable pageable);
 	@Query(value = "SELECT *, " +
-                   "(6371 * ACOS(COS(RADIANS(:centerLat)) * COS(RADIANS(lat)) * COS(RADIANS(lng) - RADIANS(:centerLng)) + SIN(RADIANS(:centerLat)) * SIN(RADIANS(lat)))) AS distance " +
-                   "FROM locations " +
-                   "HAVING distance <= :radius " +
-                   "ORDER BY distance", nativeQuery = true)
+            "(6371 * ACOS(COS(RADIANS(:centerLat)) * COS(RADIANS(location_lat)) * COS(RADIANS(location_lng) - RADIANS(:centerLng)) + SIN(RADIANS(:centerLat)) * SIN(RADIANS(location_lat)))) AS distance " +
+            "FROM EntityObject " +
+            "WHERE (6371 * ACOS(COS(RADIANS(:centerLat)) * COS(RADIANS(location_lat)) * COS(RADIANS(location_lng) - RADIANS(:centerLng)) + SIN(RADIANS(:centerLat)) * SIN(RADIANS(location_lat)))) <= :radius " +
+            "ORDER BY distance", nativeQuery = true)
     public List<EntityObject> findAllWithinRadius(@Param("centerLat") double centerLat, 
                                                   @Param("centerLng") double centerLng, 
                                                   @Param("radius") double radius  , Pageable pageable);

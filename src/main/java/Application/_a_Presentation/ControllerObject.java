@@ -111,11 +111,11 @@ public class ControllerObject {
 		}
 	
 	@GetMapping(
-			path = { "/search/byLocation/{lat}/{Ing}/{distance}"},
+			path = { "/search/byLocation/{lat}/{lng}/{distance}"},
 			produces = MediaType.APPLICATION_JSON_VALUE)
 		public BoundaryObject[] getObjectsInRadius (
 			@PathVariable("lat") double lat , 
-			@PathVariable("lat") double lng , 
+			@PathVariable("lng") double lng , 
 			@PathVariable("distance") double distance ,
 			@RequestParam(name = "distanceUnits", required = false, defaultValue = "km") String distanceUnits, 
 			@RequestParam("superapp") String superapp , 

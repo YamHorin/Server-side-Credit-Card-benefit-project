@@ -14,8 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import Application.DataConvertor;
 import Application.DataAccess.EntityCommand;
+import Application.DataAccess.EntityObject;
 import Application.DataAccess.EntityUser;
 import Application.DataAccess.MiniAppCommadDao;
+import Application.DataAccess.ObjDao;
 import Application.DataAccess.RoleEnumEntity;
 import Application.DataAccess.UserDao;
 import Application._a_Presentation.BoundaryIsNotFoundException;
@@ -26,16 +28,18 @@ import Application._a_Presentation.UnauthorizedException;
 public class DataManagerCommand implements ServicesCommand{
 	private MiniAppCommadDao miniAppCommandDao;
 	private UserDao userDao;
+	private ObjDao objDao;
 	private String superAppName;
 	private String miniAppNameDefault;
 	private DataConvertor DataConvertor;
 	
 	
 	
-	public DataManagerCommand(UserDao userDao, MiniAppCommadDao miniAppCommandDao , DataConvertor DataConvertor) {
+	public DataManagerCommand(UserDao userDao, MiniAppCommadDao miniAppCommandDao , DataConvertor DataConvertor , ObjDao objDao) {
 		this.miniAppCommandDao = miniAppCommandDao;
 		this.userDao = userDao;
 		this.DataConvertor = DataConvertor;
+		this.objDao  = objDao;
 	}
 
 	@Value("${spring.application.name:Jill}")
@@ -123,9 +127,18 @@ public class DataManagerCommand implements ServicesCommand{
 	
 	@Override
 	@Transactional(readOnly = false)
-// hare we erite the mathods of the miniapp, in swhich case of the name of the mini up, 
-	// of each miniApp we create  swich case of all the command of specific mimiApp
+	// hare we write the mathods of the mini app, in stwich case of the name of the mini app, 
+	// of each miniApp we create  switch case of all the command of specific mimiApp
 	public BoundaryCommand createMiniAppCommand(BoundaryCommand CommandBoundary) {
+		//checks if the object that the command does is in the table and if the user is in the table
+		String idObj = CommandBoundary.getTargetObject().getObjectId().getId()+"__"+this.superAppName;
+		EntityObject EntityObject = this.objDao.findById(idObj).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find object for command by id: " + idObj));
+		String idUser = CommandBoundary.getInvokedBy().getUserId().getEmail() +"_"+ CommandBoundary.getInvokedBy().getUserId().getSuperAPP();
+		EntityUser userEntity = this.userDao.findById(idUser).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find User for command by id: " + idUser));
+		RoleEnumEntity role = userEntity.getRole();
+		
 		System.err.println("* client requested to store: " + CommandBoundary);
 		CommandId command = new CommandId();
 		command.setSuperApp(this.superAppName);
@@ -133,6 +146,9 @@ public class DataManagerCommand implements ServicesCommand{
 		command.setId(UUID.randomUUID().toString());
 		CommandBoundary.setCommandId(command);
 		CommandBoundary.setInvocationTimeStamp(new Date());
+		ObjectId obj = CommandBoundary.getTargetObject().getObjectId();
+		obj.setSuperApp(superAppName);
+		CommandBoundary.setTargetObject(new TargetObject(obj));
 		EntityCommand entity = this.DataConvertor.BoundaryCommandToEntityCommand(CommandBoundary);
 		entity = this.miniAppCommandDao.save(entity);
 		System.err.println("***\n"+entity.toString()+"\n\n\n");

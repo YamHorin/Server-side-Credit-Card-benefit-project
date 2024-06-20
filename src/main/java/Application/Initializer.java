@@ -67,6 +67,7 @@ public class Initializer implements CommandLineRunner{
 		String alias = "alias";
 		ArrayList<String > ids_of_objects = new ArrayList<>();
 		CreatedBy CreatedBy  = new CreatedBy();
+		UserId UserId = new UserId();
 		for (int j =0 ;j<=20 ;j++)
 		{
 			System.err.println(j);
@@ -76,7 +77,6 @@ public class Initializer implements CommandLineRunner{
 			obj.setLocation(new Location(0.2+j , 0.2+j));
 			obj.setType(type+" "+j);
 			obj.setAlias(alias+" "+j);
-			UserId UserId = new UserId();
 			UserId.setEmail(username+j+"@aa.com");
 			UserId.setSuperAPP(this.name_super_app);
 			CreatedBy.setUserId(UserId);
@@ -87,12 +87,11 @@ public class Initializer implements CommandLineRunner{
 			
 		}
 		//make 10 mini app commands
-		
+		UserId.setEmail(username+2+"@aa.com");
+		UserId.setSuperAPP(this.name_super_app);
+		CreatedBy.setUserId(UserId);
 		String id = "command";
-		String command = "command number";
-		//TODO change the String in CommandEntity of invokedBy and targetObject to string 
-		//so i will get the id of the user and object 
-		//and after come back to change here 
+		String command = "make visa card";
 		for (int i =0; i<10 ; i++) {
 			BoundaryCommand Command = new BoundaryCommand();
 			Command.setCommand(command+" number "+i);

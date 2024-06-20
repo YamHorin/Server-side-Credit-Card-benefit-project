@@ -46,18 +46,7 @@ public class DataManagerUser implements ServicesUser{
 		return boundaryUser;	
 	}
 
-//	@Override
-//	public List<BoundaryUser> getAllUsers(String id, int page,int size) {
-//		List<EntityUser> entities = this.UserDao.findAll();
-//		List<BoundaryUser> boundaries = new ArrayList<>();
-//		for (EntityUser entity : entities) {
-//			boundaries.add(this.DataConvertor.EntityUserToBoundaryUser(entity));
-//		}
-//		
-//		
-//		System.err.println("* data from database: " + boundaries);
-//		return boundaries;
-//	}
+
 
 	public List<BoundaryUser> getAllUsers(String id, int page, int size) {
 		EntityUser userEntity = this.UserDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
@@ -67,7 +56,7 @@ public class DataManagerUser implements ServicesUser{
 			throw new UnauthorizedException("only admin users can get all users..");
 		else {
 			return this.UserDao
-					.findAll(PageRequest.of(page, size, Direction.DESC, "messageTimestamp", "id"))
+					.findAll(PageRequest.of(page, size, Direction.DESC, "id"))
 					.stream()
 					.map(this.DataConvertor::EntityUserToBoundaryUser)
 					.peek(System.err::println)

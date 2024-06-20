@@ -277,7 +277,7 @@ public class DataManagerObject implements ServicesObject {
 	public List<BoundaryObject> searchByType(String type, int size, int page) {
 		return this.objectDao
 				.findAllBytype(type,
-						PageRequest.of(page, size, Direction.ASC, "id"))
+						PageRequest.of(page, size, Direction.ASC, "objectID"))
 				.stream()
 				.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
 				.toList();
@@ -285,7 +285,7 @@ public class DataManagerObject implements ServicesObject {
 
 	@Override
 	public List<BoundaryObject> searchObjectsByExactAlias(String alias, int size, int page) {
-		return this.objectDao.findAllByalias(alias, PageRequest.of(page, size, Direction.ASC, "id"))
+		return this.objectDao.findAllByalias(alias, PageRequest.of(page, size, Direction.ASC, "objectID"))
 				.stream()
 				.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
 				.toList();
@@ -294,7 +294,7 @@ public class DataManagerObject implements ServicesObject {
 	
 	@Override
 	public List<BoundaryObject> searchObjectsByAliasPattern(String pattern, int size, int page) {
-		return this.objectDao.findAllByaliasLike(pattern, PageRequest.of(page, size, Direction.ASC, "id"))
+		return this.objectDao.findAllByaliasLike(pattern, PageRequest.of(page, size, Direction.ASC, "objectID"))
 				.stream()
 				.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
 				.toList();
@@ -302,7 +302,7 @@ public class DataManagerObject implements ServicesObject {
 
 	@Override
 	public List<BoundaryObject> searchByLocation(double lat, double lng, double distance,int size, int page) {
-		return this.objectDao.findAllWithinRadius(lat,lng, distance, PageRequest.of(page, size, Direction.ASC, "id"))
+		return this.objectDao.findAllWithinRadius(lat,lng, distance, PageRequest.of(page, size, Direction.ASC, "objectID"))
 				.stream()
 				.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
 				.toList();

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import Application.business_logic.BoundaryCommand;
@@ -27,25 +28,25 @@ public class ControllerAdminUser {
 		ServicesCommand = servicesCommand;
 	}
 	@DeleteMapping
-	(path  = {"/users?userSuperapp={userSuperapp}&userEmail={email}"})
-	public void deleteAllUsers(@PathVariable("email") String email , @PathVariable("userSuperapp") String superapp) {
+	(path  = {"/users"})
+	public void deleteAllUsers(@RequestParam("email") String email , @RequestParam("userSuperapp") String superapp) {
 		String id = email+"_"+superapp;
 		this.servicesUser.deleteAllUsers(id);
 	}
-	@DeleteMapping(path = {"/objects?userSuperapp={userSuperapp}&userEmail={email}"})
-	public void deleteAllObjects(@PathVariable("email") String email , @PathVariable("userSuperapp") String superapp) {
+	@DeleteMapping(path = {"/objects"})
+	public void deleteAllObjects(@RequestParam("email") String email , @RequestParam("userSuperapp") String superapp) {
 		String id = email+"_"+superapp;
 		this.servicesObject.deleteAllObjs(id);
 	}
-	@DeleteMapping(path = {"/miniapp?userSuperapp={userSuperapp}&userEmail={email}"})
-	public void deleteAllMiniAppsCommands(@PathVariable("email") String email , @PathVariable("userSuperapp") String superapp) {
+	@DeleteMapping(path = {"/miniapp"})
+	public void deleteAllMiniAppsCommands(@RequestParam("email") String email , @RequestParam("userSuperapp") String superapp) {
 		String id = email+"_"+superapp;
 		this.ServicesCommand.deleteAllminiAppCommandes(id);
 	}
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
-				path = {"/users?userSuperapp={userSuperapp}&userEmail={email}&size={size}&page={page}"})
+				path = {"/users"})
 	public BoundaryUser[] getAllUsers 
-	(@PathVariable("email") String email , @PathVariable("userSuperapp") String superapp,@PathVariable("size") int size,@PathVariable("page")int page) {
+	(@RequestParam("email") String email , @RequestParam("userSuperapp") String superapp,@RequestParam("size") int size,@RequestParam("page")int page) {
 		//add  		String id = email+"_"+superapp;
 		String id = email+"_"+superapp;
 		return this.servicesUser
@@ -53,9 +54,9 @@ public class ControllerAdminUser {
 			.toArray(new BoundaryUser[0]);
 	}
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
-				path = {"/miniapp?userSuperapp={userSuperapp}&userEmail={email}&size={size}&page={page}"})
+				path = {"/miniapp"})
 	public BoundaryCommand[] getAllMiniAppsCommands
-	(@PathVariable("email") String email , @PathVariable("userSuperapp") String superapp,@PathVariable("size") int size,@PathVariable("page")int page) {
+	(@RequestParam("email") String email , @RequestParam("userSuperapp") String superapp,@RequestParam("size") int size,@RequestParam("page")int page) {
 		//add  		String id = email+"_"+superapp;
 		String id = email+"_"+superapp;
 		return this.ServicesCommand
@@ -63,10 +64,10 @@ public class ControllerAdminUser {
 				.toArray(new BoundaryCommand[0]);
 	}
 	@GetMapping(
-			path = { "/miniapp/{miniAppName}?userSuperapp={userSuperapp}&userEmail={email}&size={size}&page={page}" }, 
+			path = { "/miniapp/{miniAppName}" }, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public BoundaryCommand[] getSpecificCommandsFromMiniApp
-	(@PathVariable("miniAppName") String idMiniAppName, @PathVariable("email") String email , @PathVariable("userSuperapp") String superapp,@PathVariable("size") int size,@PathVariable("page")int page) {
+	(@PathVariable("miniAppName") String idMiniAppName, @RequestParam("email") String email , @RequestParam("userSuperapp") String superapp,@RequestParam("size") int size,@RequestParam("page")int page) {
 		//add  		String id = email+"_"+superapp;
 		String idUser = email+"_"+superapp;
 		return this.ServicesCommand

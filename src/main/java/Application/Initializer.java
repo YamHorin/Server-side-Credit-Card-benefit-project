@@ -40,9 +40,9 @@ public class Initializer implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		//make 10 users
+		//make 11 users
 		String username = "gal";
-		IntStream.range(0, 10).mapToObj(
+		IntStream.range(0, 11).mapToObj(
 		i ->{
 			BoundaryUser user =   new BoundaryUser();
 			user.setUserName(username+i);

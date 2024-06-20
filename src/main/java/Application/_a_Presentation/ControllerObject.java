@@ -69,7 +69,7 @@ public class ControllerObject {
 	}
 	
 	@GetMapping(
-			path = {"/search/byType/{type}?userSuperapp={superapp}&userEmail={email}&size={size}&page={page}"},
+			path = {"/search/byType/{type}"},
 			produces = MediaType.APPLICATION_JSON_VALUE)
 		public BoundaryObject[] searchObjectsByType (
 			@PathVariable("type") String type , 
@@ -83,7 +83,7 @@ public class ControllerObject {
 		}	
 
 	@GetMapping(
-			path = {"/search/byAlias/{alias}?userSuperapp={superapp}&userEmail={email}&size={size}&page={page}"}, 
+			path = {"/search/byAlias/{alias}"}, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 		public BoundaryObject[] searchObjectsByExactAlias ( 
 				@PathVariable("alias") String alias , 
@@ -96,7 +96,7 @@ public class ControllerObject {
 				return demoOp;
 		}	
 	@GetMapping(
-			path = { "/search/byAliasPattern/{pattern}?userSuperapp={superapp}&userEmail={email}&size={size}&page={page}"}, 
+			path = { "/search/byAliasPattern/{pattern}"}, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 		public BoundaryObject[] searchObjectsByAliasPattern ( 
 				@PathVariable("pattern") String pattern , 
@@ -111,7 +111,7 @@ public class ControllerObject {
 		}
 	
 	@GetMapping(
-			path = { "/search/byLocation/{lat}/{Ing}/{distance}?units={distanceUnits}&userSuperapp={superapp} &userEmail-{email}&size={size}&page={page}"},
+			path = { "/search/byLocation/{lat}/{Ing}/{distance}"},
 			produces = MediaType.APPLICATION_JSON_VALUE)
 		public BoundaryObject[] getObjectsInRadius (
 			@PathVariable("lat") double lat , 

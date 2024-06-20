@@ -59,21 +59,7 @@ public class DataManagerCommand implements ServicesCommand{
 		return boundaryCommand;
 	}
 	
-//	old //
-//	@Override
-//	@Transactional(readOnly = true)
-//
-//	public List<BoundaryCommand> getAllMiniAppCommands(String id, int page, int size) {
-//		List<EntityCommand> entities = this.miniAppCommandDao.findAll();
-//		List<BoundaryCommand> boundaries = new ArrayList<>();
-//		for (EntityCommand entity : entities) {
-//			boundaries.add(this.DataConvertor.EntityCommandToBoundaryCommand(entity));
-//		}
-//		
-//		System.err.println("* data from database: " + boundaries);
-//		return boundaries;
-//	}
-	
+
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -85,7 +71,7 @@ public class DataManagerCommand implements ServicesCommand{
 			throw new UnauthorizedException("only admin users can get all miniApp commandes..");
 		else {
 			return this.miniAppCommandDao
-					.findAll(PageRequest.of(page, size, Direction.DESC, "messageTimestamp", "id"))
+					.findAll(PageRequest.of(page, size, Direction.DESC, "invocationTimeStamp","commandId"))
 					.stream()
 					.map(this.DataConvertor::EntityCommandToBoundaryCommand)
 					.peek(System.err::println)
@@ -127,7 +113,7 @@ public class DataManagerCommand implements ServicesCommand{
 			throw new UnauthorizedException("only admin users can get all commands of specific MiniApp");
 		else {
 			return this.miniAppCommandDao
-					.findAllByMiniAppName(id , PageRequest.of(page, size, Direction.DESC, "messageTimestamp", "id"))
+					.findAllByMiniAppName(id , PageRequest.of(page, size, Direction.DESC, "invocationTimeStamp", "commandId"))
 					.stream()
 					.map(this.DataConvertor::EntityCommandToBoundaryCommand)
 					.peek(System.err::println)

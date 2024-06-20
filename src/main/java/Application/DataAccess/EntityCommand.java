@@ -31,16 +31,12 @@ public class EntityCommand {
 	private String miniAppName;
 	private String command;
 	
-	//TODO to change to a string 
-	@Transient
-	private TargetObject targetObject;
+	private String targetObject;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date invocationTimeStamp;
 	
-	//TODO to change to a string 
-	@Transient
-	private CreatedBy invokedBy;
+	private String invokedBy;
 	
 	
 	@Lob
@@ -79,12 +75,12 @@ public class EntityCommand {
 	}
 
 
-	public TargetObject getTargetObject() {
+	public String getTargetObject() {
 		return targetObject;
 	}
 
 
-	public void setTargetObject(TargetObject targetObject) {
+	public void setTargetObject(String targetObject) {
 		this.targetObject = targetObject;
 	}
 
@@ -99,12 +95,12 @@ public class EntityCommand {
 	}
 
 
-	public CreatedBy getInvokedBy() {
+	public String getInvokedBy() {
 		return invokedBy;
 	}
 
 
-	public void setInvokedBy(CreatedBy invokedBy) {
+	public void setInvokedBy(String invokedBy) {
 		this.invokedBy = invokedBy;
 	}
 

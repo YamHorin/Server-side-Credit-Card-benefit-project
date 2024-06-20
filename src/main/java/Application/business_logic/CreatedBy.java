@@ -3,7 +3,12 @@ package Application.business_logic;
 public class CreatedBy {
 	private UserId userId;
 	
-	public CreatedBy() {}
+	public CreatedBy() {
+	}
+
+	public CreatedBy(UserId userId2) {
+		this.userId = userId2;
+	}
 
 	public CreatedBy(String email , String superApp) {
 		this.userId = new UserId(email ,superApp);

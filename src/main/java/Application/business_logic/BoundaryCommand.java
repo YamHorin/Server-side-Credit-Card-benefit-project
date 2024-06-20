@@ -21,16 +21,25 @@ public class BoundaryCommand {
     }
 
     public BoundaryCommand(EntityCommand entity) {
-        String[] splitId = entity.getCommandId().split("_");
-        this.commandId = new CommandId();
-        this.getCommandId().setSuperApp(splitId[0]);
-        this.getCommandId().setMiniApp(splitId[1]);
-        this.getCommandId().setId(splitId[2]);
-        this.setCommand(entity.getCommand());
-        this.setTargetObject(entity.getTargetObject());
-        this.setInvocationTimeStamp(entity.getInvocationTimeStamp());
-        this.setInvokedBy(entity.getInvokedBy());
-        this.setCommandAttributes(entity.getCommandAttributes());
+		BoundaryCommand boun = new BoundaryCommand();
+		boun.setCommand(entity.getCommand());
+		boun.setCommandAttributes(entity.getCommandAttributes());
+		CommandId CommandId = new CommandId();
+		CommandId.setId(entity.getCommandId());
+		CommandId.setMiniApp(entity.getMiniAppName());
+		boun.setCommandId(CommandId);
+		boun.setInvocationTimeStamp(entity.getInvocationTimeStamp());
+		
+		String email = entity.getInvokedBy().split("_")[0];
+    	String superAppName = entity.getInvokedBy().split("_")[1];
+    	boun.setInvokedBy(new CreatedBy(new UserId(superAppName, email)));
+		
+		TargetObject targetObject = new TargetObject ();
+		ObjectId ObjectId = new ObjectId();
+    	ObjectId.setId(entity.getTargetObject().split("__")[0]);
+    	ObjectId.setSuperApp(entity.getTargetObject().split("__")[1]);
+    	targetObject.setObjectId(ObjectId);
+		boun.setTargetObject(targetObject);
     }
 
 

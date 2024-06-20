@@ -16,6 +16,7 @@ import Application.business_logic.CommandId;
 import Application.business_logic.CreatedBy;
 import Application.business_logic.ObjectId;
 import Application.business_logic.RoleEnumBoundary;
+import Application.business_logic.TargetObject;
 import Application.business_logic.UserId;
 
 
@@ -64,8 +65,17 @@ public class DataConvertor {
 		CommandId.setMiniApp(Entity.getMiniAppName());
 		boun.setCommandId(CommandId);
 		boun.setInvocationTimeStamp(Entity.getInvocationTimeStamp());
-		boun.setInvokedBy(Entity.getInvokedBy());
-		boun.setTargetObject(Entity.getTargetObject());
+		
+		String email = Entity.getInvokedBy().split("_")[0];
+    	String superAppName = Entity.getInvokedBy().split("_")[1];
+    	boun.setInvokedBy(new CreatedBy(new UserId(superAppName, email)));
+		
+		TargetObject targetObject = new TargetObject ();
+		ObjectId ObjectId = new ObjectId();
+    	ObjectId.setId(Entity.getTargetObject().split("__")[0]);
+    	ObjectId.setSuperApp(Entity.getTargetObject().split("__")[1]);
+    	targetObject.setObjectId(ObjectId);
+		boun.setTargetObject(targetObject);
 		return boun;
 	}
     
@@ -75,9 +85,12 @@ public class DataConvertor {
         entity.setCommand(bCommand.getCommand());
         entity.setCommandId(bCommand.getCommandId().getId());
         entity.setMiniAppName(bCommand.getCommandId().getMiniApp());
-        entity.setTargetObject(bCommand.getTargetObject());
+        ObjectId TargetObject = bCommand.getTargetObject().getObjectId();
+        String objectTarget = TargetObject.getId()+"__"+TargetObject.getSuperApp();
+        entity.setTargetObject(objectTarget);
         entity.setCommandAttributes(bCommand.getCommandAttributes());
-        entity.setInvokedBy(bCommand.getInvokedBy());
+        UserId bUser = bCommand.getInvokedBy().getUserId();
+        entity.setInvokedBy(bUser.getEmail() + "_" + bUser.getSuperAPP());
         entity.setInvocationTimeStamp(bCommand.getInvocationTimeStamp());
         return entity;
     }

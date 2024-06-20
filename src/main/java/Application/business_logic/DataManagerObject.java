@@ -37,7 +37,7 @@ public class DataManagerObject implements ServicesObject {
 
 	// a value for max location value , could be change in the future
 	private final double limit_location = 1000;
-
+	private final double KmToMile = 0.621371192;
 	public DataManagerObject(UserDao userDao, ObjDao objectDao, DataConvertor DataConvertor) {
 		this.objectDao = objectDao;
 		this.userDao = userDao;
@@ -362,7 +362,7 @@ public class DataManagerObject implements ServicesObject {
 	}
 
 	@Override
-	public List<BoundaryObject> searchByLocation(String id, double lat, double lng, double distance,int size, int page) {
+	public List<BoundaryObject> searchByLocation(String id,double lat, double lng, double distance,String distanceUnits,int size, int page) {
 		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
 		RoleEnumEntity role = userEntity.getRole();
@@ -376,10 +376,26 @@ public class DataManagerObject implements ServicesObject {
 						.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
 						.toList();
 			case superapp_user:
-				return this.objectDao.findAllWithinRadius(lat,lng, distance, PageRequest.of(page, size, Direction.ASC, "objectID"))
-						.stream()
-						.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
-						.toList();				
+				if (distanceUnits.equalsIgnoreCase("neutral") )
+				{
+					System.err.println("this is the natural ..\n\n");
+					return this.objectDao.findAllWithinRadiusN(lat,lng, distance, PageRequest.of(page, size, Direction.ASC, "objectID"))
+							.stream()
+							.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
+							.toList();	
+				}
+				else
+				{
+					System.err.println("this is the KM ..\n\n");
+					if (distanceUnits.equalsIgnoreCase("MILES") )
+						distance = distance *KmToMile;
+
+					return this.objectDao.findAllByLocationWithinRadiusKM(lat,lng, distance, PageRequest.of(page, size, Direction.ASC, "objectID"))
+							.stream()
+							.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
+							.toList();	
+				}
+					
 			case undetermined:
 				throw new UnauthorizedException("admin can't update object");
 			default:

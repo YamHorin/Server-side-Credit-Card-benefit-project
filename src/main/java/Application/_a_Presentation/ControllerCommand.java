@@ -13,6 +13,7 @@ import Application.business_logic.BoundaryCommand;
 import Application.business_logic.ServicesCommand;
 
 @RestController
+// remove /{MiniAppName}
 @RequestMapping(path = { "/superapp/miniapp/{MiniAppName}" })
 public class ControllerCommand {
 	private ServicesCommand ServicesCommand;
@@ -22,8 +23,10 @@ public class ControllerCommand {
 	}
 
 	@PostMapping(
+//path= {"/{MiniAppName}"
 		consumes = MediaType.APPLICATION_JSON_VALUE, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
+
 	public BoundaryCommand store_command(@RequestBody BoundaryCommand message) {
 
 			return this.ServicesCommand.createMiniAppCommand(message);

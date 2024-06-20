@@ -274,42 +274,123 @@ public class DataManagerObject implements ServicesObject {
 	}
 
 	@Override
-	public List<BoundaryObject> searchByType(String type, int size, int page) {
-		return this.objectDao
-				.findAllBytype(type,
-						PageRequest.of(page, size, Direction.ASC, "objectID"))
-				.stream()
-				.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
-				.toList();
+	public List<BoundaryObject> searchByType(String id,String type, int size, int page) {
+		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find User for update by id: " + id));
+		RoleEnumEntity role = userEntity.getRole();
+		switch (role) {
+			case adm_user:
+				throw new UnauthorizedException("admin can't update object");
+
+			case miniapp_user:
+				return this.objectDao.findAllBytypeAndActiveIsTrue(type, PageRequest.of(page, size, Direction.ASC, "objectID"))
+						.stream()
+						.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
+						.toList();
+			case superapp_user:
+				return this.objectDao
+						.findAllBytype(type,
+								PageRequest.of(page, size, Direction.ASC, "objectID"))
+						.stream()
+						.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
+						.toList();	
+			case undetermined:
+				throw new UnauthorizedException("admin can't update object");
+			default:
+				break;
+		}
+		return null;
+		
 	}
 
 	@Override
-	public List<BoundaryObject> searchObjectsByExactAlias(String alias, int size, int page) {
-		return this.objectDao.findAllByalias(alias, PageRequest.of(page, size, Direction.ASC, "objectID"))
-				.stream()
-				.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
-				.toList();
+	public List<BoundaryObject> searchObjectsByExactAlias(String id,String alias, int size, int page) {
+		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find User for update by id: " + id));
+		RoleEnumEntity role = userEntity.getRole();
+		switch (role) {
+			case adm_user:
+				throw new UnauthorizedException("admin can't update object");
+
+			case miniapp_user:
+				return this.objectDao.findAllByaliasAndActiveIsTrue(alias, PageRequest.of(page, size, Direction.ASC, "objectID"))
+						.stream()
+						.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
+						.toList();
+			case superapp_user:
+				return this.objectDao.findAllByalias(alias, PageRequest.of(page, size, Direction.ASC, "objectID"))
+						.stream()
+						.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
+						.toList();		
+			case undetermined:
+				throw new UnauthorizedException("admin can't update object");
+			default:
+				break;
+		}
+		return null;
 	}
 
 	
 	@Override
-	public List<BoundaryObject> searchObjectsByAliasPattern(String pattern, int size, int page) {
-		return this.objectDao.findAllByaliasLike(pattern, PageRequest.of(page, size, Direction.ASC, "objectID"))
-				.stream()
-				.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
-				.toList();
+	public List<BoundaryObject> searchObjectsByAliasPattern(String id,String pattern, int size, int page) {
+		
+		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find User for update by id: " + id));
+		RoleEnumEntity role = userEntity.getRole();
+		switch (role) {
+			case adm_user:
+				throw new UnauthorizedException("admin can't update object");
+
+			case miniapp_user:
+				return this.objectDao.findAllByaliasLikeAndActiveIsTrue(pattern, PageRequest.of(page, size, Direction.ASC, "objectID"))
+						.stream()
+						.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
+						.toList();
+			case superapp_user:
+				return this.objectDao.findAllByaliasLike(pattern, PageRequest.of(page, size, Direction.ASC, "objectID"))
+						.stream()
+						.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
+						.toList();				
+			case undetermined:
+				throw new UnauthorizedException("admin can't update object");
+			default:
+				break;
+		}
+		return null;
+				
+		
 	}
 
 	@Override
-	public List<BoundaryObject> searchByLocation(double lat, double lng, double distance,int size, int page) {
+	public List<BoundaryObject> searchByLocation(String id, double lat, double lng, double distance,int size, int page) {
+		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find User for update by id: " + id));
+		RoleEnumEntity role = userEntity.getRole();
+		switch (role) {
+			case adm_user:
+				throw new UnauthorizedException("admin can't update object");
+
+			case miniapp_user:
+				return this.objectDao.findAllWithinRadiusAndActiveIsTrue(lat,lng, distance, PageRequest.of(page, size, Direction.ASC, "objectID"))
+						.stream()
+						.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
+						.toList();
+			case superapp_user:
+				return this.objectDao.findAllWithinRadius(lat,lng, distance, PageRequest.of(page, size, Direction.ASC, "objectID"))
+						.stream()
+						.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
+						.toList();				
+			case undetermined:
+				throw new UnauthorizedException("admin can't update object");
+			default:
+				break;
+		}
+		return null;
 		
 	
 		
 		
-		return this.objectDao.findAllWithinRadius(lat,lng, distance, PageRequest.of(page, size, Direction.ASC, "objectID"))
-				.stream()
-				.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
-				.toList();
+		
 	}
 
 

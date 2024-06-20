@@ -77,8 +77,9 @@ public class ControllerObject {
 			@RequestParam("email") String email, 
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+			String id = email+"_"+superapp;	
 			BoundaryObject[] demoOp = this.servicesObject
-				.searchByType(type, size, page).toArray(new BoundaryObject[0]);
+				.searchByType(id,type, size, page).toArray(new BoundaryObject[0]);
 			return demoOp;
 		}	
 
@@ -91,8 +92,9 @@ public class ControllerObject {
 				@RequestParam("email") String email, 
 				@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 				@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+				String id = email+"_"+superapp;	
 				BoundaryObject[] demoOp = this.servicesObject
-					.searchObjectsByExactAlias(alias, size, page).toArray(new BoundaryObject[0]);
+					.searchObjectsByExactAlias(id, alias, size, page).toArray(new BoundaryObject[0]);
 				return demoOp;
 		}	
 	@GetMapping(
@@ -105,8 +107,9 @@ public class ControllerObject {
 				@RequestParam("email") String superAppUser, 
 				@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 				@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+				String id = email+"_"+superapp;
 				BoundaryObject[] demoOp = this.servicesObject
-					.searchObjectsByAliasPattern(pattern, size, page).toArray(new BoundaryObject[0]);
+					.searchObjectsByAliasPattern(id, pattern, size, page).toArray(new BoundaryObject[0]);
 				return demoOp;
 		}
 	
@@ -141,8 +144,9 @@ public class ControllerObject {
 			default:
 				throw new BoundaryIsNotFilledCorrectException ("distanceUnits is not found");
 			}
+			String id = email+"_"+superapp;
 			BoundaryObject[] demoOp = this.servicesObject
-				.searchByLocation(lat, lng, distance, size, page).toArray(new BoundaryObject[0]);
+				.searchByLocation(id, lat, lng, distance, size, page).toArray(new BoundaryObject[0]);
 			return demoOp;
 		}	
 

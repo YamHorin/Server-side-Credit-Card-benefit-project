@@ -123,7 +123,8 @@ public class DataManagerCommand implements ServicesCommand{
 	
 	@Override
 	@Transactional(readOnly = false)
-
+// hare we erite the mathods of the miniapp, in swhich case of the name of the mini up, 
+	// of each miniApp we create  swich case of all the command of specific mimiApp
 	public BoundaryCommand createMiniAppCommand(BoundaryCommand CommandBoundary) {
 		System.err.println("* client requested to store: " + CommandBoundary);
 		CommandId command = new CommandId();

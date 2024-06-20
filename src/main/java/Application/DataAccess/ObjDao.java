@@ -21,8 +21,6 @@ public interface ObjDao extends JpaRepository<EntityObject, String> {
 
 	public List<EntityObject> findAllBytype(@Param("type") String type, Pageable pageable);
 	
-	public List<EntityObject> findAllBytypeAndActiveIsTrue(@Param("type") String type, Pageable pageable);
-
 	public Page<EntityObject> findAll(Pageable pageable);
 	
 	public Optional<EntityObject> findByobjectIDAndActiveIsTrue(@Param("objectID") String objectID);
@@ -49,6 +47,21 @@ public List<EntityObject> findAllWithinRadius(@Param("centerLat") double centerL
                                                      @Param("centerLng") double centerLng, 
                                                      @Param("radius") double radius,
                                                      Pageable pageable);
+	@Query(value = "SELECT *, " +
+            "SQRT(POW((:centerLat - location_lat), 2) + POW((:centerLng - location_lng), 2)) AS distance " +
+            "FROM OBJ_TBL " +
+            "WHERE SQRT(POW((:centerLat - location_lat), 2) + POW((:centerLng - location_lng), 2)) <= :radius " +
+            "ORDER BY distance", nativeQuery = true)
+	public List<EntityObject> findAllWithinRadiusAndActiveIsTrue(@Param("centerLat") double centerLat, 
+            @Param("centerLng") double centerLng, 
+            @Param("radius") double radius,
+            Pageable pageable);
+
+	public List<EntityObject> findAllByaliasLikeAndActiveIsTrue(@Param("pattern") String pattern, Pageable pageable);
+
+	public List<EntityObject>  findAllByaliasAndActiveIsTrue(@Param("alias")String alias, Pageable of);
+
+	public List<EntityObject> findAllBytypeAndActiveIsTrue(@Param("type")String type, Pageable of);
 }
 	
 

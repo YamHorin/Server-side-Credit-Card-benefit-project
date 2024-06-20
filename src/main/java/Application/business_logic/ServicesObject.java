@@ -12,10 +12,10 @@ public interface ServicesObject {
 	
 	public	BoundaryObject createObject (BoundaryObject StoreBoundary);
 	
-	public List<BoundaryObject> searchByType(String type, int size, int page);	
-	public List<BoundaryObject> searchObjectsByExactAlias(String alias, int size, int page);
-	public List<BoundaryObject> searchObjectsByAliasPattern(String pattern, int size, int page);
-	public List<BoundaryObject> searchByLocation(double lat, double lng, double distance,int size, int page);
+	public List<BoundaryObject> searchByType(String id,String type, int size, int page);	
+	public List<BoundaryObject> searchObjectsByExactAlias(String id,String alias, int size, int page);
+	public List<BoundaryObject> searchObjectsByAliasPattern(String id,String pattern, int size, int page);
+	public List<BoundaryObject> searchByLocation(String id,double lat, double lng, double distance,int size, int page);
 	public void deleteAllObjs (String id);
 	
 	public void updateObj (String id,String superApp, BoundaryObject update, String email, String userSuperapp);

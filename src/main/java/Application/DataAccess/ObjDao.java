@@ -27,10 +27,9 @@ public interface ObjDao extends JpaRepository<EntityObject, String> {
 	
 	public Optional<EntityObject> findByobjectIDAndActiveIsTrue(@Param("objectID") String objectID);
 
-	public List<EntityObject> findAllBypattern(@Param("pattern") String pattern, Pageable pageable);
+	
+	public List<EntityObject> findAllByaliasLike(@Param("pattern") String pattern, Pageable pageable);
 
-	public List<EntityObject> findAllBylat(@Param("lat") int lat, PageRequest of);
-	public List<EntityObject> findAllBylat(@Param("lat") String lat, Pageable pageable);
 
 	public List<EntityObject> findAllByalias(@Param("alias") String alias, Pageable pageable);
 	@Query(value = "SELECT *, " +

@@ -302,6 +302,10 @@ public class DataManagerObject implements ServicesObject {
 
 	@Override
 	public List<BoundaryObject> searchByLocation(double lat, double lng, double distance,int size, int page) {
+		
+	
+		
+		
 		return this.objectDao.findAllWithinRadius(lat,lng, distance, PageRequest.of(page, size, Direction.ASC, "objectID"))
 				.stream()
 				.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))

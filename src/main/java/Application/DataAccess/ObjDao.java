@@ -32,15 +32,24 @@ public interface ObjDao extends JpaRepository<EntityObject, String> {
 
 
 	public List<EntityObject> findAllByalias(@Param("alias") String alias, Pageable pageable);
+	
+	
+//	@Query(value = "SELECT e FROM EntityObject e WHERE " +
+//            "(6371 * acos(cos(radians(:latitude)) * cos(radians(e.location_lat)) * cos(radians(e.location_lng) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(e.location_lat)))) < :radius")
+//	
+//	public List<EntityObject> findAllWithinRadius(@Param("centerLat") double centerLat, 
+//                                                  @Param("centerLng") double centerLng, 
+//                                                  @Param("radius") double radius  , Pageable pageable);
 	@Query(value = "SELECT *, " +
-            "(6371 * ACOS(COS(RADIANS(:centerLat)) * COS(RADIANS(location_lat)) * COS(RADIANS(location_lng) - RADIANS(:centerLng)) + SIN(RADIANS(:centerLat)) * SIN(RADIANS(location_lat)))) AS distance " +
-            "FROM EntityObject " +
-            "WHERE (6371 * ACOS(COS(RADIANS(:centerLat)) * COS(RADIANS(location_lat)) * COS(RADIANS(location_lng) - RADIANS(:centerLng)) + SIN(RADIANS(:centerLat)) * SIN(RADIANS(location_lat)))) <= :radius " +
+            "SQRT(POW((:centerLat - location_lat), 2) + POW((:centerLng - location_lng), 2)) AS distance " +
+            "FROM OBJ_TBL " +
+            "WHERE SQRT(POW((:centerLat - location_lat), 2) + POW((:centerLng - location_lng), 2)) <= :radius " +
             "ORDER BY distance", nativeQuery = true)
-    public List<EntityObject> findAllWithinRadius(@Param("centerLat") double centerLat, 
-                                                  @Param("centerLng") double centerLng, 
-                                                  @Param("radius") double radius  , Pageable pageable);
-
+public List<EntityObject> findAllWithinRadius(@Param("centerLat") double centerLat, 
+                                                     @Param("centerLng") double centerLng, 
+                                                     @Param("radius") double radius,
+                                                     Pageable pageable);
+}
 	
 
-}
+

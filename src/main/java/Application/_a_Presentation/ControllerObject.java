@@ -122,6 +122,25 @@ public class ControllerObject {
 			@RequestParam("email") String email,
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+		
+		//check distance 
+		//to ask eyal where to put this check 
+			switch (distanceUnits)
+			{
+			case "km":
+				break;
+
+			case "m":
+				distance = distance/1000;
+				break;
+
+			case "cm":
+				distance = distance/100000;
+				break;
+
+			default:
+				throw new BoundaryIsNotFilledCorrectException ("distanceUnits is not found");
+			}
 			BoundaryObject[] demoOp = this.servicesObject
 				.searchByLocation(lat, lng, distance, size, page).toArray(new BoundaryObject[0]);
 			return demoOp;

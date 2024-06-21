@@ -29,7 +29,6 @@ public class Initializer implements CommandLineRunner{
 	private ServicesUser ServicesUser;
 	private ServicesObject ServicesObject;
 	private ServicesCommand ServicesCommand;
-	private String name_super_app;
 	
 	public Initializer(ServicesUser servicesUser,
 			ServicesObject servicesObject,
@@ -68,6 +67,7 @@ public class Initializer implements CommandLineRunner{
 		ArrayList<String > ids_of_objects = new ArrayList<>();
 		CreatedBy CreatedBy  = new CreatedBy();
 		UserId UserId = new UserId();
+		BoundaryObject BoundaryObject = null;
 		for (int j =0 ;j<=20 ;j++)
 		{
 			System.err.println(j);
@@ -78,17 +78,16 @@ public class Initializer implements CommandLineRunner{
 			obj.setType(type+" "+j);
 			obj.setAlias(alias+" "+j);
 			UserId.setEmail(username+j+"@aa.com");
-			UserId.setSuperAPP(this.name_super_app);
 			CreatedBy.setUserId(UserId);
 			obj.setCreatedBy(CreatedBy);
 			obj.setObjectDetails(Collections.singletonMap("person", "Jane #" + j));
-			BoundaryObject BoundaryObject = this.ServicesObject.createObject(obj);
+			BoundaryObject = this.ServicesObject.createObject(obj);
 			ids_of_objects.add( BoundaryObject.getObjectID().getId());	
 			
 		}
 		//make 10 mini app commands
 		UserId.setEmail(username+2+"@aa.com");
-		UserId.setSuperAPP(this.name_super_app);
+		UserId.setSuperAPP(BoundaryObject.getObjectID().getSuperApp());
 		CreatedBy.setUserId(UserId);
 		String id = "command";
 		String command = "make visa card";
@@ -107,11 +106,7 @@ public class Initializer implements CommandLineRunner{
 		
 
 	}
-	@Value("${spring.application.name:SuperApppp}")
-	public void setname_super_app(String name_super_app) {
-		System.err.println("**** reading from configuration default super app name: " + name_super_app);
-		this.name_super_app = name_super_app;
-	}
+
 
 	
 	

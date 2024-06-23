@@ -1,4 +1,4 @@
-package demo;
+package Application;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +22,7 @@ class Applicationtests2 {
 	private RestClient restClientUser;
 	private RestClient restClientCommand;
 	private RestClient restClientAdmin;
-    @Value("${super.app.name}")
+    @Value("${spring.application.name}")
 	private String superAppName;
 
 	

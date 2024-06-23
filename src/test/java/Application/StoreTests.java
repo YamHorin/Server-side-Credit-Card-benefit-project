@@ -1,4 +1,4 @@
-package demo;
+package Application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

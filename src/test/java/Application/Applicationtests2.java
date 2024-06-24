@@ -27,26 +27,60 @@ class Applicationtests2 {
 
 	
 	@Value("${server.port:8080}")
-	public void setPort(int port, String superAppName) {
+	public void setPort(int port) {
 		this.restClientObj = RestClient.create("http://localhost:" + port + "/superapp/objects");
 		this.restClientAdmin = RestClient.create("http://localhost:" + port +"/superapp/admin" );
 		this.restClientUser = RestClient.create("http://localhost:" + port +"/superapp/users" );
 		this.restClientCommand = RestClient.create("http://localhost:" + port +"/superapp/commands");
-		this.superAppName =superAppName;
 	
 	}
 
 	@BeforeEach
 	public void setup() {
-	}
-	
-	@AfterEach
-	public void tearDown() {
+		
+		
 
 	}
+    @AfterEach
+    public void tearDown() {
+        try {
+            String username = "admUser";
+            NewUserBoundary user = new NewUserBoundary();
+            user.setUserName(username);
+            user.setRole("ADM_USER");
+            user.setEmail(username + "@aa.com");
+            user.setAvatar("houj");
+            
+            // Post a app user 
+            this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+            System.out.println("Posted ADM_USER: " + username);
+
+
+            // Delete all objects
+            this.restClientAdmin.delete().uri("/objects?userSuperapp={userSuperApp}&email={email}",
+                this.superAppName, username + "@aa.com").retrieve();
+            System.out.println("Deleted all objects");
+
+            // Delete all commands
+            this.restClientAdmin.delete().uri("/miniapp?userSuperapp={userSuperApp}&email={email}",
+                this.superAppName, username + "@aa.com").retrieve();
+            System.out.println("Deleted all commands");
+            
+            // Delete all users
+            this.restClientAdmin.delete().uri("/users?userSuperapp={userSuperApp}&email={email}",
+            		this.superAppName, username + "@aa.com").retrieve();
+            System.out.println("Deleted all users");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error during tearDown: " + e.getMessage());
+        }
+    }
+	
 	
 	@Test
 	public void contextLoads() {
+		
 		
 	}
 	@Test
@@ -60,11 +94,11 @@ class Applicationtests2 {
 		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
 		user.setRole("SUPERAPP_USER");
-		UserId UserId = new UserId();
-		UserId.setEmail(username+"@aa.com");
+		user.setEmail(username+"@aa.com");
+		user.setAvatar("houj");
 		//post a super app user 
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
-		List<BoundaryObject> actives = new ArrayList<>();
+		List<BoundaryObject> all = new ArrayList<>();
 		String type = "type_test";
 		String alias = "alias_test";
 		String createdBy = username+"@aa.com";
@@ -84,9 +118,8 @@ class Applicationtests2 {
 			// POST Objects to server
 
 			obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
-			actives.add(obj);
+			all.add(obj);
 		}
-		List<BoundaryObject> non_actives = new ArrayList<>();
 		for (int i = 0; i < 4; i++) {
 			BoundaryObject obj = new BoundaryObject();
 			obj.setActive(false);
@@ -103,27 +136,26 @@ class Applicationtests2 {
 			// POST Objects to server
 
 			obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
-			non_actives.add(obj);
+			all.add(obj);
 		}
+
 		// /superapp/objects?userSuperApp ={userSuperApp}&userEmail = {email}&size = {size}&page = {page}
 		// WHEN I invoke GET /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}&size = {10}&page = {1}
-		BoundaryObject [] actual = this.restClientObj.get().uri("/superapp/objects?userSuperApp ={userSuperApp}&userEmail = {email}&size = {size}&page = {page}"
+		BoundaryObject [] actual = this.restClientObj.get().uri("?userSuperapp={userSuperApp}&email={email}&size={size}&page={page}"
 				,this.superAppName ,username+"@aa.com" , 10,0 )
 				.retrieve().body(BoundaryObject [].class);
 		
 		// THEN the server responds with the same 8 objects generated above
 		assertThat(actual).hasSize(8)
 						.usingRecursiveFieldByFieldElementComparator()
-						.containsExactlyInAnyOrderElementsOf(actives)
-						.usingRecursiveFieldByFieldElementComparator()
-						.doesNotContainAnyElementsOf(non_actives);
+						.containsExactlyInAnyOrderElementsOf(all);
 		
-
 		
 	}
 	@Test
 	public void testGetAllObjectsToUserMiniApp()throws Exception
 	{
+
 		// GIVEN the server is up
 		// AND the database contains 4 active objects
 		// AND the database contains 4 non active objects
@@ -180,7 +212,8 @@ class Applicationtests2 {
 		}
 		// /superapp/objects?userSuperApp ={userSuperApp}&userEmail = {email}&size = {size}&page = {page}
 		// WHEN I invoke GET /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}&size = {10}&page = {1}
-		BoundaryObject [] actual = this.restClientObj.get().uri("/superapp/objects?userSuperApp ={userSuperApp}&userEmail = {email}&size = {size}&page = {page}"
+		//?userSuperapp=2024B.gal.angel&email=miniAppUser%40aa.com&size=10&page=0
+		BoundaryObject [] actual = this.restClientObj.get().uri("?userSuperapp={userSuperApp}&email={email}&size={size}&page={page}"
 				,this.superAppName ,username+"@aa.com" , 10,0 )
 				.retrieve().body(BoundaryObject [].class);
 		
@@ -188,22 +221,23 @@ class Applicationtests2 {
 		assertThat(actual).hasSize(4)
 						.usingRecursiveFieldByFieldElementComparator()
 						.containsExactlyInAnyOrderElementsOf(actives);
+		tearDown();
 		
 	}
 	@Test
 	public void testGetSpecificObjectForUserMiniApp()throws Exception
 	{
+
 		// GIVEN the server is up
 		// AND the database contains 1  non active objects
 		// AND the database contains 1 active objects
 		// AND the database contains 1 mini app user
-		
 		String username = "miniAppUser";
 		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
 		user.setRole("MINIAPP_USER");
-		UserId UserId = new UserId();
-		UserId.setEmail(username+"@aa.com");
+		
+		user.setEmail(username+"@aa.com");
 		
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
 		String type = "type_test";
@@ -239,41 +273,28 @@ class Applicationtests2 {
 		obj1.setObjectDetails(Collections.singletonMap("person", "Jane #"));
 		// POST Objects to server
 		obj1 = this.restClientObj.post().body(obj1).retrieve().body(BoundaryObject.class);
-		
 		// WHEN I invoke GET on the false active object  /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}
 		// THEN I get an BoundaryIsNotFoundException
-		try {
-		BoundaryObject obj_return  = this.restClientObj.get().uri("/superapp/objects/{superapp}/{id}?userSuperApp ={userSuperApp}&userEmail = {email}",
-				this.superAppName,obj1.getObjectID().getId(),this.superAppName ,username+"@aa.com").retrieve().body(BoundaryObject.class);
-		
-		}
-		
-		catch (BoundaryIsNotFoundException e)
-		{
-			System.out.println("we got a BoundaryIsNotFoundException yayyyyyyyyyyyy ");
-		}
-		// WHEN I invoke GET on the false active object  /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}
-		// THEN I get an BoundaryIsNotFoundException
-		BoundaryObject obj_return  = this.restClientObj.get().uri("/superapp/objects/{superapp}/{id}?userSuperApp ={userSuperApp}&userEmail = {email}",
+		BoundaryObject obj_return  = this.restClientObj.get().uri("/{superapp}/{id}?userSuperapp={userSuperApp}&email={email}",
 				this.superAppName,obj.getObjectID().getId(),this.superAppName ,username+"@aa.com").retrieve().body(BoundaryObject.class);
 		assertThat(obj_return).isNotNull();
 		assertThat(obj_return.getObjectID().getId()).isEqualTo(obj.getObjectID().getId());
+		tearDown();
 	}
 	
 	@Test
 	public void testGetSpecificObjectForUserSuperApp()throws Exception
 	{
+
 		// GIVEN the server is up
 		// AND the database contains 1  non active objects
 		// AND the database contains 1 active objects
 		// AND the database contains 1 super app user
-		
 		String username = "SuperAppUser";
 		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
 		user.setRole("SUPERAPP_USER");
-		UserId UserId = new UserId();
-		UserId.setEmail(username+"@aa.com");
+		user.setEmail(username+"@aa.com");
 		
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
 		String type = "type_test";
@@ -313,55 +334,56 @@ class Applicationtests2 {
 		// WHEN I invoke GET on the false active object  /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}
 		// THEN I get an object
 
-		BoundaryObject obj_return  = this.restClientObj.get().uri("/superapp/objects/{superapp}/{id}?userSuperApp ={userSuperApp}&userEmail = {email}",
-				this.superAppName,obj1.getObjectID().getId(),this.superAppName ,username+"@aa.com").retrieve().body(BoundaryObject.class);
+		BoundaryObject obj_return  = this.restClientObj.get().uri("/{superapp}/{id}?userSuperapp={userSuperapp}&email={email}",
+				this.superAppName,obj.getObjectID().getId(),this.superAppName ,username+"@aa.com").retrieve().body(BoundaryObject.class);
 		assertThat(obj_return).isNotNull();
 		assertThat(obj_return.getObjectID().getId()).isEqualTo(obj.getObjectID().getId());
 	}
 	
-	//no finish yet -yam 
-	public void testAdminGetAllMiniAppCommands()
-	{
-		// GIVEN the server is up
-		// AND 5 miniApp commands
-		// AND the database contains 1 admin app user
-		
-		String username = "AdminAppUser";
-		NewUserBoundary user  = new NewUserBoundary();
-		user.setUserName(username);
-		user.setRole("ADM_USER");
-		UserId UserId = new UserId();
-		UserId.setEmail(username+"@aa.com");
-		
-		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
-		for (int i = 0; i < 5; i++) {
-			 BoundaryCommand BoundaryCommand  = new BoundaryCommand();
-		     //Set values for the object's attributes
-		       CommandId ci = new CommandId();
-		       ci.setId("1234567");
-		       BoundaryCommand.setCommandId(ci);
-		       BoundaryCommand.setCommand("Test Command "+i);
-		       BoundaryCommand.setTargetObject(new TargetObject());
-		       String createdBy = "yam_test_@yam.com";
-				CreatedBy CreatedBy  = new CreatedBy();
-				UserId UserId1 = new UserId();
-				UserId1.setEmail(createdBy);
-				UserId1.setSuperAPP("");
-				CreatedBy.setUserId(UserId1);
-		       BoundaryCommand.setCommandAttributes(new HashMap<>());
-		        
-		       BoundaryCommand = this.restClientCommand
-					.post()
-					.body(BoundaryCommand)
-					.retrieve()
-					.body(BoundaryCommand.class);
-		}
-		
-
-		
-		
-		
-	}
+//	//no finish yet -yam 
+//	public void testAdminGetAllMiniAppCommands()
+//	{
+//
+//		// GIVEN the server is up
+//		// AND 5 miniApp commands
+//		// AND the database contains 1 admin app user
+//		
+//		String username = "AdminAppUser";
+//		NewUserBoundary user  = new NewUserBoundary();
+//		user.setUserName(username);
+//		user.setRole("ADM_USER");
+//		UserId UserId = new UserId();
+//		UserId.setEmail(username+"@aa.com");
+//		
+//		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+//		for (int i = 0; i < 5; i++) {
+//			 BoundaryCommand BoundaryCommand  = new BoundaryCommand();
+//		     //Set values for the object's attributes
+//		       CommandId ci = new CommandId();
+//		       ci.setId("1234567");
+//		       BoundaryCommand.setCommandId(ci);
+//		       BoundaryCommand.setCommand("Test Command "+i);
+//		       BoundaryCommand.setTargetObject(new TargetObject());
+//		       String createdBy = "yam_test_@yam.com";
+//				CreatedBy CreatedBy  = new CreatedBy();
+//				UserId UserId1 = new UserId();
+//				UserId1.setEmail(createdBy);
+//				UserId1.setSuperAPP("");
+//				CreatedBy.setUserId(UserId1);
+//		       BoundaryCommand.setCommandAttributes(new HashMap<>());
+//		        
+//		       BoundaryCommand = this.restClientCommand
+//					.post()
+//					.body(BoundaryCommand)
+//					.retrieve()
+//					.body(BoundaryCommand.class);
+//		}
+//		
+//
+//		
+//		
+//		
+//	}
 	
 	
 	

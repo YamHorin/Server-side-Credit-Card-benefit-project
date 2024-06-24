@@ -13,8 +13,7 @@ import Application.business_logic.BoundaryCommand;
 import Application.business_logic.ServicesCommand;
 
 @RestController
-// remove /{MiniAppName}
-@RequestMapping(path = { "/superapp/miniapp/{MiniAppName}" })
+@RequestMapping(path = { "/superapp/miniapp" })
 public class ControllerCommand {
 	private ServicesCommand ServicesCommand;
 	
@@ -22,8 +21,7 @@ public class ControllerCommand {
 		this.ServicesCommand = ServicesCommand;
 	}
 
-	@PostMapping(
-//path= {"/{MiniAppName}"
+	@PostMapping (path = { "/{MiniAppName}" },
 		consumes = MediaType.APPLICATION_JSON_VALUE, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
 

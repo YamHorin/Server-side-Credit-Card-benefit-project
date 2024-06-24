@@ -3,6 +3,7 @@ package Application.business_logic;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -138,7 +139,6 @@ public class DataManagerCommand implements ServicesCommand{
 		EntityUser userEntity = this.userDao.findById(idUser).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for command by id: " + idUser));
 		RoleEnumEntity role = userEntity.getRole();
-		
 		System.err.println("* client requested to store: " + CommandBoundary);
 		CommandId command = new CommandId();
 		command.setSuperApp(this.superAppName);
@@ -149,6 +149,39 @@ public class DataManagerCommand implements ServicesCommand{
 		ObjectId obj = CommandBoundary.getTargetObject().getObjectId();
 		obj.setSuperApp(superAppName);
 		CommandBoundary.setTargetObject(new TargetObject(obj));
+		switch (CommandBoundary.getCommandId().getMiniApp()){
+			case "getYourBenefits":
+				switch (CommandBoundary.getCommand())
+				{
+					case "ShowStoresWithDiscountInCreditcard": {
+						ShowStoresWithDiscountInCreditcard(userEntity,EntityObject);
+						break;
+					}
+					case "ShowStoresWithDiscountInClub":{
+						ShowStoresWithDiscountInClub(userEntity,EntityObject);
+						break;
+					}				
+				}
+				break;
+			case "StoreInterface":
+				switch (CommandBoundary.getCommand())
+				{
+					case "ShowAllBenefit": {
+						ShowAllBenefit( userEntity, EntityObject);
+						break;
+					}
+					case "AddBenefitOfClub":{
+						AddBenefitOfClub(userEntity, EntityObject);
+						break;
+					}
+					case "AddBenefitOfCreditcard":{
+						AddBenefitOfCreditcard(userEntity, EntityObject);
+						break;
+					}		
+					
+				}
+				break;						
+		}
 		EntityCommand entity = this.DataConvertor.BoundaryCommandToEntityCommand(CommandBoundary);
 		entity = this.miniAppCommandDao.save(entity);
 		System.err.println("***\n"+entity.toString()+"\n\n\n");
@@ -162,6 +195,70 @@ public class DataManagerCommand implements ServicesCommand{
 	
 	
 	
+	private void ShowStoresWithDiscountInClub(EntityUser userEntity, EntityObject entityObject) {
+		// // miniApp getYourBenefits command ShowStoresWithDiscountInClub
+		//entityObject -the client
+
+		// list of the clubs of the client play the function
+		List<String> clubs = (List<String>) entityObject.getObjectDetails().get("Club");
+		// list of the store that active
+		List <EntityObject> stores = this.objDao
+		.findAllBytype("store",PageRequest.of(0, 10, Direction.DESC, "invocationTimeStamp", "commandId"))
+		.stream()
+		.filter(EntityObject::getActive).toList();
+		// find for each store if there is the credit card - yes=show, no=remove
+		for (EntityObject store : stores) {
+			if (!clubs.contains(store.getObjectDetails().get("Club")))
+				stores.remove(store);
+		}
+		//TODO find who to print the app filter list to the client
+	}
+
+	private void ShowStoresWithDiscountInCreditcard(EntityUser userEntity, EntityObject entityObject) {
+		// miniApp getYourBenefits command ShowStoresWithDiscountInCreditcard
+		//entityObject -the client
+		
+		// list of the cards of the client play the function
+		List<String> cards = (List<String>) entityObject.getObjectDetails().get("CreaditCard");
+		// list of the store that active
+		//TODO add opsion of number of store to show -right now it's only 10
+		List <EntityObject> stores = this.objDao
+		.findAllBytype("store",PageRequest.of(0, 10, Direction.DESC, "invocationTimeStamp", "commandId"))
+		.stream()
+		.filter(EntityObject::getActive).toList();
+		// find for each store if there is the credit card - yes=show, no=remove
+		for (EntityObject store : stores) {
+			if (!cards.contains(store.getObjectDetails().get("CreaditCard")))
+				stores.remove(store);
+		}
+		//TODO find who to print the app filter list to the client
+
+	}
+
+	private void AddBenefitOfCreditcard(EntityUser userEntity, EntityObject entityObject) {
+		// miniApp StoreInterface command AddBenefitOfCreditcard
+		
+		
+	}
+
+	private void AddBenefitOfClub(EntityUser userEntity, EntityObject entityObject) {
+		// miniApp StoreInterface command AddBenefitOfClub
+		
+	}
+
+	private void ShowAllBenefit(EntityUser userEntity, EntityObject entityObject) {
+		// miniApp StoreInterface command ShowAllBenefit
+		//show all benefits that has the store in it 
+		//entityObject  = the store we wish to get all stores
+//		String storeName = entityObject.getAlias();
+//		this.objDao.findAllBytypeAndActiveIsTrue("Benefit", PageRequest.of(0, 10, Direction.DESC, "invocationTimeStamp"))
+//		.stream().filter
+		
+	}
+
+
+
+
 	@Override
 	@Transactional(readOnly = false)
 

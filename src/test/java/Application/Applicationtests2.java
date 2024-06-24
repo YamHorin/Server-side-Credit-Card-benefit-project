@@ -57,18 +57,17 @@ class Applicationtests2 {
 		// AND the database contains 4 non active objects
 		// AND the database contains 1 super app user
 		String username = "superUser";
-		BoundaryUser user  = new BoundaryUser();
+		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
-		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
+		user.setRole("SUPERAPP_USER");
 		UserId UserId = new UserId();
 		UserId.setEmail(username+"@aa.com");
-		user.setUserId(UserId);
 		//post a super app user 
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
 		List<BoundaryObject> actives = new ArrayList<>();
 		String type = "type_test";
 		String alias = "alias_test";
-		String createdBy = "yam_test_@yam.com";
+		String createdBy = username+"@aa.com";
 		for (int i = 0; i < 4; i++) {
 			BoundaryObject obj = new BoundaryObject();
 			obj.setActive(true);
@@ -77,8 +76,8 @@ class Applicationtests2 {
 			obj.setAlias(alias+" "+i);
 			CreatedBy CreatedBy  = new CreatedBy();
 			UserId UserId1 = new UserId();
-			UserId1.setEmail(createdBy+i);
-			UserId1.setSuperAPP("");
+			UserId1.setEmail(createdBy);
+			UserId1.setSuperAPP(this.superAppName);
 			CreatedBy.setUserId(UserId1);
 			obj.setCreatedBy(CreatedBy);
 			obj.setObjectDetails(Collections.singletonMap("person", "Jane #" + i));
@@ -97,7 +96,7 @@ class Applicationtests2 {
 			CreatedBy CreatedBy  = new CreatedBy();
 			UserId UserId1 = new UserId();
 			UserId1.setEmail(createdBy+i+"non_active");
-			UserId1.setSuperAPP("");
+			UserId1.setSuperAPP(this.superAppName);
 			CreatedBy.setUserId(UserId1);
 			obj.setCreatedBy(CreatedBy);
 			obj.setObjectDetails(Collections.singletonMap("non_active", "non_active #" + i));
@@ -130,18 +129,18 @@ class Applicationtests2 {
 		// AND the database contains 4 non active objects
 		// AND the database contains 1 mini app user
 		String username = "miniAppUser";
-		BoundaryUser user  = new BoundaryUser();
+		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
-		user.setRole(RoleEnumBoundary.MINIAPP_USER);
-		UserId UserId = new UserId();
-		UserId.setEmail(username+"@aa.com");
-		user.setUserId(UserId);
+		user.setRole("MINIAPP_USER");
+		user.setEmail(username+"@aa.com");
+		user.setAvatar("p");
+		System.err.println(user.toString());
 		//post a super app user 
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
 		List<BoundaryObject> actives = new ArrayList<>();
 		String type = "type_test";
 		String alias = "alias_test";
-		String createdBy = "yam_test_@yam.com";
+		String createdBy = username+"@aa.com";
 		for (int i = 0; i < 4; i++) {
 			BoundaryObject obj = new BoundaryObject();
 			obj.setActive(true);
@@ -150,7 +149,7 @@ class Applicationtests2 {
 			obj.setAlias(alias+" "+i);
 			CreatedBy CreatedBy  = new CreatedBy();
 			UserId UserId1 = new UserId();
-			UserId1.setEmail(createdBy+i);
+			UserId1.setEmail(createdBy);
 			UserId1.setSuperAPP("");
 			CreatedBy.setUserId(UserId1);
 			obj.setCreatedBy(CreatedBy);
@@ -169,7 +168,7 @@ class Applicationtests2 {
 			obj.setAlias(alias+" "+i);
 			CreatedBy CreatedBy  = new CreatedBy();
 			UserId UserId1 = new UserId();
-			UserId1.setEmail(createdBy+i+"non_active");
+			UserId1.setEmail(createdBy);
 			UserId1.setSuperAPP("");
 			CreatedBy.setUserId(UserId1);
 			obj.setCreatedBy(CreatedBy);
@@ -200,12 +199,11 @@ class Applicationtests2 {
 		// AND the database contains 1 mini app user
 		
 		String username = "miniAppUser";
-		BoundaryUser user  = new BoundaryUser();
+		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
-		user.setRole(RoleEnumBoundary.MINIAPP_USER);
+		user.setRole("MINIAPP_USER");
 		UserId UserId = new UserId();
 		UserId.setEmail(username+"@aa.com");
-		user.setUserId(UserId);
 		
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
 		String type = "type_test";
@@ -271,12 +269,11 @@ class Applicationtests2 {
 		// AND the database contains 1 super app user
 		
 		String username = "SuperAppUser";
-		BoundaryUser user  = new BoundaryUser();
+		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
-		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
+		user.setRole("SUPERAPP_USER");
 		UserId UserId = new UserId();
 		UserId.setEmail(username+"@aa.com");
-		user.setUserId(UserId);
 		
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
 		String type = "type_test";
@@ -330,12 +327,11 @@ class Applicationtests2 {
 		// AND the database contains 1 admin app user
 		
 		String username = "AdminAppUser";
-		BoundaryUser user  = new BoundaryUser();
+		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
-		user.setRole(RoleEnumBoundary.ADM_USER);
+		user.setRole("ADM_USER");
 		UserId UserId = new UserId();
 		UserId.setEmail(username+"@aa.com");
-		user.setUserId(UserId);
 		
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
 		for (int i = 0; i < 5; i++) {

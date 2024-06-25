@@ -137,11 +137,11 @@ public class DataManagerObject implements ServicesObject {
 		checkLocationOfObject(ObjectBoundary.getLocation());
 
 		// check Role
-//		String id = ObjectBoundary.getCreatedBy().getUserId().getEmail() + "_" + this.superAppName;
-//		EntityUser userEntity = this.userDao.findById(id).orElseThrow(() -> new BoundaryIsNotFoundException(
-//				"Could not find User for update by id: " + id));
-//		if (userEntity.getRole() != RoleEnumEntity.superapp_user)
-//			throw new UnauthorizedException("only super app users can creat objects");
+		String id = ObjectBoundary.getCreatedBy().getUserId().getEmail() + "_" + this.superAppName;
+		EntityUser userEntity = this.userDao.findById(id).orElseThrow(() -> new BoundaryIsNotFoundException(
+				"Could not find User for update by id: " + id));
+		if (userEntity.getRole() != RoleEnumEntity.superapp_user)
+			throw new UnauthorizedException("only super app users can creat objects");
 
 		ObjectBoundary.setCreationTimeStamp(new Date());
 		ObjectId objId = new ObjectId();

@@ -128,7 +128,7 @@ class Applicationtests2 {
 			obj.setAlias(alias+" "+i);
 			CreatedBy CreatedBy  = new CreatedBy();
 			UserId UserId1 = new UserId();
-			UserId1.setEmail(createdBy+i+"non_active");
+			UserId1.setEmail(createdBy);
 			UserId1.setSuperAPP(this.superAppName);
 			CreatedBy.setUserId(UserId1);
 			obj.setCreatedBy(CreatedBy);
@@ -160,15 +160,25 @@ class Applicationtests2 {
 		// AND the database contains 4 active objects
 		// AND the database contains 4 non active objects
 		// AND the database contains 1 mini app user
-		String username = "miniAppUser";
+		// AND the database contains 1 super app user
+		String username = "superUser";
 		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
-		user.setRole("MINIAPP_USER");
+		user.setRole("SUPERAPP_USER");
 		user.setEmail(username+"@aa.com");
-		user.setAvatar("p");
-		System.err.println(user.toString());
-		//post a super app user 
+		user.setAvatar("houj");
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+
+		
+		String username1 = "miniAppUser";
+		NewUserBoundary user1  = new NewUserBoundary();
+		user1.setUserName(username1);
+		user1.setRole("MINIAPP_USER");
+		user1.setEmail(username1+"@aa.com");
+		user1.setAvatar("p");
+		System.err.println(user1.toString());
+		//post a super app user 
+		this.restClientUser.post().body(user1).retrieve().body(BoundaryUser.class);
 		List<BoundaryObject> actives = new ArrayList<>();
 		String type = "type_test";
 		String alias = "alias_test";
@@ -214,7 +224,7 @@ class Applicationtests2 {
 		// WHEN I invoke GET /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}&size = {10}&page = {1}
 		//?userSuperapp=2024B.gal.angel&email=miniAppUser%40aa.com&size=10&page=0
 		BoundaryObject [] actual = this.restClientObj.get().uri("?userSuperapp={userSuperApp}&email={email}&size={size}&page={page}"
-				,this.superAppName ,username+"@aa.com" , 10,0 )
+				,this.superAppName ,username1+"@aa.com" , 10,0 )
 				.retrieve().body(BoundaryObject [].class);
 		
 		// THEN the server responds with  4 objects
@@ -232,14 +242,23 @@ class Applicationtests2 {
 		// AND the database contains 1  non active objects
 		// AND the database contains 1 active objects
 		// AND the database contains 1 mini app user
-		String username = "miniAppUser";
+		// AND the database contains 1 super app user
+		String username = "superUser";
 		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
-		user.setRole("MINIAPP_USER");
-		
+		user.setRole("SUPERAPP_USER");
 		user.setEmail(username+"@aa.com");
-		
+		user.setAvatar("houj");
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+
+		String username1 = "miniAppUser";
+		NewUserBoundary user1  = new NewUserBoundary();
+		user1.setUserName(username1);
+		user1.setRole("MINIAPP_USER");
+		
+		user1.setEmail(username1+"@aa.com");
+		
+		this.restClientUser.post().body(user1).retrieve().body(BoundaryUser.class);
 		String type = "type_test";
 		String alias = "alias_test";
 		String createdBy = username+"@aa.com";
@@ -276,7 +295,7 @@ class Applicationtests2 {
 		// WHEN I invoke GET on the false active object  /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}
 		// THEN I get an BoundaryIsNotFoundException
 		BoundaryObject obj_return  = this.restClientObj.get().uri("/{superapp}/{id}?userSuperapp={userSuperApp}&email={email}",
-				this.superAppName,obj.getObjectID().getId(),this.superAppName ,username+"@aa.com").retrieve().body(BoundaryObject.class);
+				this.superAppName,obj.getObjectID().getId(),this.superAppName ,username1+"@aa.com").retrieve().body(BoundaryObject.class);
 		assertThat(obj_return).isNotNull();
 		assertThat(obj_return.getObjectID().getId()).isEqualTo(obj.getObjectID().getId());
 		tearDown();

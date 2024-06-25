@@ -278,27 +278,14 @@ class Applicationtests2 {
 		// POST Objects to server
 		obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
 		
-		BoundaryObject obj1 = new BoundaryObject();
-		obj1.setActive(false);
-		obj1.setLocation(new Location(0.2 , 0.2));
-		obj1.setType(type+" ");
-		obj1.setAlias(alias+" ");
-		CreatedBy CreatedBy1  = new CreatedBy();
-		UserId UserId11 = new UserId();
-		UserId11.setEmail(createdBy);
-		UserId11.setSuperAPP("");
-		CreatedBy1.setUserId(UserId11);
-		obj1.setCreatedBy(CreatedBy1);
-		obj1.setObjectDetails(Collections.singletonMap("person", "Jane #"));
-		// POST Objects to server
-		obj1 = this.restClientObj.post().body(obj1).retrieve().body(BoundaryObject.class);
-		// WHEN I invoke GET on the false active object  /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}
-		// THEN I get an BoundaryIsNotFoundException
+
+		// WHEN I invoke GET on the true active object  /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}
+		// THEN I get the active object
+
 		BoundaryObject obj_return  = this.restClientObj.get().uri("/{superapp}/{id}?userSuperapp={userSuperApp}&email={email}",
 				this.superAppName,obj.getObjectID().getId(),this.superAppName ,username1+"@aa.com").retrieve().body(BoundaryObject.class);
 		assertThat(obj_return).isNotNull();
 		assertThat(obj_return.getObjectID().getId()).isEqualTo(obj.getObjectID().getId());
-		tearDown();
 	}
 	
 	@Test

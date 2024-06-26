@@ -13,17 +13,7 @@ public class BoundaryUser {
 	public BoundaryUser() {
 	}
 
-	public BoundaryUser(EntityUser userEntity) {
-		this.userId = new UserId();
-		String[] splitId = userEntity.getId().split("_");
-		this.getUserId().setEmail(splitId[0]);
-		this.getUserId().setSuperAPP(splitId[1]);
-		this.setUserName(userEntity.getUserName());
-		RoleEnumBoundary role =RoleEnumBoundary.valueOf(userEntity.getRole().name().toUpperCase());
-		this.setRole(role);
-		this.setAvatar(userEntity.getAvatar());
 
-	}
 
 	public UserId getUserId() {
 		return userId;

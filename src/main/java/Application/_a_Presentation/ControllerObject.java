@@ -125,10 +125,6 @@ public class ControllerObject {
 			@RequestParam("email") String email,
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
-		
-		//check distance 
-		//to ask eyal where to put this check 
-
 			String id = email+"_"+superapp;
 			BoundaryObject[] demoOp = this.servicesObject
 				.searchByLocation(id, lat, lng, distance ,distanceUnits, size, page).toArray(new BoundaryObject[0]);

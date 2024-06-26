@@ -346,50 +346,7 @@ class Applicationtests2 {
 		assertThat(obj_return.getObjectID().getId()).isEqualTo(obj.getObjectID().getId());
 	}
 	
-//	//no finish yet -yam 
-//	public void testAdminGetAllMiniAppCommands()
-//	{
-//
-//		// GIVEN the server is up
-//		// AND 5 miniApp commands
-//		// AND the database contains 1 admin app user
-//		
-//		String username = "AdminAppUser";
-//		NewUserBoundary user  = new NewUserBoundary();
-//		user.setUserName(username);
-//		user.setRole("ADM_USER");
-//		UserId UserId = new UserId();
-//		UserId.setEmail(username+"@aa.com");
-//		
-//		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
-//		for (int i = 0; i < 5; i++) {
-//			 BoundaryCommand BoundaryCommand  = new BoundaryCommand();
-//		     //Set values for the object's attributes
-//		       CommandId ci = new CommandId();
-//		       ci.setId("1234567");
-//		       BoundaryCommand.setCommandId(ci);
-//		       BoundaryCommand.setCommand("Test Command "+i);
-//		       BoundaryCommand.setTargetObject(new TargetObject());
-//		       String createdBy = "yam_test_@yam.com";
-//				CreatedBy CreatedBy  = new CreatedBy();
-//				UserId UserId1 = new UserId();
-//				UserId1.setEmail(createdBy);
-//				UserId1.setSuperAPP("");
-//				CreatedBy.setUserId(UserId1);
-//		       BoundaryCommand.setCommandAttributes(new HashMap<>());
-//		        
-//		       BoundaryCommand = this.restClientCommand
-//					.post()
-//					.body(BoundaryCommand)
-//					.retrieve()
-//					.body(BoundaryCommand.class);
-//		}
-//		
-//
-//		
-//		
-//		
-//	}
+
 	
 	
 	

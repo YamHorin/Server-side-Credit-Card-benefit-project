@@ -25,7 +25,7 @@ public class ControllerCommand {
 		consumes = MediaType.APPLICATION_JSON_VALUE, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
 
-	public BoundaryCommand store_command(@PathVariable("miniAppName") String idMiniAppName ,@RequestBody BoundaryCommand message) {
+	public BoundaryCommand store_command(@PathVariable("MiniAppName") String idMiniAppName ,@RequestBody BoundaryCommand message) {
 
 			return this.ServicesCommand.createMiniAppCommand(message);
 	

@@ -77,7 +77,7 @@ public class Initializer implements CommandLineRunner{
 			obj.setLocation(new Location(0.2+j , 0.2+j));
 			obj.setType(type+" "+j);
 			obj.setAlias(alias+" "+j);
-			UserId.setEmail(username+j+"@aa.com");
+			UserId.setEmail(username+2+"@aa.com");
 			CreatedBy.setUserId(UserId);
 			obj.setCreatedBy(CreatedBy);
 			obj.setObjectDetails(Collections.singletonMap("person", "Jane #" + j));

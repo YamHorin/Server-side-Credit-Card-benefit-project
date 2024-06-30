@@ -15,8 +15,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.web.client.RestClient;
 
-import Application.DataAccess.Location;
 import Application.business_logic.*;
+import Application.business_logic.Boundaies.BoundaryObject;
+import Application.business_logic.Boundaies.BoundaryUser;
+import Application.business_logic.Boundaies.NewUserBoundary;
+import Application.business_logic.javaObjects.CreatedBy;
+import Application.business_logic.javaObjects.Location;
+import Application.business_logic.javaObjects.UserId;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)

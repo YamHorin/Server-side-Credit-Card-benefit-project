@@ -9,19 +9,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import Application.DataAccess.Location;
-import Application.business_logic.BoundaryCommand;
-import Application.business_logic.BoundaryObject;
-import Application.business_logic.BoundaryUser;
-import Application.business_logic.CommandId;
-import Application.business_logic.CreatedBy;
-import Application.business_logic.ObjectId;
-import Application.business_logic.RoleEnumBoundary;
-import Application.business_logic.ServicesCommand;
-import Application.business_logic.ServicesObject;
-import Application.business_logic.ServicesUser;
-import Application.business_logic.TargetObject;
-import Application.business_logic.UserId;
+import Application.business_logic.Boundaies.BoundaryCommand;
+import Application.business_logic.Boundaies.BoundaryObject;
+import Application.business_logic.Boundaies.BoundaryUser;
+import Application.business_logic.Boundaies.RoleEnumBoundary;
+import Application.business_logic.DataService.ServicesCommand;
+import Application.business_logic.DataService.ServicesObject;
+import Application.business_logic.DataService.ServicesUser;
+import Application.business_logic.javaObjects.CommandId;
+import Application.business_logic.javaObjects.CreatedBy;
+import Application.business_logic.javaObjects.Location;
+import Application.business_logic.javaObjects.ObjectId;
+import Application.business_logic.javaObjects.TargetObject;
+import Application.business_logic.javaObjects.UserId;
 
 @Component
 @Profile("manualTests")

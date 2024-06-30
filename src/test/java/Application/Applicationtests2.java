@@ -5,9 +5,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
-import Application.DataAccess.Location;
-import Application._a_Presentation.BoundaryIsNotFoundException;
+
+import Application._a_Presentation.Exceptions.BoundaryIsNotFoundException;
 import Application.business_logic.*;
+import Application.business_logic.Boundaies.BoundaryObject;
+import Application.business_logic.Boundaies.BoundaryUser;
+import Application.business_logic.Boundaies.NewUserBoundary;
+import Application.business_logic.javaObjects.CreatedBy;
+import Application.business_logic.javaObjects.Location;
+import Application.business_logic.javaObjects.UserId;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

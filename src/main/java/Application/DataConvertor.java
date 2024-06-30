@@ -4,20 +4,20 @@ import java.util.HashMap;
 
 import org.springframework.stereotype.Component;
 
-import Application.DataAccess.EntityCommand;
-import Application.DataAccess.EntityObject;
-import Application.DataAccess.EntityUser;
-import Application.DataAccess.Location;
-import Application.DataAccess.RoleEnumEntity;
-import Application.business_logic.BoundaryCommand;
-import Application.business_logic.BoundaryObject;
-import Application.business_logic.BoundaryUser;
-import Application.business_logic.CommandId;
-import Application.business_logic.CreatedBy;
-import Application.business_logic.ObjectId;
-import Application.business_logic.RoleEnumBoundary;
-import Application.business_logic.TargetObject;
-import Application.business_logic.UserId;
+import Application.DataAccess.Entities.EntityCommand;
+import Application.DataAccess.Entities.EntityObject;
+import Application.DataAccess.Entities.EntityUser;
+import Application.DataAccess.Entities.RoleEnumEntity;
+import Application.business_logic.Boundaies.BoundaryCommand;
+import Application.business_logic.Boundaies.BoundaryObject;
+import Application.business_logic.Boundaies.BoundaryUser;
+import Application.business_logic.Boundaies.RoleEnumBoundary;
+import Application.business_logic.javaObjects.CommandId;
+import Application.business_logic.javaObjects.CreatedBy;
+import Application.business_logic.javaObjects.Location;
+import Application.business_logic.javaObjects.ObjectId;
+import Application.business_logic.javaObjects.TargetObject;
+import Application.business_logic.javaObjects.UserId;
 
 
 @Component

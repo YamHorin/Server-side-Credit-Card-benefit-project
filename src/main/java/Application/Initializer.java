@@ -85,7 +85,7 @@ public class Initializer implements CommandLineRunner{
 			return this.ServicesUser.createUser(user);
 		}).forEach(user->System.err.println(user.toString()));
 
-		boolean isATest = true;
+		boolean isATest = false;
 		
 		if (isATest)
 			testRunSprint3(names);

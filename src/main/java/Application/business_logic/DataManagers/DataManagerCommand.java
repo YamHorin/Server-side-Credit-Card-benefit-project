@@ -201,7 +201,7 @@ public class DataManagerCommand implements ServicesCommand{
 //		}
 		
 		//new func by Yam  :)
-		//invokeCommand(CommandBoundary);
+		invokeCommand(CommandBoundary);
 		
 		EntityCommand entity = this.DataConvertor.BoundaryCommandToEntityCommand(CommandBoundary);
 		entity = this.miniAppCommandDao.save(entity);

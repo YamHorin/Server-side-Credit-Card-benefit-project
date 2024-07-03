@@ -47,7 +47,6 @@ public class ControllerAdminUser {
 				path = {"/users"})
 	public BoundaryUser[] getAllUsers 
 	(@RequestParam("email") String email , @RequestParam("userSuperapp") String superapp,@RequestParam("size") int size,@RequestParam("page")int page) {
-		//add  		String id = email+"_"+superapp;
 		String id = email+"_"+superapp;
 		return this.servicesUser
 			.getAllUsers(id, page, size)
@@ -57,7 +56,6 @@ public class ControllerAdminUser {
 				path = {"/miniapp"})
 	public BoundaryCommand[] getAllMiniAppsCommands
 	(@RequestParam("email") String email , @RequestParam("userSuperapp") String superapp,@RequestParam("size") int size,@RequestParam("page")int page) {
-		//add  		String id = email+"_"+superapp;
 		String id = email+"_"+superapp;
 		return this.ServicesCommand
 				.getAllMiniAppsCommands(id, page, size)
@@ -68,14 +66,13 @@ public class ControllerAdminUser {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public BoundaryCommand[] getSpecificCommandsFromMiniApp
 	(@PathVariable("miniAppName") String idMiniAppName, @RequestParam("email") String email , @RequestParam("userSuperapp") String superapp,@RequestParam("size") int size,@RequestParam("page")int page) {
-		//add  		String id = email+"_"+superapp;
 		String idUser = email+"_"+superapp;
 		return this.ServicesCommand
 				.getAllCommandsOfSpecificMiniApp(idMiniAppName,idUser, page, size)
 				.toArray(new BoundaryCommand[0]);
 	}
 	
-	//ask eyal if this is ok?
+	//TODO ask eyal if this is ok?
 	//created by yam to delet store
 	@DeleteMapping
 	(path  = {"/objects/club/{clubName}"})

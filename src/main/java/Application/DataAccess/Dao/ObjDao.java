@@ -84,7 +84,7 @@ public List<EntityObject> findAllWithinRadiusN(@Param("centerLat") double center
 	
 
 	//created by yam to delet club
-	public List<EntityObject> findAllbyobjectDetailsLike(@Param("pattern") String pattern);
+	public List<EntityObject> findAllByobjectDetailsLike(@Param("pattern") String pattern);
 }
 	
 

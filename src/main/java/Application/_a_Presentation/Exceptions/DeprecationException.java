@@ -1,5 +1,10 @@
 package Application._a_Presentation.Exceptions;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+
 public class DeprecationException extends RuntimeException {
 	private static final long serialVersionUID = 5817983602753987345L;
 
@@ -8,7 +13,7 @@ public class DeprecationException extends RuntimeException {
 	}
 
 	public DeprecationException(String message) {
-		super(message);
+		super("Deprecation exception"+message);
 	}
 
 	public DeprecationException(Throwable cause) {
@@ -16,6 +21,6 @@ public class DeprecationException extends RuntimeException {
 	}
 
 	public DeprecationException(String message, Throwable cause) {
-		super(message, cause);
+		super("Deprecation exception"+message, cause);
 	}
 }

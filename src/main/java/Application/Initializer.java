@@ -85,7 +85,7 @@ public class Initializer implements CommandLineRunner{
 			return this.ServicesUser.createUser(user);
 		}).forEach(user->System.err.println(user.toString()));
 
-		boolean isATest = false;
+		boolean isATest = true;
 		
 		if (isATest)
 			testRunSprint3(names);
@@ -215,7 +215,7 @@ public class Initializer implements CommandLineRunner{
 			obj.setLocation(new Location(0.2+j , 0.2+j));
 			obj.setType(type+" "+j);
 			obj.setAlias(alias+" "+j);
-			UserId.setEmail(names.get(2)+"@aa.com");
+			UserId.setEmail(names.get(2)+"@gmail.com");
 			CreatedBy.setUserId(UserId);
 			obj.setCreatedBy(CreatedBy);
 			obj.setObjectDetails(Collections.singletonMap("person", "Jane #" + j));
@@ -224,7 +224,7 @@ public class Initializer implements CommandLineRunner{
 			
 		}
 		//make 10 mini app commands
-		UserId.setEmail(names.get(2)+"@aa.com");
+		UserId.setEmail(names.get(2)+"@gmail.com");
 		UserId.setSuperAPP(BoundaryObject.getObjectID().getSuperApp());
 		CreatedBy.setUserId(UserId);
 		String id = "command";

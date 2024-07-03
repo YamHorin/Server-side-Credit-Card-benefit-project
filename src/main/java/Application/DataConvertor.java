@@ -29,10 +29,11 @@ public class DataConvertor {
     	RoleEnumBoundary role =   RoleEnumBoundary.valueOf(entity.getRole().name().toUpperCase());
     	boun.setRole(role);
     	boun.setAvatar(entity.getAvatar());
-    	String email = entity.getId().split("_")[0];
-    	String superAppName = entity.getId().split("_")[1];
+    	boun.setUserId(UserIDFromStringId(entity.getId()));
+//    	String email = entity.getId().split("_")[0];
+//    	String superAppName = entity.getId().split("_")[1];
+//    	boun.setUserId(new UserId(superAppName, email));
     	boun.setUserName(entity.getUserName());
-    	boun.setUserId(new UserId(superAppName, email));
     	return boun;
     }
     public  BoundaryObject EntityObjectTOBoundaryObject (EntityObject entity)
@@ -40,10 +41,11 @@ public class DataConvertor {
     	BoundaryObject bounObj = new BoundaryObject();
     	bounObj.setActive(entity.getActive());
     	bounObj.setAlias(entity.getAlias());
-    	String id = entity.getCreatedBy();
-    	String email = id.split("_")[0];
-    	String superAppName = id.split("_")[1];
-    	bounObj.setCreatedBy(new CreatedBy(email, superAppName));
+    	bounObj.setCreatedBy(new CreatedBy(UserIDFromStringId(entity.getCreatedBy())));
+//    	String id = entity.getCreatedBy();
+//    	String email = id.split("_")[0];
+//    	String superAppName = id.split("_")[1];
+//    	bounObj.setCreatedBy(new CreatedBy(email, superAppName));
     	bounObj.setCreationTimeStamp(entity.getCreationTimeStamp());
     	bounObj.setLocation(new Location(entity.getLocation_lat() , entity.getLocation_lng()));
     	bounObj.setObjectDetails(entity.getObjectDetails());
@@ -66,9 +68,9 @@ public class DataConvertor {
 		boun.setCommandId(CommandId);
 		boun.setInvocationTimeStamp(Entity.getInvocationTimeStamp());
 		
-		String email = Entity.getInvokedBy().split("_")[0];
-    	String superAppName = Entity.getInvokedBy().split("_")[1];
-    	boun.setInvokedBy(new CreatedBy(new UserId(superAppName, email)));
+//		String email = Entity.getInvokedBy().split("_")[0];
+//    	String superAppName = Entity.getInvokedBy().split("_")[1];
+    	boun.setInvokedBy(new CreatedBy(UserIDFromStringId(Entity.getInvokedBy())));
 		
 		TargetObject targetObject = new TargetObject ();
 		ObjectId ObjectId = new ObjectId();
@@ -90,7 +92,7 @@ public class DataConvertor {
         entity.setTargetObject(objectTarget);
         entity.setCommandAttributes(bCommand.getCommandAttributes());
         UserId bUser = bCommand.getInvokedBy().getUserId();
-        entity.setInvokedBy(bUser.getEmail() + "_" + bUser.getSuperAPP());
+        entity.setInvokedBy(stringIdFromUserID(bUser));
         entity.setInvocationTimeStamp(bCommand.getInvocationTimeStamp());
         return entity;
     }
@@ -100,27 +102,39 @@ public class DataConvertor {
         objectEntity.setObjectID(bObject.getObjectID().getId() + "__" + bObject.getObjectID().getSuperApp());
         objectEntity.setType(bObject.getType());
         objectEntity.setCreationTimeStamp(bObject.getCreationTimeStamp());
-        String email = bObject.getCreatedBy().getUserId().getEmail();
-        String superApp = bObject.getCreatedBy().getUserId().getSuperAPP();
-    	objectEntity.setCreatedBy(email+"_"+superApp);
+//        String email = bObject.getCreatedBy().getUserId().getEmail();
+//        String superApp = bObject.getCreatedBy().getUserId().getSuperAPP();
+        
+    	objectEntity.setCreatedBy(stringIdFromUserID(bObject.getCreatedBy().getUserId()));
         objectEntity.setActive(bObject.getActive() == null || bObject.getActive());
-        objectEntity.setAlias(bObject.getAlias() == null ? "demo instance" : bObject.getAlias());
+        objectEntity.setAlias(bObject.getAlias() == null ? "object" : bObject.getAlias());
         objectEntity.setObjectDetails(bObject.getObjectDetails() == null ? new HashMap<>() : bObject.getObjectDetails());
         objectEntity.setLocation_lat(bObject.getLocation().getLat());
         objectEntity.setLocation_lng(bObject.getLocation().getLng());
-
-
         return objectEntity;
     }
     
 	public EntityUser BoundaryUserTOEntityUser(BoundaryUser bUser) {
 		EntityUser userEntity = new EntityUser();
-		userEntity.setId(bUser.getUserId().getEmail() + "_" + bUser.getUserId().getSuperAPP());
+		userEntity.setId(stringIdFromUserID(bUser.getUserId()));
 		RoleEnumEntity  role = RoleEnumEntity.valueOf(bUser.getRole().name().toLowerCase());
 		userEntity.setRole(role);
 		userEntity.setUserName(bUser.getUserName());
 		userEntity.setAvatar(bUser.getAvatar());
 		return userEntity;
 
+	}
+	
+	public String stringIdFromUserID(UserId UserId)
+	{
+		String email = UserId.getEmail();
+		String superAppName = UserId.getSuperAPP();
+		return email+"_pizza_@@##"+superAppName;
+	}
+	public UserId UserIDFromStringId(String id)
+	{
+		String email = id.split("_pizza_@@##")[0];
+    	String superAppName = id.split("_pizza_@@##")[1];
+		return new UserId(superAppName, email);
 	}
 }

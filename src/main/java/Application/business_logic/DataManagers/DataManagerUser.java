@@ -142,6 +142,11 @@ public class DataManagerUser implements ServicesUser{
 		Matcher matcher = pattern.matcher(email);
 		if(matcher.matches()==false)
 			throw new BoundaryIsNotFilledCorrectException("email is not filled correctly");
+		for (int i = 0; i < email.length(); i++) {
+			if (email.charAt(i)=='_')
+				throw new BoundaryIsNotFilledCorrectException("email can not have '_' char....");
+
+		}
 	}
 	
 	public void checkStringIsNullOrEmpty(String str , String value)

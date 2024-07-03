@@ -141,8 +141,7 @@ public class DataManagerCommand implements ServicesCommand{
 	
 	@Override
 	@Transactional(readOnly = false)
-	// hare we write the mathods of the mini app, in stwich case of the name of the mini app, 
-	// of each miniApp we create  switch case of all the command of specific mimiApp
+
 	public BoundaryCommand createMiniAppCommand(BoundaryCommand CommandBoundary) {
 		//checks if the object that the command does is in the table and if the user is in the table
 		String idObj = CommandBoundary.getTargetObject().getObjectId().getId()+"__"+this.superAppName;
@@ -151,11 +150,14 @@ public class DataManagerCommand implements ServicesCommand{
 		String idUser = CommandBoundary.getInvokedBy().getUserId().getEmail() +"_"+ CommandBoundary.getInvokedBy().getUserId().getSuperAPP();
 		EntityUser userEntity = this.userDao.findById(idUser).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for command by id: " + idUser));
-		RoleEnumEntity role = userEntity.getRole();
-		System.err.println("* client requested to store: " + CommandBoundary);
+		
 		CommandId command = new CommandId();
 		command.setSuperApp(this.superAppName);
-		command.setMiniApp(this.miniAppNameDefault);
+		
+		if (CommandBoundary.getCommandId().getMiniApp()==null || CommandBoundary.getCommandId().getMiniApp().equalsIgnoreCase(""))
+			command.setMiniApp(this.miniAppNameDefault);
+		else
+			command.setMiniApp(CommandBoundary.getCommandId().getMiniApp());
 		command.setId(UUID.randomUUID().toString());
 		CommandBoundary.setCommandId(command);
 		CommandBoundary.setInvocationTimeStamp(new Date());
@@ -197,6 +199,7 @@ public class DataManagerCommand implements ServicesCommand{
 //				}
 //				break;						
 //		}
+		
 		//new func by Yam  :)
 		invokeCommand(CommandBoundary);
 		
@@ -212,27 +215,27 @@ public class DataManagerCommand implements ServicesCommand{
 	}
 	
 	
-	
-	private void ShowStoresWithDiscountInClub(EntityUser userEntity, EntityObject entityObject) {
-		// // miniApp getYourBenefits command ShowStoresWithDiscountInClub
-		//entityObject -the client
-
-		// list of the clubs of the client play the function
-		List<String> clubs = (List<String>) entityObject.getObjectDetails().get("Club");
-		// list of the store that active
-		List <EntityObject> stores = this.objDao
-		.findAllBytype("store",PageRequest.of(0, 10, Direction.DESC, "invocationTimeStamp", "commandId"))
-		.stream()
-		.filter(EntityObject::getActive).toList();
-		// find for each store if there is the credit card - yes=show, no=remove
-		for (EntityObject store : stores) {
-			if (!clubs.contains(store.getObjectDetails().get("Club")))
-				stores.remove(store);
-		}
-		//TODO find who to print the app filter list to the client
-	}
 	//TODO delet this...
-
+//	
+//	private void ShowStoresWithDiscountInClub(EntityUser userEntity, EntityObject entityObject) {
+//		// // miniApp getYourBenefits command ShowStoresWithDiscountInClub
+//		//entityObject -the client
+//
+//		// list of the clubs of the client play the function
+//		List<String> clubs = (List<String>) entityObject.getObjectDetails().get("Club");
+//		// list of the store that active
+//		List <EntityObject> stores = this.objDao
+//		.findAllBytype("store",PageRequest.of(0, 10, Direction.DESC, "invocationTimeStamp", "commandId"))
+//		.stream()
+//		.filter(EntityObject::getActive).toList();
+//		// find for each store if there is the credit card - yes=show, no=remove
+//		for (EntityObject store : stores) {
+//			if (!clubs.contains(store.getObjectDetails().get("Club")))
+//				stores.remove(store);
+//		}
+//		//TODO find who to print the app filter list to the client
+//	}
+//
 //	private void ShowStoresWithDiscountInCreditcard(EntityUser userEntity, EntityObject entityObject) {
 //		// miniApp getYourBenefits command ShowStoresWithDiscountInCreditcard
 //		//entityObject -the client

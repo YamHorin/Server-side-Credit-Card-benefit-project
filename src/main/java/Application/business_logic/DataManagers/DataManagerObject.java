@@ -278,6 +278,7 @@ public class DataManagerObject implements ServicesObject {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<BoundaryObject> searchByType(String id,String type, int size, int page) {
 		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
@@ -308,6 +309,8 @@ public class DataManagerObject implements ServicesObject {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
+
 	public List<BoundaryObject> searchObjectsByExactAlias(String id,String alias, int size, int page) {
 		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
@@ -336,6 +339,8 @@ public class DataManagerObject implements ServicesObject {
 
 	
 	@Override
+	@Transactional(readOnly = true)
+
 	public List<BoundaryObject> searchObjectsByAliasPattern(String id,String pattern, int size, int page) {
 		
 		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
@@ -366,6 +371,8 @@ public class DataManagerObject implements ServicesObject {
 	}
 
 	@Override
+
+	@Transactional(readOnly = true)
 	public List<BoundaryObject> searchByLocation(String id,double lat, double lng, double distance,String distanceUnits,int size, int page) {
 		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
@@ -408,6 +415,25 @@ public class DataManagerObject implements ServicesObject {
 		return null;
 		
 	
+		
+		
+		
+	}
+
+	
+	//ask eyal if this is ok?
+	//created by yam to delete club
+	@Override
+	@Transactional(readOnly = false)
+	public void deleteByClubId(String clubName, String idUser) {
+		EntityUser userEntity = this.userDao.findById(idUser).orElseThrow(()->new BoundaryIsNotFoundException(
+				"Could not find User for update by id: " + idUser));
+		RoleEnumEntity role = userEntity.getRole();
+		if (role!=RoleEnumEntity.adm_user)
+			throw new UnauthorizedException("only admin user can delete object!!!!!!!!");
+		this.objectDao.deleteByalias(clubName);
+		//TODO
+		//this.objectDao.findAllbyobjectDetailsLike("%%");
 		
 		
 		

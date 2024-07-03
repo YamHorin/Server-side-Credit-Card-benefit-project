@@ -21,4 +21,8 @@ public interface ServicesObject {
 	public void deleteAllObjs (String id);
 	
 	public void updateObj (String id,String superApp, BoundaryObject update, String email, String userSuperapp);
+	
+	//ask eyal if this is ok?
+	//created by yam to delet store
+	public void deleteByClubId(String clubName, String idUser);
 }

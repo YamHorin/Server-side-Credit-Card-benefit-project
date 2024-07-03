@@ -137,17 +137,11 @@ public class DataManagerUser implements ServicesUser{
 		String EMAIL_PATTERN =
 				"^[a-zA-Z0-9_+&-]+(?:\\.[a-zA-Z0-9_+&-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-		if (email == null || email == "") {
+		if (email == null || email == "") 
 			throw new BoundaryIsNotFilledCorrectException("email is empty..");
-		}
 		Matcher matcher = pattern.matcher(email);
 		if(matcher.matches()==false)
-		{
-			System.err.println("enter check\n");
 			throw new BoundaryIsNotFilledCorrectException("email is not filled correctly");
-			
-		}
-
 	}
 	
 	public void checkStringIsNullOrEmpty(String str , String value)

@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import Application.DataAccess.Entities.EntityCommand;
 import Application.DataAccess.Entities.EntityObject;
 import Application.DataAccess.Entities.EntityUser;
 import Application.DataAccess.Entities.RoleEnumEntity;
+import Application._a_Presentation.Exceptions.BoundaryIsNotFilledCorrectException;
 import Application._a_Presentation.Exceptions.BoundaryIsNotFoundException;
 import Application._a_Presentation.Exceptions.UnauthorizedException;
 import Application.business_logic.Boundaies.BoundaryCommand;
@@ -28,6 +30,7 @@ import Application.business_logic.DataService.ServicesCommand;
 import Application.business_logic.javaObjects.CommandId;
 import Application.business_logic.javaObjects.ObjectId;
 import Application.business_logic.javaObjects.TargetObject;
+import Application.logic.MiniappInterface;
 
 
 @Service
@@ -38,14 +41,19 @@ public class DataManagerCommand implements ServicesCommand{
 	private String superAppName;
 	private String miniAppNameDefault;
 	private DataConvertor DataConvertor;
+	private ApplicationContext applicationContext;
 	
 	
 	
-	public DataManagerCommand(UserDao userDao, MiniAppCommadDao miniAppCommandDao , DataConvertor DataConvertor , ObjDao objDao) {
+	public DataManagerCommand( ApplicationContext applicationContext
+			, UserDao userDao
+			, MiniAppCommadDao miniAppCommandDao 
+			, DataConvertor DataConvertor , ObjDao objDao) {
 		this.miniAppCommandDao = miniAppCommandDao;
 		this.userDao = userDao;
 		this.DataConvertor = DataConvertor;
 		this.objDao  = objDao;
+		this.applicationContext = applicationContext;
 	}
 
 	@Value("${spring.application.name:Jill}")
@@ -154,39 +162,44 @@ public class DataManagerCommand implements ServicesCommand{
 		ObjectId obj = CommandBoundary.getTargetObject().getObjectId();
 		obj.setSuperApp(superAppName);
 		CommandBoundary.setTargetObject(new TargetObject(obj));
-		switch (CommandBoundary.getCommandId().getMiniApp()){
-			case "getYourBenefits":
-				switch (CommandBoundary.getCommand())
-				{
-					case "ShowStoresWithDiscountInCreditcard": {
-						ShowStoresWithDiscountInCreditcard(userEntity,EntityObject);
-						break;
-					}
-					case "ShowStoresWithDiscountInClub":{
-						ShowStoresWithDiscountInClub(userEntity,EntityObject);
-						break;
-					}				
-				}
-				break;
-			case "StoreInterface":
-				switch (CommandBoundary.getCommand())
-				{
-					case "ShowAllBenefit": {
-						ShowAllBenefit( userEntity, EntityObject);
-						break;
-					}
-					case "AddBenefitOfClub":{
-						AddBenefitOfClub(userEntity, EntityObject);
-						break;
-					}
-					case "AddBenefitOfCreditcard":{
-						AddBenefitOfCreditcard(userEntity, EntityObject);
-						break;
-					}		
-					
-				}
-				break;						
-		}
+		
+		//TODO to delet this 
+//		switch (CommandBoundary.getCommandId().getMiniApp()){
+//			case "getYourBenefits":
+//				switch (CommandBoundary.getCommand())
+//				{
+//					case "ShowStoresWithDiscountInCreditcard": {
+//						ShowStoresWithDiscountInCreditcard(userEntity,EntityObject);
+//						break;
+//					}
+//					case "ShowStoresWithDiscountInClub":{
+//						ShowStoresWithDiscountInClub(userEntity,EntityObject);
+//						break;
+//					}				
+//				}
+//				break;
+//			case "StoreInterface":
+//				switch (CommandBoundary.getCommand())
+//				{
+//					case "ShowAllBenefit": {
+//						ShowAllBenefit( userEntity, EntityObject);
+//						break;
+//					}
+//					case "AddBenefitOfClub":{
+//						AddBenefitOfClub(userEntity, EntityObject);
+//						break;
+//					}
+//					case "AddBenefitOfCreditcard":{
+//						AddBenefitOfCreditcard(userEntity, EntityObject);
+//						break;
+//					}		
+//					
+//				}
+//				break;						
+//		}
+		//new func by Yam  :)
+		invokeCommand(CommandBoundary);
+		
 		EntityCommand entity = this.DataConvertor.BoundaryCommandToEntityCommand(CommandBoundary);
 		entity = this.miniAppCommandDao.save(entity);
 		System.err.println("***\n"+entity.toString()+"\n\n\n");
@@ -218,48 +231,49 @@ public class DataManagerCommand implements ServicesCommand{
 		}
 		//TODO find who to print the app filter list to the client
 	}
+	//TODO delet this...
 
-	private void ShowStoresWithDiscountInCreditcard(EntityUser userEntity, EntityObject entityObject) {
-		// miniApp getYourBenefits command ShowStoresWithDiscountInCreditcard
-		//entityObject -the client
-		
-		// list of the cards of the client play the function
-		List<String> cards = (List<String>) entityObject.getObjectDetails().get("CreaditCard");
-		// list of the store that active
-		//TODO add opsion of number of store to show -right now it's only 10
-		List <EntityObject> stores = this.objDao
-		.findAllBytype("store",PageRequest.of(0, 10, Direction.DESC, "invocationTimeStamp", "commandId"))
-		.stream()
-		.filter(EntityObject::getActive).toList();
-		// find for each store if there is the credit card - yes=show, no=remove
-		for (EntityObject store : stores) {
-			if (!cards.contains(store.getObjectDetails().get("CreaditCard")))
-				stores.remove(store);
-		}
-		//TODO find who to print the app filter list to the client
-
-	}
-
-	private void AddBenefitOfCreditcard(EntityUser userEntity, EntityObject entityObject) {
-		// miniApp StoreInterface command AddBenefitOfCreditcard
-		
-		
-	}
-
-	private void AddBenefitOfClub(EntityUser userEntity, EntityObject entityObject) {
-		// miniApp StoreInterface command AddBenefitOfClub
-		
-	}
-
-	private void ShowAllBenefit(EntityUser userEntity, EntityObject entityObject) {
-		// miniApp StoreInterface command ShowAllBenefit
-		//show all benefits that has the store in it 
-		//entityObject  = the store we wish to get all stores
-//		String storeName = entityObject.getAlias();
-//		this.objDao.findAllBytypeAndActiveIsTrue("Benefit", PageRequest.of(0, 10, Direction.DESC, "invocationTimeStamp"))
-//		.stream().filter
-		
-	}
+//	private void ShowStoresWithDiscountInCreditcard(EntityUser userEntity, EntityObject entityObject) {
+//		// miniApp getYourBenefits command ShowStoresWithDiscountInCreditcard
+//		//entityObject -the client
+//		
+//		// list of the cards of the client play the function
+//		List<String> cards = (List<String>) entityObject.getObjectDetails().get("CreaditCard");
+//		// list of the store that active
+//		//TODO add opsion of number of store to show -right now it's only 10
+//		List <EntityObject> stores = this.objDao
+//		.findAllBytype("store",PageRequest.of(0, 10, Direction.DESC, "invocationTimeStamp", "commandId"))
+//		.stream()
+//		.filter(EntityObject::getActive).toList();
+//		// find for each store if there is the credit card - yes=show, no=remove
+//		for (EntityObject store : stores) {
+//			if (!cards.contains(store.getObjectDetails().get("CreaditCard")))
+//				stores.remove(store);
+//		}
+//		//TODO find who to print the app filter list to the client
+//
+//	}
+//
+//	private void AddBenefitOfCreditcard(EntityUser userEntity, EntityObject entityObject) {
+//		// miniApp StoreInterface command AddBenefitOfCreditcard
+//		
+//		
+//	}
+//
+//	private void AddBenefitOfClub(EntityUser userEntity, EntityObject entityObject) {
+//		// miniApp StoreInterface command AddBenefitOfClub
+//		
+//	}
+//
+//	private void ShowAllBenefit(EntityUser userEntity, EntityObject entityObject) {
+//		// miniApp StoreInterface command ShowAllBenefit
+//		//show all benefits that has the store in it 
+//		//entityObject  = the store we wish to get all stores
+////		String storeName = entityObject.getAlias();
+////		this.objDao.findAllBytypeAndActiveIsTrue("Benefit", PageRequest.of(0, 10, Direction.DESC, "invocationTimeStamp"))
+////		.stream().filter
+//		
+//	}
 
 
 
@@ -286,7 +300,16 @@ public class DataManagerCommand implements ServicesCommand{
 		this.miniAppNameDefault = miniAppNameDefault;
 	}
 
-
+	public Object invokeCommand(BoundaryCommand CommandBoundary)
+	{
+		MiniappInterface app = null;
+		try {
+			app = this.applicationContext.getBean(CommandBoundary.getCommand() , MiniappInterface.class);
+		} catch (Exception e) {
+			throw new BoundaryIsNotFilledCorrectException("no command is found!!!");
+		}
+		return app.activateCommand(CommandBoundary);
+	}
 
 
 

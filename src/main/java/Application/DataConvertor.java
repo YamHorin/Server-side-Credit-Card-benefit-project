@@ -129,12 +129,15 @@ public class DataConvertor {
 	{
 		String email = UserId.getEmail();
 		String superAppName = UserId.getSuperAPP();
-		return email+"_pizza_@@##"+superAppName;
+		return email+" "+superAppName;
 	}
 	public UserId UserIDFromStringId(String id)
 	{
-		String email = id.split("_pizza_@@##")[0];
-    	String superAppName = id.split("_pizza_@@##")[1];
+		String email = id.split(" ")[0];
+    	String superAppName = id.split(" ")[1];
 		return new UserId(superAppName, email);
 	}
+	
+	
+	
 }

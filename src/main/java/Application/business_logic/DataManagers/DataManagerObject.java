@@ -55,7 +55,7 @@ public class DataManagerObject implements ServicesObject {
 		if (this.superAppName.compareTo(superApp) != 0)
 			throw new BoundaryIsNotFoundException("super app is not found...");
 		// check what the role of the user
-		String id_user = email + "_" + userSuperapp;
+		String id_user = email + " " + userSuperapp;
 		EntityUser userEntity = this.userDao.findById(id_user).orElseThrow(() -> new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id_user));
 		String id_object = id + "__" + superApp;
@@ -141,7 +141,7 @@ public class DataManagerObject implements ServicesObject {
 		checkLocationOfObject(ObjectBoundary.getLocation());
 
 		// check Role
-		String id = ObjectBoundary.getCreatedBy().getUserId().getEmail() + "_" + this.superAppName;
+		String id = ObjectBoundary.getCreatedBy().getUserId().getEmail() + " " + this.superAppName;
 		EntityUser userEntity = this.userDao.findById(id).orElseThrow(() -> new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
 		if (userEntity.getRole() != RoleEnumEntity.superapp_user)
@@ -197,7 +197,7 @@ public class DataManagerObject implements ServicesObject {
 		EntityObject objectEntity = this.objectDao.findById(id).orElseThrow(() -> new BoundaryIsNotFoundException(
 				"Could not find object for update by id: " + id2));
 		// check role
-		String id_user = email + "_" + userSuperapp;
+		String id_user = email + " " + userSuperapp;
 		EntityUser EntityUser = this.userDao.findById(id_user).orElseThrow(() -> new BoundaryIsNotFoundException(
 				"Could not find user for update by id: " + id_user));
 		switch (EntityUser.getRole()) {
@@ -260,7 +260,7 @@ public class DataManagerObject implements ServicesObject {
 		if (update.getCreatedBy() != null) {
 			String email1 = update.getCreatedBy().getUserId().getEmail();
 			isValidEmail(email1);
-			objectEntity.setCreatedBy(email1 + "_" + this.superAppName);
+			objectEntity.setCreatedBy(email1 + " " + this.superAppName);
 		}
 
 		if (update.getActive() != null)

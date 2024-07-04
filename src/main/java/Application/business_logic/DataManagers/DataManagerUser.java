@@ -111,11 +111,11 @@ public class DataManagerUser implements ServicesUser{
 		checkStringIsNullOrEmpty(update.getAvatar(), "avatar");
 		if (update.getUserId().getEmail()!=null)
 		{
-			String id_new = update.getUserId().getEmail() + "_" + this.name_super_app;
+			String id_new = update.getUserId().getEmail() + " " + this.name_super_app;
 			if (!userEntity.getId().equalsIgnoreCase(id_new))
 			{
 				this.UserDao.deleteById(id);
-				userEntity.setId(update.getUserId().getEmail() + "_" + this.name_super_app);				
+				userEntity.setId(update.getUserId().getEmail() + " " + this.name_super_app);				
 			}
 		}
 		if (update.getRole()!=null)

@@ -63,7 +63,7 @@ public class ControllerObject {
 			) 
 	{
 		
-		String id_user = email+"_"+userSuperapp;
+		String id_user = email+" "+userSuperapp;
 		return this.servicesObject
 			.getAllObjects(id_user, size , page)
 			.toArray(new BoundaryObject[0]);
@@ -78,7 +78,7 @@ public class ControllerObject {
 			@RequestParam("email") String email, 
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
-			String id = email+"_"+superapp;	
+			String id = email+" "+superapp;	
 			BoundaryObject[] demoOp = this.servicesObject
 				.searchByType(id,type, size, page).toArray(new BoundaryObject[0]);
 			return demoOp;
@@ -93,7 +93,7 @@ public class ControllerObject {
 				@RequestParam("email") String email, 
 				@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 				@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
-				String id = email+"_"+superapp;	
+				String id = email+" "+superapp;	
 				BoundaryObject[] demoOp = this.servicesObject
 					.searchObjectsByExactAlias(id, alias, size, page).toArray(new BoundaryObject[0]);
 				return demoOp;
@@ -108,7 +108,7 @@ public class ControllerObject {
 				@RequestParam("email") String superAppUser, 
 				@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 				@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
-				String id = email+"_"+superapp;
+				String id = email+" "+superapp;
 				BoundaryObject[] demoOp = this.servicesObject
 					.searchObjectsByAliasPattern(id, pattern, size, page).toArray(new BoundaryObject[0]);
 				return demoOp;
@@ -126,7 +126,7 @@ public class ControllerObject {
 			@RequestParam("email") String email,
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
-			String id = email+"_"+superapp;
+			String id = email+" "+superapp;
 			BoundaryObject[] demoOp = this.servicesObject
 				.searchByLocation(id, lat, lng, distance ,distanceUnits, size, page).toArray(new BoundaryObject[0]);
 			return demoOp;

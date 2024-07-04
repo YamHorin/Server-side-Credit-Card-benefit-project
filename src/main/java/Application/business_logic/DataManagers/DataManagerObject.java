@@ -421,23 +421,7 @@ public class DataManagerObject implements ServicesObject {
 	}
 
 	
-	//ask eyal if this is ok?
-	//created by yam to delete club
-	@Override
-	@Transactional(readOnly = false)
-	public void deleteByClubId(String clubName, String idUser) {
-		EntityUser userEntity = this.userDao.findById(idUser).orElseThrow(()->new BoundaryIsNotFoundException(
-				"Could not find User for update by id: " + idUser));
-		RoleEnumEntity role = userEntity.getRole();
-		if (role!=RoleEnumEntity.adm_user)
-			throw new UnauthorizedException("only admin user can delete object!!!!!!!!");
-		this.objectDao.deleteByalias(clubName);
-		//TODO
-		//this.objectDao.findAllbyobjectDetailsLike("%%");
-		
-		
-		
-	}
+
 
 
 

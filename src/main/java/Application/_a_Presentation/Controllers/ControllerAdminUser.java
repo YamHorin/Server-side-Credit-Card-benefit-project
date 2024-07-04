@@ -72,16 +72,6 @@ public class ControllerAdminUser {
 				.toArray(new BoundaryCommand[0]);
 	}
 	
-	//TODO ask eyal if this is ok?
-	//created by yam to delet store
-	@DeleteMapping
-	(path  = {"/objects/club/{clubName}"})
-	public void deletClub(@PathVariable("clubName")String clubName,@RequestParam("userEmail") String email , @RequestParam("userSuperapp") String superapp)
-	{
-		String idUser = email+" "+superapp;
-		this.servicesObject.deleteByClubId(clubName, idUser);
-	}
-	
 	
 	
 	

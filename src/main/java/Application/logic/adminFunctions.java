@@ -30,7 +30,27 @@ public class adminFunctions {
 		
 		//System.out.println("user update to super app so it can update the club....\n\n");
 		
-		BoundaryObject clubObject =  restClient.get()
+//		BoundaryObject clubObject =  restClient.get()
+//				.uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&email={email}",
+//				superApp,
+//				idClub ,
+//				superApp, 
+//				email).
+//				retrieve().
+//				body(BoundaryObject.class);
+		
+		BoundaryObject clubObject = new BoundaryObject();
+		clubObject.setActive(false);
+		//can't enter the link and change for some reason....
+		restClient.put().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&email={email}",
+				superApp,
+				idClub,
+				superApp, 
+				email).
+				body(clubObject).
+				retrieve();
+		
+		clubObject =  restClient.get()
 				.uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&email={email}",
 				superApp,
 				idClub ,
@@ -38,17 +58,7 @@ public class adminFunctions {
 				email).
 				retrieve().
 				body(BoundaryObject.class);
-
-		clubObject.setActive(false);
-		
-		restClient.put().uri("/objects/{superapp}/{id}"
-				+ "?userSuperapp={userSuperapp}&email={email}",
-				superApp,
-				idClub,
-				superApp , 
-				email).
-				body(clubObject).
-				retrieve();
+		System.out.println("clubObject: "+clubObject.toString());
 		
 		user.setRole(RoleEnumBoundary.ADM_USER);
 

@@ -78,14 +78,15 @@ public List<EntityObject> findAllWithinRadiusN(@Param("centerLat") double center
 
 	public List<EntityObject> findAllBytypeAndActiveIsTrue(@Param("type")String type, Pageable of);
 	
-	//TODO: ask eyal if this is ok?
-	//created by yam to delet club
-	public void deleteByalias(@Param("alias")String alias);
-	
-
+	 @Query("SELECT COUNT(e) FROM EntityObject  e WHERE e.type = :type")
+    public long countByType(@Param("type") String type);
+	 
+	 
 	//created by yam to delet club
 	public List<EntityObject> findAllByobjectDetailsLike(@Param("pattern") String pattern);
 }
 	
+
+
 
 

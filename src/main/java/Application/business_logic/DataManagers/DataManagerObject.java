@@ -3,6 +3,7 @@ package Application.business_logic.DataManagers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -42,6 +43,7 @@ public class DataManagerObject implements ServicesObject {
 	// a value for max location value , could be change in the future
 	private final double limit_location = 1000;
 	private final double KmToMile = 0.621371192;
+	
 	public DataManagerObject(UserDao userDao, ObjDao objectDao, DataConvertor DataConvertor) {
 		this.objectDao = objectDao;
 		this.userDao = userDao;
@@ -66,7 +68,6 @@ public class DataManagerObject implements ServicesObject {
 				throw new UnauthorizedException("admin can't get a Specific object ");
 			case miniapp_user:
 				entityObject = this.objectDao.findByobjectIDAndActiveIsTrue(id_object);
-				// entityObject = entityObject.filter(EntityObject::getActive);
 				boundaryObject = entityObject.map(this.DataConvertor::EntityObjectTOBoundaryObject);
 				if (boundaryObject.isEmpty())
 					System.err.println("* no user to return");
@@ -140,6 +141,8 @@ public class DataManagerObject implements ServicesObject {
 		// check for normal location
 		checkLocationOfObject(ObjectBoundary.getLocation());
 
+		
+		
 		// check Role
 		String id = ObjectBoundary.getCreatedBy().getUserId().getEmail() + " " + this.superAppName;
 		EntityUser userEntity = this.userDao.findById(id).orElseThrow(() -> new BoundaryIsNotFoundException(
@@ -149,16 +152,41 @@ public class DataManagerObject implements ServicesObject {
 
 		ObjectBoundary.setCreationTimeStamp(new Date());
 		ObjectId objId = new ObjectId();
-		objId.setId(UUID.randomUUID().toString());
 		objId.setSuperApp(this.superAppName);
+		objId.setId(makeObjectId(ObjectBoundary));
 		ObjectBoundary.setObjectID(objId);
-		ObjectBoundary
-				.setCreatedBy(new CreatedBy(ObjectBoundary.getCreatedBy().getUserId().getEmail(), this.superAppName));
+		ObjectBoundary.setCreatedBy(new CreatedBy(ObjectBoundary.getCreatedBy().getUserId().getEmail(), this.superAppName));
 		EntityObject entity = this.DataConvertor.BoundaryObjectTOEntityObject(ObjectBoundary);
 		entity = this.objectDao.save(entity);
 		BoundaryObject rv = this.DataConvertor.EntityObjectTOBoundaryObject(entity);
 		System.err.println("all the data objects server stored: " + rv);
 		return rv;
+	}
+
+	private String makeObjectId(BoundaryObject objectBoundary) {
+		//also update the id to the last count
+		int counterObjectType = (int) this.objectDao.countByType(objectBoundary.getType());
+		Map<String, Object> objectDetails = objectBoundary.getObjectDetails();
+		switch (objectBoundary.getType())
+		{
+		case "store":
+			objectDetails.put("idStore",counterObjectType);
+			objectBoundary.setObjectDetails(objectDetails);
+			return "S"+objectBoundary.getObjectDetails().get("idStore");
+		case "benefit":
+			objectDetails.put("idBenefit",counterObjectType);
+			objectBoundary.setObjectDetails(objectDetails);
+			return "B"+objectBoundary.getObjectDetails().get("idBenefit");
+		case "club":
+			objectDetails.put("idClub",counterObjectType);
+			objectBoundary.setObjectDetails(objectDetails);
+			return "C"+objectBoundary.getObjectDetails().get("idClub");
+		default:
+			return (UUID.randomUUID().toString());
+			
+		}
+			
+		
 	}
 
 	private void checkLocationOfObject(Location location) {

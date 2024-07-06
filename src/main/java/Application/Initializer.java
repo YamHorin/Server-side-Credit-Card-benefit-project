@@ -155,7 +155,7 @@ public class Initializer implements CommandLineRunner{
 			int benefitsId []  = {j , j+1 , j+2};
 			if (stores[j].equalsIgnoreCase("Golda"))
 				 benefitsId   = null;
-			obj_items.put("listOfBenefitOfClub", benefitsId );
+			obj_items.put("listOfBenefitOfStore", benefitsId );
 			int listOfClubOfStore []  ={j , j+1};
 			obj_items.put("listOfClubOfStore", listOfClubOfStore);
 			obj.setActive(true);

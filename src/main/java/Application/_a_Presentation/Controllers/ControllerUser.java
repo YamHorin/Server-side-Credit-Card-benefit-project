@@ -39,7 +39,7 @@ public class ControllerUser {
 		path = { "/login/{superapp}/{email}" }, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
 	public BoundaryUser getSpecificUser(@PathVariable("email") String email ,@PathVariable("superapp") String superapp ) {
-		String id  = email+"_"+superapp;
+		String id  = email+" "+superapp;
 		Optional<BoundaryUser> User = this.servicesUser
 			.getSpecificUser(id);
 		
@@ -62,7 +62,7 @@ public class ControllerUser {
 		consumes = {MediaType.APPLICATION_JSON_VALUE})
 	public void updateUser (@PathVariable("userEmail") String email ,@PathVariable("superapp") String superapp, 
 			@RequestBody BoundaryUser update) {
-		String id  = email+"_"+superapp;
+		String id  = email+" "+superapp;
 		this.servicesUser
 			.updateUser(id, update);
 	}

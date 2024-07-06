@@ -16,16 +16,18 @@ import Application.business_logic.javaObjects.UserId;
 @Component
 public class ClubFunctions {
 
-	public void printAllBenefitOfClub (RestClient restClient ,UserId userId , String club)
+	public void printAllBenefitOfClub (RestClient restClient ,UserId userId , int clubNumber)
 	{
 		//restClient  = "http://localhost:" + port + "/superapp
-		club = "C"+club;
+		String club = "C"+clubNumber;
 		String superApp = userId.getSuperAPP();
 		String email = userId.getEmail();
-		BoundaryObject clubObject =  restClient.get().uri("/object/{id}"
-				+ "?userSuperApp ={userSuperapp}&userEmail = {superUser@aa.com}",
-				club ,
-				superApp , 
+		//fix url
+		BoundaryObject clubObject =  restClient.get().uri("/objects/{superapp}/{id}"
+				+ "?userSuperApp ={userSuperapp}&email={email}",
+				superApp,
+				club,
+				superApp, 
 				email ).
 				retrieve().body(BoundaryObject.class);
 //		List<Object> objects = (List)(clubObject.getObjectDetails().get("listOfBenefitOfClub"));
@@ -35,7 +37,7 @@ public class ClubFunctions {
 		List <Integer> benefits = getALiistFromMap(clubObject.getObjectDetails(), "listOfBenefitOfClub");
 		System.out.println("here are all the benefits in the club: \n\n");
 		for (Integer benefitNumber : benefits) {
-			BoundaryObject benefit =  restClient.get().uri("/object/{id}"
+			BoundaryObject benefit =  restClient.get().uri("/objects/{id}"
 					+ "?userSuperApp ={userSuperapp}&userEmail = {superUser@aa.com}",
 					"B"+benefitNumber ,
 					superApp , 
@@ -54,18 +56,22 @@ public class ClubFunctions {
 		String club = "C"+clubNumber;
 		String superApp = userId.getSuperAPP();
 		String email = userId.getEmail();
-		BoundaryObject clubObject =  restClient.get().uri("/object/{id}"
-				+ "?userSuperApp ={userSuperapp}&userEmail = {superUser@aa.com}",
+		//fix url
+		BoundaryObject clubObject =  restClient.get().uri("/objects/{superapp}/{id}"
+				+ "?userSuperApp ={userSuperapp}&email={email}",
+				superApp ,
 				club ,
 				superApp , 
 				email ).
 				retrieve().body(BoundaryObject.class);
 		
 		String BenefitId = "B"+benefitNumber;
-		BoundaryObject benefitObject =  restClient.get().uri("/object/{id}"
-				+ "?userSuperApp ={userSuperapp}&userEmail = {superUser@aa.com}",
-				BenefitId ,
-				superApp , 
+		//fix url
+		BoundaryObject benefitObject =  restClient.get().uri("/objects/{superapp}/{id}"
+				+ "?userSuperApp ={userSuperapp}&email={email}",
+				superApp, 
+				BenefitId,
+				superApp, 
 				email ).
 				retrieve().body(BoundaryObject.class);
 		List <Integer> benefits = getALiistFromMap(clubObject.getObjectDetails(),"listOfBenefitOfClub");
@@ -74,13 +80,16 @@ public class ClubFunctions {
 		objectDetails.put("listOfBenefitOfClub", objectDetails);
 		clubObject.setObjectDetails(objectDetails);
 		System.out.println("benefit list of club has been updates :"+benefits.toString());
-		clubObject =  restClient.put().uri("/object/{id}"
-				+ "?userSuperApp ={userSuperapp}&userEmail = {superUser@aa.com}",
+		
+		//can be a bug because put do not return nothing....
+		//fix url
+		restClient.put().uri("/objects/{superapp}/{id}"
+				+ "?userSuperApp={userSuperapp}&email={email}",
 				club ,
 				superApp , 
 				email ).
 				body(clubObject).
-				retrieve().body(BoundaryObject.class);
+				retrieve();
 		System.out.println("the updated club: \n"+clubObject.toString());
 	}
 	

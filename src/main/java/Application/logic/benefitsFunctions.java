@@ -27,8 +27,10 @@ public class benefitsFunctions {
 		benefit.setObjectDetails(Collections.singletonMap("description", description));
 		benefit.setCreatedBy(new CreatedBy(userId));
 		
+		
+		//url fix...
 		benefit  = restClient.post()
-				.uri("/object")
+				.uri("/objects")
 				.body(benefit)
 				.retrieve()
 				.body(BoundaryObject.class);

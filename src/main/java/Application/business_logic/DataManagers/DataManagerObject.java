@@ -139,6 +139,7 @@ public class DataManagerObject implements ServicesObject {
 		checkStringIsNullOrEmpty(ObjectBoundary.getCreatedBy().getUserId().getEmail(),
 				"user email who created the object");
 		// check for normal location
+		
 		checkLocationOfObject(ObjectBoundary.getLocation());
 
 		
@@ -218,7 +219,7 @@ public class DataManagerObject implements ServicesObject {
 
 			throw new BoundaryIsNotFoundException("super app is not found...");
 		}
-		System.err.println("* updating obj with id: " + id + ", with the following details: " + update);
+		//System.err.println("* updating obj with id: " + id + ", with the following details: " + update);
 		id = id + "__" + superApp;
 		String id2 = id;
 
@@ -241,14 +242,14 @@ public class DataManagerObject implements ServicesObject {
 				updateObjectInAction(objectEntity, update);
 				break;
 			case undetermined:
-				throw new UnauthorizedException("admin can't update object");
+				throw new UnauthorizedException("undetermined can't update object");
 			default:
 				break;
 
 		}
 
 		objectEntity = this.objectDao.save(objectEntity);
-		System.err.println("\n\nuser has been updated: * \n" + objectEntity);
+		System.err.println("\n\n********object has been updated: * \n" + objectEntity);
 	}
 
 	@Value("${spring.application.name:Jill}")
@@ -279,7 +280,6 @@ public class DataManagerObject implements ServicesObject {
 
 	// copy to an own function to avoid Repeated code
 	public void updateObjectInAction(EntityObject objectEntity, BoundaryObject update) {
-		checkLocationOfObject(update.getLocation());
 		if (update.getType() != null)
 			objectEntity.setType(update.getType());
 		if (update.getCreationTimeStamp() != null)
@@ -291,15 +291,20 @@ public class DataManagerObject implements ServicesObject {
 			objectEntity.setCreatedBy(email1 + " " + this.superAppName);
 		}
 
+		
 		if (update.getActive() != null)
-			objectEntity.setActive(update.getActive() == null || update.getActive());
+			objectEntity.setActive(update.getActive());
 
+		System.err.println("\n\n\n\n\n*****\n\n\n"+objectEntity.getActive());
+		
+		
 		if (update.getAlias() != null)
-			objectEntity.setAlias(update.getAlias() == null ? "object instance" : update.getAlias());
+			objectEntity.setAlias(update.getAlias());
 
 		if (update.getObjectDetails() != null)
 			objectEntity.setObjectDetails(update.getObjectDetails());
 		if (update.getLocation() != null) {
+			checkLocationOfObject(update.getLocation());
 			objectEntity.setLocation_lat(update.getLocation().getLat());
 			objectEntity.setLocation_lng(update.getLocation().getLng());
 		}

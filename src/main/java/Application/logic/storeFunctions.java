@@ -17,16 +17,20 @@ public class storeFunctions {
 		String storeId  = "S"+StoreNumber;
 		String superApp = userId.getSuperAPP();
 		String email = userId.getEmail();
-		BoundaryObject StoreObject =  restClient.get().uri("/object/{id}"
-				+ "?userSuperApp ={userSuperapp}&userEmail = {superUser@aa.com}",
+		//fix url
+		BoundaryObject StoreObject =  restClient.get().uri("/objects/{superapp}/{id}"
+				+ "?userSuperApp={userSuperapp}&email={email}",
+				superApp,
 				storeId,
 				superApp , 
 				email ).
 				retrieve().body(BoundaryObject.class);
 		
-		String benefitId  = "S"+benefitNumber;
-		BoundaryObject benefitObject =  restClient.get().uri("/object/{id}"
-				+ "?userSuperApp ={userSuperapp}&userEmail = {superUser@aa.com}",
+		String benefitId  = "B"+benefitNumber;
+		//fix url
+		BoundaryObject benefitObject =  restClient.get().uri("/objects/{superapp}/{id}"
+				+ "?userSuperApp={userSuperapp}&email={email}",
+				superApp,
 				benefitId,
 				superApp , 
 				email ).
@@ -38,11 +42,14 @@ public class storeFunctions {
 		objectDetails.put("listOfBenefitOfStore", objectDetails);
 		StoreObject.setObjectDetails(objectDetails);
 		System.out.println("benefit list of store has been updates :"+benefits.toString());
-		StoreObject =  restClient.put().uri("/object/{id}"
-				+ "?userSuperApp ={userSuperapp}&userEmail = {superUser@aa.com}",
-				storeId ,
-				superApp , 
-				email ).
+		
+		//fix url
+		StoreObject =  restClient.put().uri("/objects/{superapp}/{id}"
+				+ "?userSuperApp={userSuperapp}&email={email}",
+				superApp,
+				storeId,
+				superApp, 
+				email).
 				body(StoreObject).
 				retrieve().body(BoundaryObject.class);
 		System.out.println("the updated club: \n"+StoreObject.toString());
@@ -56,8 +63,11 @@ public class storeFunctions {
 		String storeId  = "S"+StoreNumber;
 		String superApp = userId.getSuperAPP();
 		String email = userId.getEmail();
-		BoundaryObject StoreObject =  restClient.get().uri("/object/{id}"
-				+ "?userSuperApp ={userSuperapp}&userEmail = {superUser@aa.com}",
+		//fix url
+		BoundaryObject StoreObject =  restClient.get().uri("/objects"
+				+ "/{superapp}"
+				+ "/{id}"
+				+ "?userSuperApp={userSuperapp}&email={email}",
 				storeId,
 				superApp , 
 				email ).
@@ -65,8 +75,10 @@ public class storeFunctions {
 		List <Integer> benefits = getALiistFromMap(StoreObject.getObjectDetails(), "listOfBenefitOfStore");
 		System.out.println("here are all the benefits in the store: \n\n");
 		for (Integer benefitNumber : benefits) {
-			BoundaryObject benefit =  restClient.get().uri("/object/{id}"
-					+ "?userSuperApp ={userSuperapp}&userEmail = {superUser@aa.com}",
+			//fix url
+			BoundaryObject benefit =  restClient.get().uri("/objects/{superapp}/{id}"
+					+ "?userSuperApp={userSuperapp}&email={email}",
+					superApp,
 					"B"+benefitNumber ,
 					superApp , 
 					email ).

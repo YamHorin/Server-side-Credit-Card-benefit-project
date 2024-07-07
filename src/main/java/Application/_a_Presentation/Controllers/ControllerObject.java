@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import Application._a_Presentation.Exceptions.BoundaryIsNotFoundException;
-import Application.business_logic.Boundaies.BoundaryObject;
+import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.DataService.ServicesObject;
 
 @RestController
@@ -29,7 +29,7 @@ public class ControllerObject {
 	@PostMapping(
 		consumes = MediaType.APPLICATION_JSON_VALUE, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryObject CreateAnObject(@RequestBody BoundaryObject message) {
+	public ObjectBoundary CreateAnObject(@RequestBody ObjectBoundary message) {
 		return this.servicesObject.createObject(message);			
 		
 	}
@@ -38,13 +38,13 @@ public class ControllerObject {
 	@GetMapping(
 		path = { "/{superapp}/{id}" }, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryObject RetrieveAnObject ( 
+	public ObjectBoundary RetrieveAnObject ( 
 			@PathVariable("superapp") String superapp , 
 			@PathVariable("id") String id,
 			@RequestParam("userSuperapp") String userSuperapp , 
 			@RequestParam("userEmail") String email) {
 		
-		Optional<BoundaryObject> demoOp = this.servicesObject
+		Optional<ObjectBoundary> demoOp = this.servicesObject
 			.getSpecificObj(id ,superapp  , userSuperapp , email);
 		
 		if (demoOp.isPresent()) {
@@ -55,7 +55,7 @@ public class ControllerObject {
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryObject[] GetAllObjects(
+	public ObjectBoundary[] GetAllObjects(
 			@RequestParam("userSuperapp") String userSuperapp , 
 			@RequestParam("email") String email,	
 			@RequestParam("size") int size , 
@@ -66,57 +66,57 @@ public class ControllerObject {
 		String id_user = email+" "+userSuperapp;
 		return this.servicesObject
 			.getAllObjects(id_user, size , page)
-			.toArray(new BoundaryObject[0]);
+			.toArray(new ObjectBoundary[0]);
 	}
 	
 	@GetMapping(
 			path = {"/search/byType/{type}"},
 			produces = MediaType.APPLICATION_JSON_VALUE)
-		public BoundaryObject[] searchObjectsByType (
+		public ObjectBoundary[] searchObjectsByType (
 			@PathVariable("type") String type , 
 			@RequestParam("userSuperapp") String superapp ,
 			@RequestParam("userEmail") String email, 
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
-			String id_user = email+" "+superapp;
-			BoundaryObject[] demoOp = this.servicesObject
-				.searchByType(id_user,type, size, page).toArray(new BoundaryObject[0]);
+			String id = email+" "+superapp;	
+			ObjectBoundary[] demoOp = this.servicesObject
+				.searchByType(id,type, size, page).toArray(new ObjectBoundary[0]);
 			return demoOp;
 		}	
 
 	@GetMapping(
 			path = {"/search/byAlias/{alias}"}, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-		public BoundaryObject[] searchObjectsByExactAlias ( 
+		public ObjectBoundary[] searchObjectsByExactAlias ( 
 				@PathVariable("alias") String alias , 
 				@RequestParam("userSuperapp") String superapp , 
 				@RequestParam("userEmail") String email, 
 				@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 				@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
 				String id = email+" "+superapp;	
-				BoundaryObject[] demoOp = this.servicesObject
-					.searchObjectsByExactAlias(id, alias, size, page).toArray(new BoundaryObject[0]);
+				ObjectBoundary[] demoOp = this.servicesObject
+					.searchObjectsByExactAlias(id, alias, size, page).toArray(new ObjectBoundary[0]);
 				return demoOp;
 		}	
 	@GetMapping(
 			path = { "/search/byAliasPattern/{pattern}"}, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-		public BoundaryObject[] searchObjectsByAliasPattern ( 
+		public ObjectBoundary[] searchObjectsByAliasPattern ( 
 				@PathVariable("pattern") String pattern , 
 				@RequestParam("userSuperapp") String superapp , 
 				@RequestParam("userEmail") String email, 
 				@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 				@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
 				String id = email+" "+superapp;
-				BoundaryObject[] demoOp = this.servicesObject
-					.searchObjectsByAliasPattern(id, pattern, size, page).toArray(new BoundaryObject[0]);
+				ObjectBoundary[] demoOp = this.servicesObject
+					.searchObjectsByAliasPattern(id, pattern, size, page).toArray(new ObjectBoundary[0]);
 				return demoOp;
 		}
 	
 	@GetMapping(
 			path = { "/search/byLocation/{lat}/{lng}/{distance}"},
 			produces = MediaType.APPLICATION_JSON_VALUE)
-		public BoundaryObject[] getObjectsInRadius (
+		public ObjectBoundary[] getObjectsInRadius (
 			@PathVariable("lat") double lat , 
 			@PathVariable("lng") double lng , 
 			@PathVariable("distance") double distance ,
@@ -126,8 +126,8 @@ public class ControllerObject {
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
 			String id = email+" "+superapp;
-			BoundaryObject[] demoOp = this.servicesObject
-				.searchByLocation(id, lat, lng, distance ,distanceUnits, size, page).toArray(new BoundaryObject[0]);
+			ObjectBoundary[] demoOp = this.servicesObject
+				.searchByLocation(id, lat, lng, distance ,distanceUnits, size, page).toArray(new ObjectBoundary[0]);
 			return demoOp;
 		}	
 
@@ -138,7 +138,7 @@ public class ControllerObject {
 	public void updateObject (
 			@PathVariable("id") String id,
 			@PathVariable("superapp") String superapp,
-			@RequestBody BoundaryObject update , 
+			@RequestBody ObjectBoundary update , 
 			@RequestParam("userSuperapp") String userSuperapp , 
 			@RequestParam("userEmail") String email) {
 		

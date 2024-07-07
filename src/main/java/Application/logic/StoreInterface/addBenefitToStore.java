@@ -7,9 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
-
-import Application.business_logic.Boundaies.BoundaryCommand;
-import Application.business_logic.Boundaies.BoundaryObject;
+import Application.business_logic.Boundaies.MiniAppCommandBoundary;
+import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.DataService.ServicesObject;
 import Application.logic.MiniappInterface;
 
@@ -27,13 +26,13 @@ private ServicesObject ServicesObject;
 	//number of benefit will be in the detiles map of mini app boundary ....
 	//TODO add jason of miniApp in the drive
 	@Override
-	public List<BoundaryObject> activateCommand(BoundaryCommand miniappCommandBoundary) {
-		BoundaryObject store = null;
+	public List<ObjectBoundary> activateCommand(MiniAppCommandBoundary miniappCommandBoundary) {
+		ObjectBoundary store = null;
 		String storeId = miniappCommandBoundary.getTargetObject().getObjectId().getId();
 		String superApp = miniappCommandBoundary.getTargetObject().getObjectId().getSuperApp();
 		String userSuperapp = miniappCommandBoundary.getInvokedBy().getUserId().getSuperAPP();
 		String email = miniappCommandBoundary.getInvokedBy().getUserId().getEmail();
-		Optional<BoundaryObject> club = this.ServicesObject
+		Optional<ObjectBoundary> club = this.ServicesObject
 		.getSpecificObj(storeId ,superApp  , userSuperapp , email);
 		
 		if (club.isPresent()) {

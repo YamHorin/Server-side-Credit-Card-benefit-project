@@ -28,7 +28,7 @@ import Application._a_Presentation.Exceptions.BoundaryIsNotFilledCorrectExceptio
 import Application._a_Presentation.Exceptions.BoundaryIsNotFoundException;
 import Application._a_Presentation.Exceptions.DeprecationException;
 import Application._a_Presentation.Exceptions.UnauthorizedException;
-import Application.business_logic.Boundaies.BoundaryObject;
+import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.DataService.ServicesObject;
 import Application.business_logic.javaObjects.CreatedBy;
 import Application.business_logic.javaObjects.Location;
@@ -54,7 +54,7 @@ public class DataManagerObject implements ServicesObject {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<BoundaryObject> getSpecificObj(String id, String superApp, String userSuperapp, String email) {
+	public Optional<ObjectBoundary> getSpecificObj(String id, String superApp, String userSuperapp, String email) {
 		if (this.superAppName.compareTo(superApp) != 0)
 			throw new BoundaryIsNotFoundException("super app is not found...");
 		// check what the role of the user
@@ -63,7 +63,7 @@ public class DataManagerObject implements ServicesObject {
 				"Could not find User for update by id: " + id_user));
 		String id_object = id + "__" + superApp;
 		Optional<EntityObject> entityObject;
-		Optional<BoundaryObject> boundaryObject = java.util.Optional.empty();
+		Optional<ObjectBoundary> boundaryObject = java.util.Optional.empty();
 		switch (userEntity.getRole()) {
 			case adm_user:
 				throw new UnauthorizedException("admin can't get a Specific object ");
@@ -95,11 +95,11 @@ public class DataManagerObject implements ServicesObject {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<BoundaryObject> getAllObjects(String id_user, int size, int page) {
+	public List<ObjectBoundary> getAllObjects(String id_user, int size, int page) {
 		// check role
 		EntityUser EntityUser = this.userDao.findById(id_user).orElseThrow(() -> new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id_user));
-		List<BoundaryObject> boundaries = new ArrayList<>();
+		List<ObjectBoundary> boundaries = new ArrayList<>();
 		List<EntityObject> entities;
 		switch (EntityUser.getRole()) {
 			case adm_user:
@@ -133,7 +133,7 @@ public class DataManagerObject implements ServicesObject {
 
 	@Override
 	@Transactional(readOnly = false)
-	public BoundaryObject createObject(BoundaryObject ObjectBoundary) {
+	public ObjectBoundary createObject(ObjectBoundary ObjectBoundary) {
 		// check for null \empty Strings
 		checkStringIsNullOrEmpty(ObjectBoundary.getType(), "type object");
 		checkStringIsNullOrEmpty(ObjectBoundary.getAlias(), "Alias object");
@@ -160,12 +160,12 @@ public class DataManagerObject implements ServicesObject {
 		ObjectBoundary.setCreatedBy(new CreatedBy(ObjectBoundary.getCreatedBy().getUserId().getEmail(), this.superAppName));
 		EntityObject entity = this.DataConvertor.BoundaryObjectTOEntityObject(ObjectBoundary);
 		entity = this.objectDao.save(entity);
-		BoundaryObject rv = this.DataConvertor.EntityObjectTOBoundaryObject(entity);
+		ObjectBoundary rv = this.DataConvertor.EntityObjectTOBoundaryObject(entity);
 		System.err.println("all the data objects server stored: " + rv);
 		return rv;
 	}
 
-	private String makeObjectId(BoundaryObject objectBoundary) {
+	private String makeObjectId(ObjectBoundary objectBoundary) {
 		//also update the id to the last count
 		int counterObjectType = (int) this.objectDao.countByType(objectBoundary.getType());
 		Map<String, Object> objectDetails = new HashMap<>();
@@ -215,7 +215,7 @@ public class DataManagerObject implements ServicesObject {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void updateObj(String id, String superApp, BoundaryObject update, String email, String userSuperapp) {
+	public void updateObj(String id, String superApp, ObjectBoundary update, String email, String userSuperapp) {
 		if (this.superAppName.compareTo(superApp) != 0) {
 			System.err.println("\n" + this.superAppName.compareTo(superApp) + "\n");
 
@@ -275,7 +275,7 @@ public class DataManagerObject implements ServicesObject {
 	}
 
 	// copy to an own function to avoid Repeated code
-	public void updateObjectInAction(EntityObject objectEntity, BoundaryObject update) {
+	public void updateObjectInAction(EntityObject objectEntity, ObjectBoundary update) {
 		if (update.getType() != null)
 			objectEntity.setType(update.getType());
 		if (update.getCreationTimeStamp() != null)
@@ -308,7 +308,7 @@ public class DataManagerObject implements ServicesObject {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<BoundaryObject> searchByType(String id,String type, int size, int page) {
+	public List<ObjectBoundary> searchByType(String id,String type, int size, int page) {
 		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
 		RoleEnumEntity role = userEntity.getRole();
@@ -340,7 +340,7 @@ public class DataManagerObject implements ServicesObject {
 	@Override
 	@Transactional(readOnly = true)
 
-	public List<BoundaryObject> searchObjectsByExactAlias(String id,String alias, int size, int page) {
+	public List<ObjectBoundary> searchObjectsByExactAlias(String id,String alias, int size, int page) {
 		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
 		RoleEnumEntity role = userEntity.getRole();
@@ -370,7 +370,7 @@ public class DataManagerObject implements ServicesObject {
 	@Override
 	@Transactional(readOnly = true)
 
-	public List<BoundaryObject> searchObjectsByAliasPattern(String id,String pattern, int size, int page) {
+	public List<ObjectBoundary> searchObjectsByAliasPattern(String id,String pattern, int size, int page) {
 		
 		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
@@ -400,7 +400,7 @@ public class DataManagerObject implements ServicesObject {
 	@Override
 
 	@Transactional(readOnly = true)
-	public List<BoundaryObject> searchByLocation(String id,double lat, double lng, double distance,String distanceUnits,int size, int page) {
+	public List<ObjectBoundary> searchByLocation(String id,double lat, double lng, double distance,String distanceUnits,int size, int page) {
 		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
 		RoleEnumEntity role = userEntity.getRole();

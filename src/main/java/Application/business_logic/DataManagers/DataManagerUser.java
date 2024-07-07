@@ -18,7 +18,7 @@ import Application.DataAccess.Entities.RoleEnumEntity;
 import Application._a_Presentation.Exceptions.BoundaryIsNotFilledCorrectException;
 import Application._a_Presentation.Exceptions.BoundaryIsNotFoundException;
 import Application._a_Presentation.Exceptions.UnauthorizedException;
-import Application.business_logic.Boundaies.BoundaryUser;
+import Application.business_logic.Boundaies.UserBoundary;
 import Application.business_logic.DataService.ServicesUser;
 import Application.business_logic.javaObjects.UserId;
 @Service
@@ -39,9 +39,9 @@ public class DataManagerUser implements ServicesUser{
 	}
 
 	@Override
-	public Optional<BoundaryUser> getSpecificUser(String id) {
+	public Optional<UserBoundary> getSpecificUser(String id) {
 		Optional <EntityUser> entityUser = this.UserDao.findById(id);
-		Optional<BoundaryUser> boundaryUser = entityUser.map(this.DataConvertor::EntityUserToBoundaryUser);
+		Optional<UserBoundary> boundaryUser = entityUser.map(this.DataConvertor::EntityUserToBoundaryUser);
 		if (boundaryUser.isEmpty())
 			System.err.println("* no user to return");
 		else
@@ -51,7 +51,7 @@ public class DataManagerUser implements ServicesUser{
 
 
 
-	public List<BoundaryUser> getAllUsers(String id, int page, int size) {
+	public List<UserBoundary> getAllUsers(String id, int page, int size) {
 		EntityUser userEntity = this.UserDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
 		RoleEnumEntity role = userEntity.getRole();
@@ -68,7 +68,7 @@ public class DataManagerUser implements ServicesUser{
 	}
 	
 	@Override
-	public BoundaryUser createUser(BoundaryUser UserBoundary) {
+	public UserBoundary createUser(UserBoundary UserBoundary) {
 		System.err.println("\n\n* client requested to store: " + UserBoundary.toString());
 		//check email
 		isValidEmail(UserBoundary.getUserId().getEmail());
@@ -82,7 +82,7 @@ public class DataManagerUser implements ServicesUser{
 		UserBoundary.setUserId(userId);
 		EntityUser entity = this.DataConvertor.BoundaryUserTOEntityUser(UserBoundary);
 		entity = this.UserDao.save(entity);
-		BoundaryUser rv  = this.DataConvertor.EntityUserToBoundaryUser(entity);
+		UserBoundary rv  = this.DataConvertor.EntityUserToBoundaryUser(entity);
 		System.err.println("* server stored: " + rv);
 		return rv;
 	}
@@ -101,7 +101,7 @@ public class DataManagerUser implements ServicesUser{
 	}
 
 	@Override
-	public void updateUser(String id, BoundaryUser update) {
+	public void updateUser(String id, UserBoundary update) {
 		System.out.println("* updating user with id: " + id + ", with the following details: " + update);
 		EntityUser userEntity = this.UserDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));

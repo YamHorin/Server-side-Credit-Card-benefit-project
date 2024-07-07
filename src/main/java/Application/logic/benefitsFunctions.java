@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 import org.springframework.web.client.RestClient;
 
-import Application.business_logic.Boundaies.BoundaryObject;
-import Application.business_logic.Boundaies.BoundaryUser;
+import Application.business_logic.Boundaies.ObjectBoundary;
+import Application.business_logic.Boundaies.UserBoundary;
 import Application.business_logic.javaObjects.CreatedBy;
 import Application.business_logic.javaObjects.UserId;
 
@@ -19,7 +19,7 @@ public class benefitsFunctions {
 		String name = scn.nextLine();
 		System.out.println("benefit description?");
 		String description = scn.nextLine();
-		BoundaryObject benefit = new BoundaryObject();
+		ObjectBoundary benefit = new ObjectBoundary();
 		
 		benefit.setType("benefit");
 		benefit.setAlias(name);
@@ -33,7 +33,7 @@ public class benefitsFunctions {
 				.uri("/objects")
 				.body(benefit)
 				.retrieve()
-				.body(BoundaryObject.class);
+				.body(ObjectBoundary.class);
 		
 		scn.close();
 		System.out.println("we have a ne benefit yeah babyn\n\n"+benefit.toString());

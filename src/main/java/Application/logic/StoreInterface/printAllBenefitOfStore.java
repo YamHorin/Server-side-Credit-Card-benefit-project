@@ -6,9 +6,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
-
-import Application.business_logic.Boundaies.BoundaryCommand;
-import Application.business_logic.Boundaies.BoundaryObject;
+import Application.business_logic.Boundaies.MiniAppCommandBoundary;
+import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.DataService.ServicesObject;
 import Application.logic.MiniappInterface;
 
@@ -25,15 +24,15 @@ public class printAllBenefitOfStore implements MiniappInterface {
 
 
 	@Override
-	public List<BoundaryObject> activateCommand(BoundaryCommand miniappCommandBoundary) {
-		
+	public List<ObjectBoundary> activateCommand(MiniAppCommandBoundary miniappCommandBoundary) {
+
 		String storeId = miniappCommandBoundary.getTargetObject().getObjectId().getId();
 		String superApp = miniappCommandBoundary.getTargetObject().getObjectId().getSuperApp();
 		String userSuperapp = miniappCommandBoundary.getInvokedBy().getUserId().getSuperAPP();
 		String email = miniappCommandBoundary.getInvokedBy().getUserId().getEmail();
 		
-		BoundaryObject boundaryObject = null;
-		Optional<BoundaryObject> store = this.ServicesObject
+		ObjectBoundary boundaryObject = null;
+		Optional<ObjectBoundary> store = this.ServicesObject
 		.getSpecificObj(storeId ,superApp  , userSuperapp , email);
 		
 		if (store.isPresent()) {
@@ -41,9 +40,9 @@ public class printAllBenefitOfStore implements MiniappInterface {
 		}
 		
 		List<Integer> benefits = getAListFromMap(boundaryObject.getObjectDetails(),"listOfBenefitOfClub");
-		List<BoundaryObject> benefits_objects = new ArrayList<>();
+		List<ObjectBoundary> benefits_objects = new ArrayList<>();
 		for (Integer benefit : benefits) {
-			Optional<BoundaryObject> benefitObj =this.ServicesObject.getSpecificObj("B"+benefit, superApp, userSuperapp, email);
+			Optional<ObjectBoundary> benefitObj =this.ServicesObject.getSpecificObj("B"+benefit, superApp, userSuperapp, email);
 			if (benefitObj.isPresent()) {
 				boundaryObject = benefitObj.orElse(null);
 			}

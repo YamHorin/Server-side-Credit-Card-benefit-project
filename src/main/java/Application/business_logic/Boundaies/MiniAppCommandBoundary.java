@@ -11,16 +11,16 @@ import Application.business_logic.javaObjects.TargetObject;
 import java.util.Date;
 import java.util.Map;
 
-public class BoundaryCommand {
+public class MiniAppCommandBoundary {
 
     private CommandId commandId;
     private String command;
     private TargetObject targetObject;
-    private Date invocationTimeStamp;
+    private Date invocationTimestamp;
     private CreatedBy invokedBy;
     private Map<String, Object> commandAttributes;
 
-    public BoundaryCommand() {
+    public MiniAppCommandBoundary() {
     }
 
  
@@ -58,12 +58,12 @@ public class BoundaryCommand {
 
 
     public Date getInvocationTimeStamp() {
-        return invocationTimeStamp;
+        return invocationTimestamp;
     }
 
 
     public void setInvocationTimeStamp(Date invocationTimeStamp) {
-        this.invocationTimeStamp = invocationTimeStamp;
+        this.invocationTimestamp = invocationTimeStamp;
     }
 
 
@@ -93,7 +93,7 @@ public class BoundaryCommand {
                 "commandId=" + commandId +
                 ", command='" + command + '\'' +
                 ", targetObject=" + targetObject +
-                ", invocationTimeStamp=" + invocationTimeStamp +
+                ", invocationTimeStamp=" + invocationTimestamp +
                 ", invokedBy=" + invokedBy +
                 ", commandAttributes=" + commandAttributes +
                 '}';

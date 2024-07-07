@@ -8,9 +8,9 @@ import Application.DataAccess.Entities.EntityCommand;
 import Application.DataAccess.Entities.EntityObject;
 import Application.DataAccess.Entities.EntityUser;
 import Application.DataAccess.Entities.RoleEnumEntity;
-import Application.business_logic.Boundaies.BoundaryCommand;
-import Application.business_logic.Boundaies.BoundaryObject;
-import Application.business_logic.Boundaies.BoundaryUser;
+import Application.business_logic.Boundaies.MiniAppCommandBoundary;
+import Application.business_logic.Boundaies.ObjectBoundary;
+import Application.business_logic.Boundaies.UserBoundary;
 import Application.business_logic.Boundaies.RoleEnumBoundary;
 import Application.business_logic.javaObjects.CommandId;
 import Application.business_logic.javaObjects.CreatedBy;
@@ -23,9 +23,9 @@ import Application.business_logic.javaObjects.UserId;
 @Component
 public class DataConvertor {
 
-    public BoundaryUser EntityUserToBoundaryUser(EntityUser entity)
+    public UserBoundary EntityUserToBoundaryUser(EntityUser entity)
     {
-    	BoundaryUser boun = new BoundaryUser();
+    	UserBoundary boun = new UserBoundary();
     	RoleEnumBoundary role =   RoleEnumBoundary.valueOf(entity.getRole().name().toUpperCase());
     	boun.setRole(role);
     	boun.setAvatar(entity.getAvatar());
@@ -36,9 +36,9 @@ public class DataConvertor {
     	boun.setUserName(entity.getUserName());
     	return boun;
     }
-    public  BoundaryObject EntityObjectTOBoundaryObject (EntityObject entity)
+    public  ObjectBoundary EntityObjectTOBoundaryObject (EntityObject entity)
     {
-    	BoundaryObject bounObj = new BoundaryObject();
+    	ObjectBoundary bounObj = new ObjectBoundary();
     	bounObj.setActive(entity.getActive());
     	bounObj.setAlias(entity.getAlias());
     	bounObj.setCreatedBy(new CreatedBy(UserIDFromStringId(entity.getCreatedBy())));
@@ -57,9 +57,9 @@ public class DataConvertor {
     	return bounObj;
     	
     }
-    public BoundaryCommand EntityCommandToBoundaryCommand (EntityCommand Entity)
+    public MiniAppCommandBoundary EntityCommandToBoundaryCommand (EntityCommand Entity)
 	{
-		BoundaryCommand boun = new BoundaryCommand();
+		MiniAppCommandBoundary boun = new MiniAppCommandBoundary();
 		boun.setCommand(Entity.getCommand());
 		boun.setCommandAttributes(Entity.getCommandAttributes());
 		boun.setCommandId(makeCommandIdFromString(Entity.getCommandId()));
@@ -77,7 +77,7 @@ public class DataConvertor {
 	}
     
     
-    public EntityCommand BoundaryCommandToEntityCommand(BoundaryCommand bCommand) {
+    public EntityCommand BoundaryCommandToEntityCommand(MiniAppCommandBoundary bCommand) {
         EntityCommand entity = new EntityCommand();
         entity.setCommand(bCommand.getCommand());
         entity.setCommandId(makeStringFromCommandId(bCommand.getCommandId()));
@@ -92,7 +92,7 @@ public class DataConvertor {
         return entity;
     }
     
-    public EntityObject BoundaryObjectTOEntityObject(BoundaryObject bObject) {
+    public EntityObject BoundaryObjectTOEntityObject(ObjectBoundary bObject) {
     	EntityObject objectEntity = new EntityObject();
         objectEntity.setObjectID(bObject.getObjectID().getId() + "__" + bObject.getObjectID().getSuperApp());
         objectEntity.setType(bObject.getType());
@@ -109,7 +109,7 @@ public class DataConvertor {
         return objectEntity;
     }
     
-	public EntityUser BoundaryUserTOEntityUser(BoundaryUser bUser) {
+	public EntityUser BoundaryUserTOEntityUser(UserBoundary bUser) {
 		EntityUser userEntity = new EntityUser();
 		userEntity.setId(stringIdFromUserID(bUser.getUserId()));
 		RoleEnumEntity  role = RoleEnumEntity.valueOf(bUser.getRole().name().toLowerCase());

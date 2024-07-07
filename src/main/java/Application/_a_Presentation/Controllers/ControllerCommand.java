@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import Application.business_logic.Boundaies.BoundaryCommand;
-import Application.business_logic.Boundaies.BoundaryObject;
+import Application.business_logic.Boundaies.ObjectBoundary;
+import Application.business_logic.Boundaies.MiniAppCommandBoundary;
 import Application.business_logic.DataService.ServicesCommand;
 
 @RestController
@@ -25,9 +24,10 @@ public class ControllerCommand {
 		consumes = MediaType.APPLICATION_JSON_VALUE, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
 
-	public BoundaryObject[] store_command(@PathVariable("MiniAppName") String idMiniAppName ,@RequestBody BoundaryCommand message) {
+	public ObjectBoundary[] store_command(@PathVariable("MiniAppName") String idMiniAppName ,@RequestBody MiniAppCommandBoundary message) {
 
 			return this.ServicesCommand.createMiniAppCommand(message , idMiniAppName);
+
 	
 		
 	}

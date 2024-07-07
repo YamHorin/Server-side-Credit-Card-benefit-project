@@ -8,8 +8,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import Application._a_Presentation.Exceptions.BoundaryIsNotFoundException;
 import Application.business_logic.*;
-import Application.business_logic.Boundaies.BoundaryObject;
-import Application.business_logic.Boundaies.BoundaryUser;
+import Application.business_logic.Boundaies.ObjectBoundary;
+import Application.business_logic.Boundaies.UserBoundary;
 import Application.business_logic.Boundaies.NewUserBoundary;
 import Application.business_logic.Boundaies.RoleEnumBoundary;
 import Application.business_logic.javaObjects.CreatedBy;
@@ -60,7 +60,7 @@ class Applicationtests2 {
             user.setAvatar("houj");
             
             // Post a app user 
-            this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+            this.restClientUser.post().body(user).retrieve().body(UserBoundary.class);
             System.out.println("Posted ADM_USER: " + username);
 
 
@@ -105,13 +105,13 @@ class Applicationtests2 {
 		user.setEmail(username+"@aa.com");
 		user.setAvatar("houj");
 		//post a super app user 
-		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
-		List<BoundaryObject> all = new ArrayList<>();
+		this.restClientUser.post().body(user).retrieve().body(UserBoundary.class);
+		List<ObjectBoundary> all = new ArrayList<>();
 		String type = "type_test";
 		String alias = "alias_test";
 		String createdBy = username+"@aa.com";
 		for (int i = 0; i < 4; i++) {
-			BoundaryObject obj = new BoundaryObject();
+			ObjectBoundary obj = new ObjectBoundary();
 			obj.setActive(true);
 			obj.setLocation(new Location(0.2+i , 0.2+i));
 			obj.setType(type+" "+i);
@@ -125,11 +125,11 @@ class Applicationtests2 {
 			obj.setObjectDetails(Collections.singletonMap("person", "Jane #" + i));
 			// POST Objects to server
 
-			obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
+			obj = this.restClientObj.post().body(obj).retrieve().body(ObjectBoundary.class);
 			all.add(obj);
 		}
 		for (int i = 0; i < 4; i++) {
-			BoundaryObject obj = new BoundaryObject();
+			ObjectBoundary obj = new ObjectBoundary();
 			obj.setActive(false);
 			obj.setLocation(new Location(0.2+i , 0.2+i));
 			obj.setType(type+" "+i);
@@ -143,15 +143,15 @@ class Applicationtests2 {
 			obj.setObjectDetails(Collections.singletonMap("non_active", "non_active #" + i));
 			// POST Objects to server
 
-			obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
+			obj = this.restClientObj.post().body(obj).retrieve().body(ObjectBoundary.class);
 			all.add(obj);
 		}
 
 		// /superapp/objects?userSuperApp ={userSuperApp}&userEmail = {email}&size = {size}&page = {page}
 		// WHEN I invoke GET /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}&size = {10}&page = {1}
-		BoundaryObject [] actual = this.restClientObj.get().uri("?userSuperapp={userSuperApp}&email={email}&size={size}&page={page}"
+		ObjectBoundary [] actual = this.restClientObj.get().uri("?userSuperapp={userSuperApp}&email={email}&size={size}&page={page}"
 				,this.superAppName ,username+"@aa.com" , 10,0 )
-				.retrieve().body(BoundaryObject [].class);
+				.retrieve().body(ObjectBoundary [].class);
 		
 		// THEN the server responds with the same 8 objects generated above
 		assertThat(actual).hasSize(8)
@@ -175,7 +175,7 @@ class Applicationtests2 {
 		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 		user.setEmail(username+"@aa.com");
 		user.setAvatar("houj");
-		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+		this.restClientUser.post().body(user).retrieve().body(UserBoundary.class);
 
 		
 		String username1 = "miniAppUser";
@@ -186,13 +186,13 @@ class Applicationtests2 {
 		user1.setAvatar("p");
 		System.err.println(user1.toString());
 		//post a super app user 
-		this.restClientUser.post().body(user1).retrieve().body(BoundaryUser.class);
-		List<BoundaryObject> actives = new ArrayList<>();
+		this.restClientUser.post().body(user1).retrieve().body(UserBoundary.class);
+		List<ObjectBoundary> actives = new ArrayList<>();
 		String type = "type_test";
 		String alias = "alias_test";
 		String createdBy = username+"@aa.com";
 		for (int i = 0; i < 4; i++) {
-			BoundaryObject obj = new BoundaryObject();
+			ObjectBoundary obj = new ObjectBoundary();
 			obj.setActive(true);
 			obj.setLocation(new Location(0.2+i , 0.2+i));
 			obj.setType(type+" "+i);
@@ -206,12 +206,12 @@ class Applicationtests2 {
 			obj.setObjectDetails(Collections.singletonMap("person", "Jane #" + i));
 			// POST Objects to server
 
-			obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
+			obj = this.restClientObj.post().body(obj).retrieve().body(ObjectBoundary.class);
 			actives.add(obj);
 		}
-		List<BoundaryObject> non_actives = new ArrayList<>();
+		List<ObjectBoundary> non_actives = new ArrayList<>();
 		for (int i = 0; i < 4; i++) {
-			BoundaryObject obj = new BoundaryObject();
+			ObjectBoundary obj = new ObjectBoundary();
 			obj.setActive(false);
 			obj.setLocation(new Location(0.2+i , 0.2+i));
 			obj.setType(type+" "+i);
@@ -225,15 +225,15 @@ class Applicationtests2 {
 			obj.setObjectDetails(Collections.singletonMap("non_active", "non_active #" + i));
 			// POST Objects to server
 
-			obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
+			obj = this.restClientObj.post().body(obj).retrieve().body(ObjectBoundary.class);
 			non_actives.add(obj);
 		}
 		// /superapp/objects?userSuperApp ={userSuperApp}&userEmail = {email}&size = {size}&page = {page}
 		// WHEN I invoke GET /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}&size = {10}&page = {1}
 		//?userSuperapp=2024B.gal.angel&email=miniAppUser%40aa.com&size=10&page=0
-		BoundaryObject [] actual = this.restClientObj.get().uri("?userSuperapp={userSuperApp}&email={email}&size={size}&page={page}"
+		ObjectBoundary [] actual = this.restClientObj.get().uri("?userSuperapp={userSuperApp}&email={email}&size={size}&page={page}"
 				,this.superAppName ,username1+"@aa.com" , 10,0 )
-				.retrieve().body(BoundaryObject [].class);
+				.retrieve().body(ObjectBoundary [].class);
 		
 		// THEN the server responds with  4 objects
 		assertThat(actual).hasSize(4)
@@ -257,7 +257,7 @@ class Applicationtests2 {
 		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 		user.setEmail(username+"@aa.com");
 		user.setAvatar("houj");
-		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+		this.restClientUser.post().body(user).retrieve().body(UserBoundary.class);
 
 		String username1 = "miniAppUser";
 		NewUserBoundary user1  = new NewUserBoundary();
@@ -266,12 +266,12 @@ class Applicationtests2 {
 		
 		user1.setEmail(username1+"@aa.com");
 		
-		this.restClientUser.post().body(user1).retrieve().body(BoundaryUser.class);
+		this.restClientUser.post().body(user1).retrieve().body(UserBoundary.class);
 		String type = "type_test";
 		String alias = "alias_test";
 		String createdBy = username+"@aa.com";
 		
-		BoundaryObject obj = new BoundaryObject();
+		ObjectBoundary obj = new ObjectBoundary();
 		obj.setActive(true);
 		obj.setLocation(new Location(0.2 , 0.2));
 		obj.setType(type+" ");
@@ -284,14 +284,14 @@ class Applicationtests2 {
 		obj.setCreatedBy(CreatedBy);
 		obj.setObjectDetails(Collections.singletonMap("person", "Jane #"));
 		// POST Objects to server
-		obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
+		obj = this.restClientObj.post().body(obj).retrieve().body(ObjectBoundary.class);
 		
 
 		// WHEN I invoke GET on the true active object  /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}
 		// THEN I get the active object
 
-		BoundaryObject obj_return  = this.restClientObj.get().uri("/{superapp}/{id}?userSuperapp={userSuperApp}&email={email}",
-				this.superAppName,obj.getObjectID().getId(),this.superAppName ,username1+"@aa.com").retrieve().body(BoundaryObject.class);
+		ObjectBoundary obj_return  = this.restClientObj.get().uri("/{superapp}/{id}?userSuperapp={userSuperApp}&email={email}",
+				this.superAppName,obj.getObjectID().getId(),this.superAppName ,username1+"@aa.com").retrieve().body(ObjectBoundary.class);
 		assertThat(obj_return).isNotNull();
 		assertThat(obj_return.getObjectID().getId()).isEqualTo(obj.getObjectID().getId());
 	}
@@ -310,12 +310,12 @@ class Applicationtests2 {
 		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 		user.setEmail(username+"@aa.com");
 		
-		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+		this.restClientUser.post().body(user).retrieve().body(UserBoundary.class);
 		String type = "type_test";
 		String alias = "alias_test";
 		String createdBy = username+"@aa.com";
 		
-		BoundaryObject obj = new BoundaryObject();
+		ObjectBoundary obj = new ObjectBoundary();
 		obj.setActive(true);
 		obj.setLocation(new Location(0.2 , 0.2));
 		obj.setType(type+" ");
@@ -328,9 +328,9 @@ class Applicationtests2 {
 		obj.setCreatedBy(CreatedBy);
 		obj.setObjectDetails(Collections.singletonMap("person", "Jane #"));
 		// POST Objects to server
-		obj = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
+		obj = this.restClientObj.post().body(obj).retrieve().body(ObjectBoundary.class);
 		
-		BoundaryObject obj1 = new BoundaryObject();
+		ObjectBoundary obj1 = new ObjectBoundary();
 		obj1.setActive(false);
 		obj1.setLocation(new Location(0.2 , 0.2));
 		obj1.setType(type+" ");
@@ -343,13 +343,13 @@ class Applicationtests2 {
 		obj1.setCreatedBy(CreatedBy1);
 		obj1.setObjectDetails(Collections.singletonMap("person", "Jane #"));
 		// POST Objects to server
-		obj1 = this.restClientObj.post().body(obj1).retrieve().body(BoundaryObject.class);
+		obj1 = this.restClientObj.post().body(obj1).retrieve().body(ObjectBoundary.class);
 		
 		// WHEN I invoke GET on the false active object  /superapp/objects?userSuperApp ={2024B.gal.angel}&userEmail = {superUser@aa.com}
 		// THEN I get an object
 
-		BoundaryObject obj_return  = this.restClientObj.get().uri("/{superapp}/{id}?userSuperapp={userSuperapp}&email={email}",
-				this.superAppName,obj.getObjectID().getId(),this.superAppName ,username+"@aa.com").retrieve().body(BoundaryObject.class);
+		ObjectBoundary obj_return  = this.restClientObj.get().uri("/{superapp}/{id}?userSuperapp={userSuperapp}&email={email}",
+				this.superAppName,obj.getObjectID().getId(),this.superAppName ,username+"@aa.com").retrieve().body(ObjectBoundary.class);
 		assertThat(obj_return).isNotNull();
 		assertThat(obj_return.getObjectID().getId()).isEqualTo(obj.getObjectID().getId());
 	}

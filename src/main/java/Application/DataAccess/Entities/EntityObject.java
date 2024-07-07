@@ -13,7 +13,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 
 import Application.DataAccess.ConverterBetweenMapAndString;
-import Application.business_logic.Boundaies.BoundaryObject;
+import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.javaObjects.CreatedBy;
 import Application.business_logic.javaObjects.ObjectId;
 

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.web.client.RestClient;
 
-import Application.business_logic.Boundaies.BoundaryObject;
+import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.javaObjects.UserId;
 
 public class storeFunctions {
@@ -18,23 +18,23 @@ public class storeFunctions {
 		String superApp = userId.getSuperAPP();
 		String email = userId.getEmail();
 		//fix url
-		BoundaryObject StoreObject =  restClient.get().uri("/objects/{superapp}/{id}"
+		ObjectBoundary StoreObject =  restClient.get().uri("/objects/{superapp}/{id}"
 				+ "?userSuperApp={userSuperapp}&email={email}",
 				superApp,
 				storeId,
 				superApp , 
 				email ).
-				retrieve().body(BoundaryObject.class);
+				retrieve().body(ObjectBoundary.class);
 		
 		String benefitId  = "B"+benefitNumber;
 		//fix url
-		BoundaryObject benefitObject =  restClient.get().uri("/objects/{superapp}/{id}"
+		ObjectBoundary benefitObject =  restClient.get().uri("/objects/{superapp}/{id}"
 				+ "?userSuperApp={userSuperapp}&email={email}",
 				superApp,
 				benefitId,
 				superApp , 
 				email ).
-				retrieve().body(BoundaryObject.class);
+				retrieve().body(ObjectBoundary.class);
 		
 		List <Integer> benefits = getALiistFromMap(StoreObject.getObjectDetails(),"listOfBenefitOfStore");
 		benefits.add(benefitNumber);
@@ -51,7 +51,7 @@ public class storeFunctions {
 				superApp, 
 				email).
 				body(StoreObject).
-				retrieve().body(BoundaryObject.class);
+				retrieve().body(ObjectBoundary.class);
 		System.out.println("the updated club: \n"+StoreObject.toString());
 	}
 	
@@ -64,25 +64,25 @@ public class storeFunctions {
 		String superApp = userId.getSuperAPP();
 		String email = userId.getEmail();
 		//fix url
-		BoundaryObject StoreObject =  restClient.get().uri("/objects"
+		ObjectBoundary StoreObject =  restClient.get().uri("/objects"
 				+ "/{superapp}"
 				+ "/{id}"
 				+ "?userSuperApp={userSuperapp}&email={email}",
 				storeId,
 				superApp , 
 				email ).
-				retrieve().body(BoundaryObject.class);
+				retrieve().body(ObjectBoundary.class);
 		List <Integer> benefits = getALiistFromMap(StoreObject.getObjectDetails(), "listOfBenefitOfStore");
 		System.out.println("here are all the benefits in the store: \n\n");
 		for (Integer benefitNumber : benefits) {
 			//fix url
-			BoundaryObject benefit =  restClient.get().uri("/objects/{superapp}/{id}"
+			ObjectBoundary benefit =  restClient.get().uri("/objects/{superapp}/{id}"
 					+ "?userSuperApp={userSuperapp}&email={email}",
 					superApp,
 					"B"+benefitNumber ,
 					superApp , 
 					email ).
-					retrieve().body(BoundaryObject.class);
+					retrieve().body(ObjectBoundary.class);
 			System.out.println("benefit:"+benefit.getAlias()+"\n"+"description: "
 					+benefit.getObjectDetails().get("description")+"\n");
 		}

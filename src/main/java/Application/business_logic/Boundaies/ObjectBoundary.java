@@ -12,17 +12,17 @@ import Application.business_logic.javaObjects.ObjectId;
 
 import java.util.Map;
 
-public class BoundaryObject {
-    private ObjectId objectID;
+public class ObjectBoundary {
+    private ObjectId objectId;
     private String type;
     private String alias;
     private Location location;
     private Boolean active;
-    private Date creationTimeStamp;
+    private Date creationTimestamp;
     private CreatedBy createdBy;
     private Map<String, Object> objectDetails;
 
-    public BoundaryObject() {
+    public ObjectBoundary() {
     }
 
 
@@ -36,11 +36,11 @@ public class BoundaryObject {
 	}
 
 	public ObjectId getObjectID() {
-        return objectID;
+        return objectId;
     }
 
     public void setObjectID(ObjectId objectID) {
-        this.objectID = objectID;
+        this.objectId = objectID;
     }
 
     public String getType() {
@@ -64,11 +64,11 @@ public class BoundaryObject {
     }
 
     public Date getCreationTimeStamp() {
-        return creationTimeStamp;
+        return creationTimestamp;
     }
 
     public void setCreationTimeStamp(Date creationTimeStamp) {
-        this.creationTimeStamp = creationTimeStamp;
+        this.creationTimestamp = creationTimeStamp;
     }
 
     public CreatedBy getCreatedBy() {
@@ -96,12 +96,12 @@ public class BoundaryObject {
     @Override
     public String toString() {
         return "ObjectBoundary{" +
-                "objectID=" + objectID.toString() +
+                "objectID=" + objectId.toString() +
                 ", type='" + type + '\'' +
                 ", alias='" + alias + '\'' +
                 ", loction='" + location + '\'' +
                 ", active=" + active +
-                ", creationTimeStamp=" + creationTimeStamp +
+                ", creationTimeStamp=" + creationTimestamp +
                 ", createdBy=" + createdBy.toString() +
                 ", objectDetails=" + objectDetails +
                 '}';

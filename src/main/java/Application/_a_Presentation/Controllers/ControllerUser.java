@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import Application._a_Presentation.Exceptions.BoundaryIsNotFoundException;
-import Application.business_logic.Boundaies.BoundaryUser;
+import Application.business_logic.Boundaies.UserBoundary;
 import Application.business_logic.Boundaies.NewUserBoundary;
 import Application.business_logic.DataService.ServicesUser;
 
@@ -29,8 +29,8 @@ public class ControllerUser {
 	@PostMapping(
 		consumes = MediaType.APPLICATION_JSON_VALUE, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryUser createUser(@RequestBody NewUserBoundary message) {
-		BoundaryUser user = message.newUserToUserBoundary();
+	public UserBoundary createUser(@RequestBody NewUserBoundary message) {
+		UserBoundary user = message.newUserToUserBoundary();
 		return this.servicesUser.createUser(user);			
 		
 	}
@@ -38,9 +38,9 @@ public class ControllerUser {
 	@GetMapping(
 		path = { "/login/{superapp}/{email}" }, 
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryUser getSpecificUser(@PathVariable("email") String email ,@PathVariable("superapp") String superapp ) {
+	public UserBoundary getSpecificUser(@PathVariable("email") String email ,@PathVariable("superapp") String superapp ) {
 		String id  = email+" "+superapp;
-		Optional<BoundaryUser> User = this.servicesUser
+		Optional<UserBoundary> User = this.servicesUser
 			.getSpecificUser(id);
 		
 		if (User.isPresent()) {
@@ -61,7 +61,7 @@ public class ControllerUser {
 		path = {"/{superapp}/{userEmail}"},
 		consumes = {MediaType.APPLICATION_JSON_VALUE})
 	public void updateUser (@PathVariable("userEmail") String email ,@PathVariable("superapp") String superapp, 
-			@RequestBody BoundaryUser update) {
+			@RequestBody UserBoundary update) {
 		String id  = email+" "+superapp;
 		this.servicesUser
 			.updateUser(id, update);

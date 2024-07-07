@@ -25,8 +25,8 @@ import Application.DataAccess.Entities.RoleEnumEntity;
 import Application._a_Presentation.Exceptions.BoundaryIsNotFilledCorrectException;
 import Application._a_Presentation.Exceptions.BoundaryIsNotFoundException;
 import Application._a_Presentation.Exceptions.UnauthorizedException;
-import Application.business_logic.Boundaies.BoundaryCommand;
-import Application.business_logic.Boundaies.BoundaryObject;
+import Application.business_logic.Boundaies.MiniAppCommandBoundary;
+import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.DataService.ServicesCommand;
 import Application.business_logic.javaObjects.CommandId;
 import Application.business_logic.javaObjects.ObjectId;
@@ -68,9 +68,9 @@ public class DataManagerCommand implements ServicesCommand{
 	@Override
 	@Transactional(readOnly = true)
 
-	public Optional<BoundaryCommand> getSpecificMiniAppCommand(String id) {
+	public Optional<MiniAppCommandBoundary> getSpecificMiniAppCommand(String id) {
 		Optional <EntityCommand> entityCommand = this.miniAppCommandDao.findById(id);
-		Optional<BoundaryCommand> boundaryCommand = entityCommand.map(this.DataConvertor::EntityCommandToBoundaryCommand);
+		Optional<MiniAppCommandBoundary> boundaryCommand = entityCommand.map(this.DataConvertor::EntityCommandToBoundaryCommand);
 		if (boundaryCommand.isEmpty())
 			System.err.println("* no mini app command to return");
 		else
@@ -82,7 +82,7 @@ public class DataManagerCommand implements ServicesCommand{
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<BoundaryCommand> getAllMiniAppsCommands(String id, int page, int size) {
+	public List<MiniAppCommandBoundary> getAllMiniAppsCommands(String id, int page, int size) {
 		EntityUser userEntity = this.userDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
 		RoleEnumEntity role = userEntity.getRole();
@@ -103,7 +103,7 @@ public class DataManagerCommand implements ServicesCommand{
 	@Override
 	@Transactional(readOnly = true)
 	//get all mini app commands by a specific mini app 
-	public List<BoundaryCommand> getAllCommandsOfSpecificMiniApp(String id, String idUser, int page, int size) {
+	public List<MiniAppCommandBoundary> getAllCommandsOfSpecificMiniApp(String id, String idUser, int page, int size) {
 		EntityUser userEntity = this.userDao.findById(idUser).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + idUser));
 		RoleEnumEntity role = userEntity.getRole();
@@ -123,7 +123,7 @@ public class DataManagerCommand implements ServicesCommand{
 	@Override
 	@Transactional(readOnly = false)
 
-	public BoundaryObject[] createMiniAppCommand(BoundaryCommand CommandBoundary ,String idMiniAppName) {
+	public ObjectBoundary[] createMiniAppCommand(MiniAppCommandBoundary CommandBoundary ,String idMiniAppName) {
 		//checks if the object that the command does is in the table and if the user is in the table
 		String idObj = CommandBoundary.getTargetObject().getObjectId().getId()+"__"+this.superAppName;
 		EntityObject EntityObject = this.objDao.findById(idObj).orElseThrow(()->new BoundaryIsNotFoundException(
@@ -153,7 +153,7 @@ public class DataManagerCommand implements ServicesCommand{
 		EntityCommand entity = this.DataConvertor.BoundaryCommandToEntityCommand(CommandBoundary);
 		entity = this.miniAppCommandDao.save(entity);
 		System.err.println("***\n"+entity.toString()+"\n\n\n");
-		BoundaryCommand rv  = DataConvertor.EntityCommandToBoundaryCommand(entity);
+		MiniAppCommandBoundary rv  = DataConvertor.EntityCommandToBoundaryCommand(entity);
 		command = rv.getCommandId();
 		command.setSuperApp(this.superAppName);
 		rv.setCommandId(command);
@@ -189,7 +189,7 @@ public class DataManagerCommand implements ServicesCommand{
 		this.miniAppNameDefault = miniAppNameDefault;
 	}
 
-	public BoundaryObject[] invokeCommand(BoundaryCommand CommandBoundary)
+	public ObjectBoundary[] invokeCommand(MiniAppCommandBoundary CommandBoundary)
 	{
 		MiniappInterface app = null;
 		String command = CommandBoundary.getCommand();
@@ -199,7 +199,7 @@ public class DataManagerCommand implements ServicesCommand{
 		} catch (Exception e) {
 			throw new BoundaryIsNotFilledCorrectException(" command is not found!!!");
 		}
-		return app.activateCommand(CommandBoundary).toArray(new BoundaryObject[0] );
+		return app.activateCommand(CommandBoundary).toArray(new ObjectBoundary[0] );
 	}
 
 

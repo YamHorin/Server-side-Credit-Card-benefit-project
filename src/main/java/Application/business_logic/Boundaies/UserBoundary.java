@@ -4,14 +4,14 @@ import Application.DataAccess.Entities.EntityUser;
 import Application.DataAccess.Entities.RoleEnumEntity;
 import Application.business_logic.javaObjects.UserId;
 
-public class BoundaryUser {
+public class UserBoundary {
 
 	private UserId userId;
 	private RoleEnumBoundary role;
-	private String userName;
+	private String username;
 	private String avatar;
 
-	public BoundaryUser() {
+	public UserBoundary() {
 	}
 
 
@@ -33,11 +33,11 @@ public class BoundaryUser {
 	}
 
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.username = userName;
 	}
 
 	public String getAvatar() {
@@ -50,7 +50,7 @@ public class BoundaryUser {
 
 	@Override
 	public String toString() {
-		return "UserBoundary{" + "userId=" + userId.toString()+"\n\n" + ", role=" + role + ", userName='" + userName + '\'' + ", avatar='"
+		return "UserBoundary{" + "userId=" + userId.toString()+"\n\n" + ", role=" + role + ", userName='" + username + '\'' + ", avatar='"
 				+ avatar + '\'' + '}';
 	}
 

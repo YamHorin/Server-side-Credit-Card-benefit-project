@@ -105,20 +105,15 @@ public class DataManagerUser implements ServicesUser{
 		System.out.println("* updating user with id: " + id + ", with the following details: " + update);
 		EntityUser userEntity = this.UserDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
-		//check email
-		isValidEmail(update.getUserId().getEmail());
+
 		//check for null \empty Strings
 		checkStringIsNullOrEmpty(update.getUserName(), "userName");
 		checkStringIsNullOrEmpty(update.getAvatar(), "avatar");
+		
+		
 		if (update.getUserId().getEmail()!=null)
-		{
-			String id_new = update.getUserId().getEmail() + " " + this.name_super_app;
-			if (!userEntity.getId().equalsIgnoreCase(id_new))
-			{
-				this.UserDao.deleteById(id);
-				userEntity.setId(update.getUserId().getEmail() + " " + this.name_super_app);				
-			}
-		}
+			throw new UnauthorizedException("can't update email for users :( ");
+		
 		if (update.getRole()!=null)
 			userEntity.setRole(RoleEnumEntity.valueOf(update.getRole().name().toLowerCase()));
 		if (update.getUserName()!=null)

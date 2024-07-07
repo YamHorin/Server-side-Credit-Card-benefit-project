@@ -232,17 +232,11 @@ public class DataManagerObject implements ServicesObject {
 		switch (EntityUser.getRole()) {
 			case adm_user:
 				throw new UnauthorizedException("admin can't update object");
-
 			case miniapp_user:
-				if (objectEntity.getActive() == false)
-					throw new BoundaryIsNotFoundException("Could not find object for update by id: " + id2);
-				updateObjectInAction(objectEntity, update);
-				break;
+				throw new UnauthorizedException("mini app user can't update object");
 			case superapp_user:
 				updateObjectInAction(objectEntity, update);
 				break;
-			case undetermined:
-				throw new UnauthorizedException("undetermined can't update object");
 			default:
 				break;
 

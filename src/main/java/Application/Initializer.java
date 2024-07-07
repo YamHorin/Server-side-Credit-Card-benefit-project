@@ -1,6 +1,7 @@
 package Application;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -85,7 +86,7 @@ public class Initializer implements CommandLineRunner{
 			return this.ServicesUser.createUser(user);
 		}).forEach(user->System.err.println(user.toString()));
 
-		boolean isATest = true;
+		boolean isATest = false;
 		
 		if (isATest)
 			testRunSprint3(names);
@@ -237,7 +238,7 @@ public class Initializer implements CommandLineRunner{
 			Command.setCommandId(CommandId);
 			Command.setInvokedBy(CreatedBy);
 			Command.setTargetObject(new TargetObject(new ObjectId(ids_of_objects.get(2))));
-			System.err.println(this.ServicesCommand.createMiniAppCommand(Command ,"test mini app").toString()); 
+			System.err.println(Arrays.toString(this.ServicesCommand.createMiniAppCommand(Command ,"test mini app"))); 
 		}
 	}
 

@@ -34,13 +34,13 @@ public class printAllClubs implements MiniappInterface{
 		String id = miniappCommandBoundary.getInvokedBy().getUserId().getEmail()+" "+
 				miniappCommandBoundary.getInvokedBy().getUserId().getSuperAPP();
 		String command = miniappCommandBoundary.getCommand();
-		System.err.println("the client wants: "+command);
 		int numberBenefits = 10;
 		//TODO how much clubs to shoe the user????? set defult to 10?
 		List<ObjectBoundary> list_clubs = this.ServicesObject.searchByType(id, 
 				"club", 
 				numberBenefits, 
 				0);
+		System.err.println(list_clubs.toString());
 		return list_clubs;
 		
 	}

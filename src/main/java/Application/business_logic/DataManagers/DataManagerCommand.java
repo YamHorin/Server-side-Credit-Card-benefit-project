@@ -199,7 +199,8 @@ public class DataManagerCommand implements ServicesCommand{
 		} catch (Exception e) {
 			throw new BoundaryIsNotFilledCorrectException(" command is not found!!!");
 		}
-		return app.activateCommand(CommandBoundary).toArray(new ObjectBoundary[0] );
+		ObjectBoundary[] r = app.activateCommand(CommandBoundary).toArray(new ObjectBoundary[0]);
+				return r;
 	}
 
 

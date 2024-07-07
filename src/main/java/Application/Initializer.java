@@ -85,7 +85,7 @@ public class Initializer implements CommandLineRunner{
 			return this.ServicesUser.createUser(user);
 		}).forEach(user->System.err.println(user.toString()));
 
-		boolean isATest = false;
+		boolean isATest = true;
 		
 		if (isATest)
 			testRunSprint3(names);
@@ -200,7 +200,7 @@ public class Initializer implements CommandLineRunner{
 	public void testRunSprint3(List<String> names)
 	{
 		//make 20 objects
-		String type = "type";
+		String type = "club";
 		String alias = "alias";
 		ArrayList<String > ids_of_objects = new ArrayList<>();
 		CreatedBy CreatedBy  = new CreatedBy();
@@ -213,7 +213,7 @@ public class Initializer implements CommandLineRunner{
 			BoundaryObject obj = new BoundaryObject();
 			obj.setActive(j%2==0);
 			obj.setLocation(new Location(0.2+j , 0.2+j));
-			obj.setType(type+" "+j);
+			obj.setType(type);
 			obj.setAlias(alias+" "+j);
 			UserId.setEmail(names.get(2)+"@gmail.com");
 			CreatedBy.setUserId(UserId);
@@ -224,21 +224,20 @@ public class Initializer implements CommandLineRunner{
 			
 		}
 		//make 10 mini app commands
-		UserId.setEmail(names.get(2)+"@gmail.com");
+		UserId.setEmail(names.get(1)+"@gmail.com");
 		UserId.setSuperAPP(BoundaryObject.getObjectID().getSuperApp());
 		CreatedBy.setUserId(UserId);
 		String id = "command";
-		String command = "make visa card";
 		for (int i =0; i<10 ; i++) {
 			BoundaryCommand Command = new BoundaryCommand();
-			Command.setCommand(command+" number "+i);
+			Command.setCommand("printAllClubs");
 			Command.setCommandAttributes(Collections.singletonMap("person", "Jane #" + i));
 			CommandId CommandId =new CommandId();
 			CommandId.setId(id+i);
 			Command.setCommandId(CommandId);
 			Command.setInvokedBy(CreatedBy);
-			Command.setTargetObject(new TargetObject(new ObjectId(ids_of_objects.get(i))));
-			this.ServicesCommand.createMiniAppCommand(Command ,"test mini app");
+			Command.setTargetObject(new TargetObject(new ObjectId(ids_of_objects.get(2))));
+			System.err.println(this.ServicesCommand.createMiniAppCommand(Command ,"test mini app").toString()); 
 		}
 	}
 

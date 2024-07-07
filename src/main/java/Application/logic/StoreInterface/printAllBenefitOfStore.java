@@ -5,11 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import Application.business_logic.Boundaies.BoundaryCommand;
 import Application.business_logic.Boundaies.BoundaryObject;
 import Application.business_logic.DataService.ServicesObject;
 import Application.logic.MiniappInterface;
 
+@Component("printAllBenefitOfStore")
 public class printAllBenefitOfStore implements MiniappInterface {
 	private ServicesObject ServicesObject;
 	
@@ -22,7 +25,7 @@ public class printAllBenefitOfStore implements MiniappInterface {
 
 
 	@Override
-	public Object activateCommand(BoundaryCommand miniappCommandBoundary) {
+	public List<BoundaryObject> activateCommand(BoundaryCommand miniappCommandBoundary) {
 		
 		String storeId = miniappCommandBoundary.getTargetObject().getObjectId().getId();
 		String superApp = miniappCommandBoundary.getTargetObject().getObjectId().getSuperApp();

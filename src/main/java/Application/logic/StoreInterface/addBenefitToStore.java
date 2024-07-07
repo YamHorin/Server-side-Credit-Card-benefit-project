@@ -1,14 +1,19 @@
 package Application.logic.StoreInterface;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import org.springframework.stereotype.Component;
 
 import Application.business_logic.Boundaies.BoundaryCommand;
 import Application.business_logic.Boundaies.BoundaryObject;
 import Application.business_logic.DataService.ServicesObject;
 import Application.logic.MiniappInterface;
 
+@Component("addBenefitToStore")
 public class addBenefitToStore implements MiniappInterface {
 
 private ServicesObject ServicesObject;
@@ -22,7 +27,7 @@ private ServicesObject ServicesObject;
 	//number of benefit will be in the detiles map of mini app boundary ....
 	//TODO add jason of miniApp in the drive
 	@Override
-	public Object activateCommand(BoundaryCommand miniappCommandBoundary) {
+	public List<BoundaryObject> activateCommand(BoundaryCommand miniappCommandBoundary) {
 		BoundaryObject store = null;
 		String storeId = miniappCommandBoundary.getTargetObject().getObjectId().getId();
 		String superApp = miniappCommandBoundary.getTargetObject().getObjectId().getSuperApp();
@@ -47,7 +52,8 @@ private ServicesObject ServicesObject;
 		
 		this.ServicesObject.updateObj(storeId, superApp, store, email, userSuperapp);
 		System.out.println("update is down add new Benefit To Store \n\nreturn update store..");
-		return store;
+        //need to return one object....
+		return Collections.singletonList(store);
 		
 	}
 	

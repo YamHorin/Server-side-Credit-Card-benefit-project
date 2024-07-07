@@ -2,6 +2,7 @@ package Application.business_logic.DataManagers;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -167,7 +168,8 @@ public class DataManagerObject implements ServicesObject {
 	private String makeObjectId(BoundaryObject objectBoundary) {
 		//also update the id to the last count
 		int counterObjectType = (int) this.objectDao.countByType(objectBoundary.getType());
-		Map<String, Object> objectDetails = objectBoundary.getObjectDetails();
+		Map<String, Object> objectDetails = new HashMap<>();
+		objectDetails.putAll(objectBoundary.getObjectDetails());
 		switch (objectBoundary.getType())
 		{
 		case "store":

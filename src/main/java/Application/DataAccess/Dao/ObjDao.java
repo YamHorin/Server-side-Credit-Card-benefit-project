@@ -28,7 +28,8 @@ public interface ObjDao extends JpaRepository<EntityObject, String> {
 	
 	public Optional<EntityObject> findByobjectIDAndActiveIsTrue(@Param("objectID") String objectID);
 
-	
+   
+	// @Query("SELECT * FROM Employee e WHERE e.firstName LIKE %:substring%")
 	public List<EntityObject> findAllByaliasLike(@Param("pattern") String pattern, Pageable pageable);
 
 

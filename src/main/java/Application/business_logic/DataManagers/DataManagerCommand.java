@@ -26,6 +26,7 @@ import Application._a_Presentation.Exceptions.BoundaryIsNotFilledCorrectExceptio
 import Application._a_Presentation.Exceptions.BoundaryIsNotFoundException;
 import Application._a_Presentation.Exceptions.UnauthorizedException;
 import Application.business_logic.Boundaies.BoundaryCommand;
+import Application.business_logic.Boundaies.BoundaryObject;
 import Application.business_logic.DataService.ServicesCommand;
 import Application.business_logic.javaObjects.CommandId;
 import Application.business_logic.javaObjects.ObjectId;
@@ -122,7 +123,7 @@ public class DataManagerCommand implements ServicesCommand{
 	@Override
 	@Transactional(readOnly = false)
 
-	public Object createMiniAppCommand(BoundaryCommand CommandBoundary ,String idMiniAppName) {
+	public BoundaryObject[] createMiniAppCommand(BoundaryCommand CommandBoundary ,String idMiniAppName) {
 		//checks if the object that the command does is in the table and if the user is in the table
 		String idObj = CommandBoundary.getTargetObject().getObjectId().getId()+"__"+this.superAppName;
 		EntityObject EntityObject = this.objDao.findById(idObj).orElseThrow(()->new BoundaryIsNotFoundException(
@@ -188,16 +189,17 @@ public class DataManagerCommand implements ServicesCommand{
 		this.miniAppNameDefault = miniAppNameDefault;
 	}
 
-	public Object invokeCommand(BoundaryCommand CommandBoundary)
+	public BoundaryObject[] invokeCommand(BoundaryCommand CommandBoundary)
 	{
 		MiniappInterface app = null;
+		String command = CommandBoundary.getCommand();
+		System.err.println("command = "+command);
 		try {
-			//TODO change this function just like eyal
-			app = this.applicationContext.getBean(CommandBoundary.getCommand() , MiniappInterface.class);
+			app = this.applicationContext.getBean( command, MiniappInterface.class);
 		} catch (Exception e) {
-			throw new BoundaryIsNotFilledCorrectException("no command is found!!!");
+			throw new BoundaryIsNotFilledCorrectException(" command is not found!!!");
 		}
-		return app.activateCommand(CommandBoundary);
+		return app.activateCommand(CommandBoundary).toArray(new BoundaryObject[0] );
 	}
 
 

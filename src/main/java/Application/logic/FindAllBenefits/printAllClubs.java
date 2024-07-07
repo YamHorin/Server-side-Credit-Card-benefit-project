@@ -10,7 +10,7 @@ import Application.business_logic.Boundaies.BoundaryObject;
 import Application.business_logic.DataService.ServicesObject;
 import Application.logic.MiniappInterface;
 
-@Component("findMyBenefits_printAllClubs")
+@Component("printAllClubs")
 public class printAllClubs implements MiniappInterface{
 	private ServicesObject ServicesObject;
 
@@ -29,9 +29,9 @@ public class printAllClubs implements MiniappInterface{
 	//i assume that it's all clubs for the user in the mini app commands
 	//i assume that the user is saying how much benefits he wnats to see  in the mini app commands
 	@Override
-	public Object activateCommand(BoundaryCommand miniappCommandBoundary) {
+	public List<BoundaryObject> activateCommand(BoundaryCommand miniappCommandBoundary) {
 
-		String id = miniappCommandBoundary.getInvokedBy().getUserId().getEmail()+"_"+
+		String id = miniappCommandBoundary.getInvokedBy().getUserId().getEmail()+" "+
 				miniappCommandBoundary.getInvokedBy().getUserId().getSuperAPP();
 		String command = miniappCommandBoundary.getCommand();
 		System.err.println("the client wants: "+command);

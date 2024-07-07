@@ -78,9 +78,9 @@ public class ControllerObject {
 			@RequestParam("userEmail") String email, 
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
-			String id = email+" "+superapp;	
+			String id_user = email+" "+superapp;
 			BoundaryObject[] demoOp = this.servicesObject
-				.searchByType(id,type, size, page).toArray(new BoundaryObject[0]);
+				.searchByType(id_user,type, size, page).toArray(new BoundaryObject[0]);
 			return demoOp;
 		}	
 

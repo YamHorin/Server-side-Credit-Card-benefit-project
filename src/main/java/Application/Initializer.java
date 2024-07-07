@@ -12,9 +12,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import Application.business_logic.Boundaies.BoundaryCommand;
-import Application.business_logic.Boundaies.BoundaryObject;
-import Application.business_logic.Boundaies.BoundaryUser;
+import Application.business_logic.Boundaies.MiniAppCommandBoundary;
+import Application.business_logic.Boundaies.ObjectBoundary;
+import Application.business_logic.Boundaies.UserBoundary;
 import Application.business_logic.Boundaies.RoleEnumBoundary;
 import Application.business_logic.DataService.ServicesCommand;
 import Application.business_logic.DataService.ServicesObject;
@@ -65,7 +65,7 @@ public class Initializer implements CommandLineRunner{
         names.add("YahavLer");
 		IntStream.range(0, 11).mapToObj(
 		i ->{
-			BoundaryUser user =   new BoundaryUser();
+			UserBoundary user =   new UserBoundary();
 			String new_name = addSpace(names.get(i));
 			user.setUserName(new_name);
 			if (i%2==0 || user.getUserName().equalsIgnoreCase("Sarah Taylor")) {
@@ -127,7 +127,7 @@ public class Initializer implements CommandLineRunner{
         
         //making 6 clubs 
 		for (int j = 0; j < 6; j++) {
-			BoundaryObject obj = new BoundaryObject();
+			ObjectBoundary obj = new ObjectBoundary();
 			obj.setType(type);
 			obj.setLocation(new Location(999,999));
 			obj.setAlias(creditCardClubs.get(j));
@@ -145,7 +145,7 @@ public class Initializer implements CommandLineRunner{
 		String[] stores = {"Walmart", "Target", "Best Buy", "Macy's", "Home Depot" ,"Castro" ,"Golda"};
         type  = "store";
 		for (int j = 0; j < 7; j++) {
-			BoundaryObject obj = new BoundaryObject();
+			ObjectBoundary obj = new ObjectBoundary();
 			
 			obj.setType(type);
 			obj.setLocation(new Location(30.25+j,60.5555-j));
@@ -180,7 +180,7 @@ public class Initializer implements CommandLineRunner{
         type  = "benefit";
         int j=0;
 	    for (String benefit : salesMap.keySet()) {
-		   BoundaryObject obj = new BoundaryObject();
+		   ObjectBoundary obj = new ObjectBoundary();
 			obj.setType(type);
 			obj.setLocation(new Location(999,999));
 			obj.setAlias(benefit);
@@ -205,12 +205,12 @@ public class Initializer implements CommandLineRunner{
 		ArrayList<String > ids_of_objects = new ArrayList<>();
 		CreatedBy CreatedBy  = new CreatedBy();
 		UserId UserId = new UserId();
-		BoundaryObject BoundaryObject = null;
+		ObjectBoundary BoundaryObject = null;
 		for (int j =0 ;j<=20 ;j++)
 		{
 			System.err.println(j);
 			System.err.println("here");
-			BoundaryObject obj = new BoundaryObject();
+			ObjectBoundary obj = new ObjectBoundary();
 			obj.setActive(j%2==0);
 			obj.setLocation(new Location(0.2+j , 0.2+j));
 			obj.setType(type+" "+j);
@@ -230,7 +230,7 @@ public class Initializer implements CommandLineRunner{
 		String id = "command";
 		String command = "make visa card";
 		for (int i =0; i<10 ; i++) {
-			BoundaryCommand Command = new BoundaryCommand();
+			MiniAppCommandBoundary Command = new MiniAppCommandBoundary();
 			Command.setCommand(command+" number "+i);
 			Command.setCommandAttributes(Collections.singletonMap("person", "Jane #" + i));
 			CommandId CommandId =new CommandId();

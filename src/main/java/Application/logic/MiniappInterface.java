@@ -1,8 +1,8 @@
 package Application.logic;
 
-import Application.business_logic.Boundaies.BoundaryCommand;
+import Application.business_logic.Boundaies.MiniAppCommandBoundary;
 
 public interface MiniappInterface {
 
-	public Object activateCommand(BoundaryCommand miniappCommandBoundary);
+	public Object activateCommand(MiniAppCommandBoundary miniappCommandBoundary);
 }

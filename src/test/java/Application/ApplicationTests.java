@@ -16,8 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.web.client.RestClient;
 
 import Application.business_logic.*;
-import Application.business_logic.Boundaies.BoundaryObject;
-import Application.business_logic.Boundaies.BoundaryUser;
+import Application.business_logic.Boundaies.ObjectBoundary;
+import Application.business_logic.Boundaies.UserBoundary;
 import Application.business_logic.Boundaies.NewUserBoundary;
 import Application.business_logic.Boundaies.RoleEnumBoundary;
 import Application.business_logic.javaObjects.CreatedBy;
@@ -59,7 +59,7 @@ class ApplicationTests {
             user.setAvatar("houj");
             
             // Post a app user 
-            this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+            this.restClientUser.post().body(user).retrieve().body(UserBoundary.class);
             System.out.println("Posted ADM_USER: " + username);
 
 
@@ -87,7 +87,7 @@ class ApplicationTests {
     @Test
     public void testCreateUser() {
     	// GIVEN the server is up
-        BoundaryUser BoundaryUser  = new BoundaryUser();
+        UserBoundary BoundaryUser  = new UserBoundary();
         String username = "superUser";
 		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
@@ -96,7 +96,7 @@ class ApplicationTests {
 		user.setAvatar("testAvatar");
 		// WHEN I invoke POST /superapp/users
 		
-		BoundaryUser = this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+		BoundaryUser = this.restClientUser.post().body(user).retrieve().body(UserBoundary.class);
         
 		// THEN the server responds with the same user
  		assertThat(BoundaryUser).isNotNull();
@@ -111,7 +111,7 @@ class ApplicationTests {
     	// GIVEN the server is up
     	//and user super app is on 
     	
-    	 BoundaryUser BoundaryUser  = new BoundaryUser();
+    	 UserBoundary BoundaryUser  = new UserBoundary();
          String username = "superUser";
  		NewUserBoundary user  = new NewUserBoundary();
  		user.setUserName(username);
@@ -120,11 +120,11 @@ class ApplicationTests {
  		user.setAvatar("testAvatar");
  		// WHEN I invoke POST /superapp/users
  		
- 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
+ 		this.restClientUser.post().body(user).retrieve().body(UserBoundary.class);
     	//Create a Object
-    	BoundaryObject BoundaryObject  = new BoundaryObject();
+    	ObjectBoundary BoundaryObject  = new ObjectBoundary();
     	//Set values for the object's attributes
-    	BoundaryObject obj = new BoundaryObject();
+    	ObjectBoundary obj = new ObjectBoundary();
 		obj.setActive(false);
 		obj.setLocation(new Location(0.2 , 0.2));
 		obj.setType("type");
@@ -139,7 +139,7 @@ class ApplicationTests {
 		obj.setObjectDetails(Collections.singletonMap("test", "test"));
 		// WHEN i invoke POST in /superapp/objects
 
-		BoundaryObject = this.restClientObj.post().body(obj).retrieve().body(BoundaryObject.class);
+		BoundaryObject = this.restClientObj.post().body(obj).retrieve().body(ObjectBoundary.class);
 
 
 		// THEN the server responds with the same  object generated above

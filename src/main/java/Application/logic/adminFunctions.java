@@ -3,8 +3,8 @@ package Application.logic;
 import org.springframework.web.client.RestClient;
 
 import Application._a_Presentation.Exceptions.UnauthorizedException;
-import Application.business_logic.Boundaies.BoundaryObject;
-import Application.business_logic.Boundaies.BoundaryUser;
+import Application.business_logic.Boundaies.ObjectBoundary;
+import Application.business_logic.Boundaies.UserBoundary;
 import Application.business_logic.Boundaies.RoleEnumBoundary;
 import Application.business_logic.javaObjects.UserId;
 
@@ -18,9 +18,9 @@ public class adminFunctions {
 		String email = userId.getEmail();
 		//get user and change the role to super app so it will be can change the object
 		
-		BoundaryUser user = restClient.get().uri("/users/login/{superapp}/{email}",
+		UserBoundary user = restClient.get().uri("/users/login/{superapp}/{email}",
 				superApp ,email).
-				retrieve().body(BoundaryUser.class);
+				retrieve().body(UserBoundary.class);
 		if (user.getRole()!= RoleEnumBoundary.ADM_USER)
 			throw new UnauthorizedException("only admin can delet club...");
 		
@@ -39,7 +39,7 @@ public class adminFunctions {
 //				retrieve().
 //				body(BoundaryObject.class);
 		
-		BoundaryObject clubObject = new BoundaryObject();
+		ObjectBoundary clubObject = new ObjectBoundary();
 		clubObject.setActive(false);
 		//can't enter the link and change for some reason....
 		restClient.put().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&email={email}",
@@ -57,7 +57,7 @@ public class adminFunctions {
 				superApp, 
 				email).
 				retrieve().
-				body(BoundaryObject.class);
+				body(ObjectBoundary.class);
 		System.out.println("clubObject: "+clubObject.toString());
 		
 		user.setRole(RoleEnumBoundary.ADM_USER);
@@ -73,9 +73,9 @@ public class adminFunctions {
 		String email = userId.getEmail();
 		//get user and change the role to super app so it will be can change the object
 		
-		BoundaryUser user = restClient.get().uri("/users/login/{superapp}/{email}",
+		UserBoundary user = restClient.get().uri("/users/login/{superapp}/{email}",
 				superApp ,email).
-				retrieve().body(BoundaryUser.class);
+				retrieve().body(UserBoundary.class);
 		if (user.getRole()!= RoleEnumBoundary.ADM_USER)
 			throw new UnauthorizedException("only admin can delet club...");
 		
@@ -84,14 +84,14 @@ public class adminFunctions {
 		restClient.put().uri("/users/{superapp}/{userEmail}" , superApp ,email).body(user);
 		System.out.println("user update to super app so it can update the club....\n\n");
 		
-		BoundaryObject clubObject =  restClient.get().uri("/objects/{superapp}"
+		ObjectBoundary clubObject =  restClient.get().uri("/objects/{superapp}"
 				+ "/{id}"
 				+ "?userSuperapp={2024B.gal.angel}&email={DanielAnderson%40gmail.com}",
 				superApp,
 				idStore ,
 				superApp , 
 				email ).
-				retrieve().body(BoundaryObject.class);
+				retrieve().body(ObjectBoundary.class);
 		clubObject.setActive(false);
 		restClient.put().uri("/objects/{superapp}/{id}"
 				+ "?userSuperApp ={userSuperapp}&email = {email}",

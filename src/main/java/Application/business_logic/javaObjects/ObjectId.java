@@ -3,7 +3,7 @@ package Application.business_logic.javaObjects;
 import org.springframework.beans.factory.annotation.Value;
 
 public class ObjectId {
-    private String superApp;
+    private String superapp;
     private String id;
 
     public ObjectId() {
@@ -11,7 +11,7 @@ public class ObjectId {
     }
     
     public ObjectId(String superApp, String id) {
-		this.superApp = superApp;
+		this.superapp = superApp;
 		this.id = id;
 	}
 
@@ -21,11 +21,11 @@ public class ObjectId {
 	}
 
 	public void setSuperApp(String superApp) {
-        this.superApp = superApp;
+        this.superapp = superApp;
     }
 
     public String getSuperApp() {
-        return this.superApp;
+        return this.superapp;
     }
 
     public String getId() {
@@ -40,7 +40,7 @@ public class ObjectId {
     public String toString() {
         return "ObjectId{" +
                 "id='" + id + "/n" +
-                ", superApp='" + superApp + "/n" +
+                ", superApp='" + superapp + "/n" +
                 '}';
     }
 

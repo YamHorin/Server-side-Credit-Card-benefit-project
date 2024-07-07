@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import Application.business_logic.Boundaies.BoundaryCommand;
-import Application.business_logic.Boundaies.BoundaryUser;
+import Application.business_logic.Boundaies.MiniAppCommandBoundary;
+import Application.business_logic.Boundaies.UserBoundary;
 import Application.business_logic.DataService.ServicesCommand;
 import Application.business_logic.DataService.ServicesObject;
 import Application.business_logic.DataService.ServicesUser;
@@ -52,7 +52,7 @@ public class ControllerAdminUser {
 	}
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
 				path = {"/users"})
-	public BoundaryUser[] getAllUsers (
+	public UserBoundary[] getAllUsers (
 			@RequestParam("userSuperapp") String superapp
 			,@RequestParam("userEmail") String email,
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
@@ -60,11 +60,11 @@ public class ControllerAdminUser {
 		String id = email+" "+superapp;
 		return this.servicesUser
 			.getAllUsers(id, page, size)
-			.toArray(new BoundaryUser[0]);
+			.toArray(new UserBoundary[0]);
 	}
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
 				path = {"/miniapp"})
-	public BoundaryCommand[] getAllMiniAppsCommands
+	public MiniAppCommandBoundary[] getAllMiniAppsCommands
 			(@RequestParam("userSuperapp") String superapp
 			,@RequestParam("userEmail") String email,
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
@@ -72,12 +72,12 @@ public class ControllerAdminUser {
 		String id = email+" "+superapp;
 		return this.ServicesCommand
 				.getAllMiniAppsCommands(id, page, size)
-				.toArray(new BoundaryCommand[0]);
+				.toArray(new MiniAppCommandBoundary[0]);
 	}
 	@GetMapping(
 			path = { "/miniapp/{miniAppName}" }, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public BoundaryCommand[] getSpecificCommandsFromMiniApp
+	public MiniAppCommandBoundary[] getSpecificCommandsFromMiniApp
 	(@PathVariable("miniAppName") String idMiniAppName,
 			@RequestParam("userSuperapp") String superapp
 			,@RequestParam("userEmail") String email
@@ -86,7 +86,7 @@ public class ControllerAdminUser {
 		String idUser = email+" "+superapp;
 		return this.ServicesCommand
 				.getAllCommandsOfSpecificMiniApp(idMiniAppName,idUser, page, size)
-				.toArray(new BoundaryCommand[0]);
+				.toArray(new MiniAppCommandBoundary[0]);
 	}
 	
 	

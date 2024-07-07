@@ -1,8 +1,8 @@
 package Application.business_logic.javaObjects;
 
 public class CommandId {
-	private String superApp;
-	private String miniApp;
+	private String superapp;
+	private String miniapp;
 	private String id;
 	
 	public CommandId () {}
@@ -10,19 +10,19 @@ public class CommandId {
 	
 
 	public String getSuperApp() {
-		return superApp;
+		return superapp;
 	}
 
 	public void setSuperApp(String superApp) {
-		this.superApp = superApp;
+		this.superapp = superApp;
 	}
 
 	public String getMiniApp() {
-		return miniApp;
+		return miniapp;
 	}
 
 	public void setMiniApp(String miniApp) {
-		this.miniApp = miniApp;
+		this.miniapp = miniApp;
 	}
 
 	public String getId() {
@@ -36,8 +36,8 @@ public class CommandId {
 	@Override
 	public String toString() {
 		return "CommandId:/n "
-				+ "{superApp=" + superApp + "/n"
-						+ ", miniApp=" + miniApp 
+				+ "{superApp=" + superapp + "/n"
+						+ ", miniApp=" + miniapp 
 						+ "/n, id=" + id + "}";
 	}
 

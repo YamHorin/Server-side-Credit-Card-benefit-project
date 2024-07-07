@@ -1,22 +1,22 @@
 package Application.business_logic.javaObjects;
 
 public class UserId {
-	private String SuperAPP;
+	private String superapp;
 	private String email;
 	
 	public UserId() {
 		
 	}
 	public UserId(String SuperAPP , String email) {
-		this.SuperAPP= SuperAPP;
+		this.superapp= SuperAPP;
 		this.email = email;
 	}
 	
 	public String getSuperAPP() {
-		return SuperAPP;
+		return superapp;
 	}
 	public void setSuperAPP(String superAPP) {
-		this.SuperAPP = superAPP;
+		this.superapp = superAPP;
 	}
 	public String getEmail() {
 		return email;
@@ -26,7 +26,7 @@ public class UserId {
 	}
 	@Override
 	public String toString() {
-		return "UserId [SuperAPP=" + SuperAPP + ", email=" + email + "]";
+		return "UserId [SuperAPP=" + superapp + ", email=" + email + "]";
 	}
 	
 

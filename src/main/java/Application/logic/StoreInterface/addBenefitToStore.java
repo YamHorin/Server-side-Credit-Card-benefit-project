@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import Application.business_logic.Boundaies.BoundaryCommand;
-import Application.business_logic.Boundaies.BoundaryObject;
+import Application.business_logic.Boundaies.MiniAppCommandBoundary;
+import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.DataService.ServicesObject;
 import Application.logic.MiniappInterface;
 
@@ -22,13 +22,13 @@ private ServicesObject ServicesObject;
 	//number of benefit will be in the detiles map of mini app boundary ....
 	//TODO add jason of miniApp in the drive
 	@Override
-	public Object activateCommand(BoundaryCommand miniappCommandBoundary) {
-		BoundaryObject store = null;
+	public Object activateCommand(MiniAppCommandBoundary miniappCommandBoundary) {
+		ObjectBoundary store = null;
 		String storeId = miniappCommandBoundary.getTargetObject().getObjectId().getId();
 		String superApp = miniappCommandBoundary.getTargetObject().getObjectId().getSuperApp();
 		String userSuperapp = miniappCommandBoundary.getInvokedBy().getUserId().getSuperAPP();
 		String email = miniappCommandBoundary.getInvokedBy().getUserId().getEmail();
-		Optional<BoundaryObject> club = this.ServicesObject
+		Optional<ObjectBoundary> club = this.ServicesObject
 		.getSpecificObj(storeId ,superApp  , userSuperapp , email);
 		
 		if (club.isPresent()) {

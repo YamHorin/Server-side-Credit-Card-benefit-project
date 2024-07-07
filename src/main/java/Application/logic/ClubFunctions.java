@@ -8,8 +8,8 @@ import java.util.function.IntFunction;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import Application.business_logic.Boundaies.BoundaryCommand;
-import Application.business_logic.Boundaies.BoundaryObject;
+import Application.business_logic.Boundaies.MiniAppCommandBoundary;
+import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.DataService.ServicesObject;
 import Application.business_logic.javaObjects.UserId;
 
@@ -23,13 +23,13 @@ public class ClubFunctions {
 		String superApp = userId.getSuperAPP();
 		String email = userId.getEmail();
 		//fix url
-		BoundaryObject clubObject =  restClient.get().uri("/objects/{superapp}/{id}"
+		ObjectBoundary clubObject =  restClient.get().uri("/objects/{superapp}/{id}"
 				+ "?userSuperApp ={userSuperapp}&email={email}",
 				superApp,
 				club,
 				superApp, 
 				email ).
-				retrieve().body(BoundaryObject.class);
+				retrieve().body(ObjectBoundary.class);
 //		List<Object> objects = (List)(clubObject.getObjectDetails().get("listOfBenefitOfClub"));
 //		List <Integer> benefits = 	objects.stream().map(Object::toString)
 //				.map(str->Integer.parseInt(str))
@@ -37,12 +37,12 @@ public class ClubFunctions {
 		List <Integer> benefits = getALiistFromMap(clubObject.getObjectDetails(), "listOfBenefitOfClub");
 		System.out.println("here are all the benefits in the club: \n\n");
 		for (Integer benefitNumber : benefits) {
-			BoundaryObject benefit =  restClient.get().uri("/objects/{id}"
+			ObjectBoundary benefit =  restClient.get().uri("/objects/{id}"
 					+ "?userSuperApp ={userSuperapp}&userEmail = {superUser@aa.com}",
 					"B"+benefitNumber ,
 					superApp , 
 					email ).
-					retrieve().body(BoundaryObject.class);
+					retrieve().body(ObjectBoundary.class);
 			System.out.println("benefit:"+benefit.getAlias()+"\n"+"description: "
 					+benefit.getObjectDetails().get("description")+"\n");
 		}
@@ -57,23 +57,23 @@ public class ClubFunctions {
 		String superApp = userId.getSuperAPP();
 		String email = userId.getEmail();
 		//fix url
-		BoundaryObject clubObject =  restClient.get().uri("/objects/{superapp}/{id}"
+		ObjectBoundary clubObject =  restClient.get().uri("/objects/{superapp}/{id}"
 				+ "?userSuperApp ={userSuperapp}&email={email}",
 				superApp ,
 				club ,
 				superApp , 
 				email ).
-				retrieve().body(BoundaryObject.class);
+				retrieve().body(ObjectBoundary.class);
 		
 		String BenefitId = "B"+benefitNumber;
 		//fix url
-		BoundaryObject benefitObject =  restClient.get().uri("/objects/{superapp}/{id}"
+		ObjectBoundary benefitObject =  restClient.get().uri("/objects/{superapp}/{id}"
 				+ "?userSuperApp ={userSuperapp}&email={email}",
 				superApp, 
 				BenefitId,
 				superApp, 
 				email ).
-				retrieve().body(BoundaryObject.class);
+				retrieve().body(ObjectBoundary.class);
 		List <Integer> benefits = getALiistFromMap(clubObject.getObjectDetails(),"listOfBenefitOfClub");
 		benefits.add(benefitNumber);
 		Map<String, Object> objectDetails = clubObject.getObjectDetails();

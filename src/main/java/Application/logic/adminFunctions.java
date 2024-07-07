@@ -26,7 +26,7 @@ public class adminFunctions {
 		
 		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 		//url check
-		restClient.put().uri("/users/{superapp}/{userEmail}" , superApp ,email).body(user).retrieve();
+		restClient.put().uri("to_complite" , superApp ,email).body(user).retrieve();
 		
 		//System.out.println("user update to super app so it can update the club....\n\n");
 		
@@ -42,7 +42,7 @@ public class adminFunctions {
 		ObjectBoundary clubObject = new ObjectBoundary();
 		clubObject.setActive(false);
 		//can't enter the link and change for some reason....
-		restClient.put().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&email={email}",
+		restClient.put().uri("to_complite" ,
 				superApp,
 				idClub,
 				superApp, 
@@ -51,7 +51,7 @@ public class adminFunctions {
 				retrieve();
 		
 		clubObject =  restClient.get()
-				.uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&email={email}",
+				.uri("to_complite" ,
 				superApp,
 				idClub ,
 				superApp, 
@@ -62,7 +62,7 @@ public class adminFunctions {
 		
 		user.setRole(RoleEnumBoundary.ADM_USER);
 
-		restClient.put().uri("/users/{superapp}/{userEmail}" , superApp ,email).body(user).retrieve();
+		restClient.put().uri("to_complite"  , superApp ,email).body(user).retrieve();
 		
 		
 	}
@@ -73,7 +73,7 @@ public class adminFunctions {
 		String email = userId.getEmail();
 		//get user and change the role to super app so it will be can change the object
 		
-		UserBoundary user = restClient.get().uri("/users/login/{superapp}/{email}",
+		UserBoundary user = restClient.get().uri("/\"to_complite\" ",
 				superApp ,email).
 				retrieve().body(UserBoundary.class);
 		if (user.getRole()!= RoleEnumBoundary.ADM_USER)
@@ -84,17 +84,14 @@ public class adminFunctions {
 		restClient.put().uri("/users/{superapp}/{userEmail}" , superApp ,email).body(user);
 		System.out.println("user update to super app so it can update the club....\n\n");
 		
-		ObjectBoundary clubObject =  restClient.get().uri("/objects/{superapp}"
-				+ "/{id}"
-				+ "?userSuperapp={2024B.gal.angel}&email={DanielAnderson%40gmail.com}",
+		ObjectBoundary clubObject =  restClient.get().uri("\"to_complite\" ",
 				superApp,
 				idStore ,
 				superApp , 
 				email ).
 				retrieve().body(ObjectBoundary.class);
 		clubObject.setActive(false);
-		restClient.put().uri("/objects/{superapp}/{id}"
-				+ "?userSuperApp ={userSuperapp}&email = {email}",
+		restClient.put().uri("to_complite" ,
 				superApp,
 				idStore,
 				superApp , 
@@ -103,7 +100,7 @@ public class adminFunctions {
 				retrieve();
 		user.setRole(RoleEnumBoundary.ADM_USER);
 
-		restClient.put().uri("/users/{superapp}/{userEmail}" , superApp ,email).body(user);
+		restClient.put().uri("to_complite"  , superApp ,email).body(user);
 	}
 	
 }

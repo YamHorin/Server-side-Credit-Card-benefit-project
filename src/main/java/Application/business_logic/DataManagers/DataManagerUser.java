@@ -102,17 +102,17 @@ public class DataManagerUser implements ServicesUser{
 
 	@Override
 	public void updateUser(String id, UserBoundary update) {
-		System.out.println("* updating user with id: " + id + ", with the following details: " + update);
+
 		EntityUser userEntity = this.UserDao.findById(id).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for update by id: " + id));
 
 		//check for null \empty Strings
-		checkStringIsNullOrEmpty(update.getUserName(), "userName");
-		checkStringIsNullOrEmpty(update.getAvatar(), "avatar");
+//		checkStringIsNullOrEmpty(update.getUserName(), "userName");
+//		checkStringIsNullOrEmpty(update.getAvatar(), "avatar");
 		
-		
-		if (update.getUserId().getEmail()!=null)
-			throw new UnauthorizedException("can't update email for users :( ");
+		if (update.getUserId()!=null)
+			if (update.getUserId().getEmail()!=null)
+				throw new UnauthorizedException("can't update email for users :( ");
 		
 		if (update.getRole()!=null)
 			userEntity.setRole(RoleEnumEntity.valueOf(update.getRole().name().toLowerCase()));
@@ -138,11 +138,6 @@ public class DataManagerUser implements ServicesUser{
 		Matcher matcher = pattern.matcher(email);
 		if(matcher.matches()==false)
 			throw new BoundaryIsNotFilledCorrectException("email is not filled correctly");
-		for (int i = 0; i < email.length(); i++) {
-			if (email.charAt(i)=='_')
-				throw new BoundaryIsNotFilledCorrectException("email can not have '_' char....");
-
-		}
 	}
 	
 	public void checkStringIsNullOrEmpty(String str , String value)

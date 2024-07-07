@@ -23,22 +23,17 @@ public class ClubFunctions {
 		String superApp = userId.getSuperAPP();
 		String email = userId.getEmail();
 		//fix url
-		ObjectBoundary clubObject =  restClient.get().uri("/objects/{superapp}/{id}"
-				+ "?userSuperApp ={userSuperapp}&email={email}",
+		ObjectBoundary clubObject =  restClient.get().uri("to_complite" ,
 				superApp,
 				club,
 				superApp, 
 				email ).
 				retrieve().body(ObjectBoundary.class);
-//		List<Object> objects = (List)(clubObject.getObjectDetails().get("listOfBenefitOfClub"));
-//		List <Integer> benefits = 	objects.stream().map(Object::toString)
-//				.map(str->Integer.parseInt(str))
-//				.toList();
+
 		List <Integer> benefits = getALiistFromMap(clubObject.getObjectDetails(), "listOfBenefitOfClub");
 		System.out.println("here are all the benefits in the club: \n\n");
 		for (Integer benefitNumber : benefits) {
-			ObjectBoundary benefit =  restClient.get().uri("/objects/{id}"
-					+ "?userSuperApp ={userSuperapp}&userEmail = {superUser@aa.com}",
+			ObjectBoundary benefit =  restClient.get().uri("to_complite" ,
 					"B"+benefitNumber ,
 					superApp , 
 					email ).
@@ -57,8 +52,7 @@ public class ClubFunctions {
 		String superApp = userId.getSuperAPP();
 		String email = userId.getEmail();
 		//fix url
-		ObjectBoundary clubObject =  restClient.get().uri("/objects/{superapp}/{id}"
-				+ "?userSuperApp ={userSuperapp}&email={email}",
+		ObjectBoundary clubObject =  restClient.get().uri("to_complite" ,
 				superApp ,
 				club ,
 				superApp , 
@@ -67,8 +61,7 @@ public class ClubFunctions {
 		
 		String BenefitId = "B"+benefitNumber;
 		//fix url
-		ObjectBoundary benefitObject =  restClient.get().uri("/objects/{superapp}/{id}"
-				+ "?userSuperApp ={userSuperapp}&email={email}",
+		ObjectBoundary benefitObject =  restClient.get().uri("to_complite" ,
 				superApp, 
 				BenefitId,
 				superApp, 
@@ -83,8 +76,7 @@ public class ClubFunctions {
 		
 		//can be a bug because put do not return nothing....
 		//fix url
-		restClient.put().uri("/objects/{superapp}/{id}"
-				+ "?userSuperApp={userSuperapp}&email={email}",
+		restClient.put().uri("to_complite" ,
 				club ,
 				superApp , 
 				email ).

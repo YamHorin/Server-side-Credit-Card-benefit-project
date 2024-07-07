@@ -18,8 +18,7 @@ public class storeFunctions {
 		String superApp = userId.getSuperAPP();
 		String email = userId.getEmail();
 		//fix url
-		ObjectBoundary StoreObject =  restClient.get().uri("/objects/{superapp}/{id}"
-				+ "?userSuperApp={userSuperapp}&email={email}",
+		ObjectBoundary StoreObject =  restClient.get().uri("\"to_complite\" ",
 				superApp,
 				storeId,
 				superApp , 
@@ -28,8 +27,7 @@ public class storeFunctions {
 		
 		String benefitId  = "B"+benefitNumber;
 		//fix url
-		ObjectBoundary benefitObject =  restClient.get().uri("/objects/{superapp}/{id}"
-				+ "?userSuperApp={userSuperapp}&email={email}",
+		ObjectBoundary benefitObject =  restClient.get().uri("\"to_complite\" ",
 				superApp,
 				benefitId,
 				superApp , 
@@ -44,8 +42,7 @@ public class storeFunctions {
 		System.out.println("benefit list of store has been updates :"+benefits.toString());
 		
 		//fix url
-		StoreObject =  restClient.put().uri("/objects/{superapp}/{id}"
-				+ "?userSuperApp={userSuperapp}&email={email}",
+		StoreObject =  restClient.put().uri("\"to_complite\" ",
 				superApp,
 				storeId,
 				superApp, 
@@ -64,10 +61,7 @@ public class storeFunctions {
 		String superApp = userId.getSuperAPP();
 		String email = userId.getEmail();
 		//fix url
-		ObjectBoundary StoreObject =  restClient.get().uri("/objects"
-				+ "/{superapp}"
-				+ "/{id}"
-				+ "?userSuperApp={userSuperapp}&email={email}",
+		ObjectBoundary StoreObject =  restClient.get().uri("to_complite" ,
 				storeId,
 				superApp , 
 				email ).
@@ -76,8 +70,7 @@ public class storeFunctions {
 		System.out.println("here are all the benefits in the store: \n\n");
 		for (Integer benefitNumber : benefits) {
 			//fix url
-			ObjectBoundary benefit =  restClient.get().uri("/objects/{superapp}/{id}"
-					+ "?userSuperApp={userSuperapp}&email={email}",
+			ObjectBoundary benefit =  restClient.get().uri("to_complite" ,
 					superApp,
 					"B"+benefitNumber ,
 					superApp , 

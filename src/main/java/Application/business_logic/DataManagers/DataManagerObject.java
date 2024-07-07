@@ -276,7 +276,7 @@ public class DataManagerObject implements ServicesObject {
 
 	// copy to an own function to avoid Repeated code
 	public void updateObjectInAction(EntityObject objectEntity, ObjectBoundary update) {
-		if (update.getType() != null)
+		if (update.getType() != null && update.getType() != "")
 			objectEntity.setType(update.getType());
 		if (update.getCreationTimeStamp() != null)
 			objectEntity.setCreationTimeStamp(update.getCreationTimeStamp());
@@ -289,12 +289,9 @@ public class DataManagerObject implements ServicesObject {
 
 		
 		if (update.getActive() != null)
-			objectEntity.setActive(update.getActive());
-
-		System.err.println("\n\n\n\n\n*****\n\n\n"+objectEntity.getActive());
+			objectEntity.setActive(update.getActive());		
 		
-		
-		if (update.getAlias() != null)
+		if (update.getAlias() != null && update.getAlias() != "")
 			objectEntity.setAlias(update.getAlias());
 
 		if (update.getObjectDetails() != null)

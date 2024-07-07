@@ -38,7 +38,7 @@ public class findBenefitsByStore implements MiniappInterface {
 			boundaryObject = store.orElse(null);
 		}
 		
-		List<Integer> benefits = getAListFromMap(boundaryObject.getObjectDetails(),"listOfBenefitOfClub");
+		List<Integer> benefits = getAListFromMap(boundaryObject.getObjectDetails(),"listOfBenefitOfStore");
 		List<ObjectBoundary> benefits_objects = new ArrayList<>();
 		for (Integer benefit : benefits) {
 			Optional<ObjectBoundary> benefitObj =this.ServicesObject.getSpecificObj("B"+benefit, superApp, userSuperapp, email);

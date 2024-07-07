@@ -393,8 +393,6 @@ public class DataManagerObject implements ServicesObject {
 						.stream()
 						.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
 						.toList();				
-			case undetermined:
-				throw new UnauthorizedException("admin can't update object");
 			default:
 				break;
 		}
@@ -440,8 +438,6 @@ public class DataManagerObject implements ServicesObject {
 							.toList();	
 				}
 					
-			case undetermined:
-				throw new UnauthorizedException("admin can't update object");
 			default:
 				break;
 		}

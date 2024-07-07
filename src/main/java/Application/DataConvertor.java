@@ -62,14 +62,9 @@ public class DataConvertor {
 		BoundaryCommand boun = new BoundaryCommand();
 		boun.setCommand(Entity.getCommand());
 		boun.setCommandAttributes(Entity.getCommandAttributes());
-		CommandId CommandId = new CommandId();
-		CommandId.setId(Entity.getCommandId());
-		CommandId.setMiniApp(Entity.getMiniAppName());
-		boun.setCommandId(CommandId);
-		boun.setInvocationTimeStamp(Entity.getInvocationTimeStamp());
+		boun.setCommandId(makeCommandIdFromString(Entity.getCommandId()));
 		
-//		String email = Entity.getInvokedBy().split("_")[0];
-//    	String superAppName = Entity.getInvokedBy().split("_")[1];
+		boun.setInvocationTimeStamp(Entity.getInvocationTimeStamp());
     	boun.setInvokedBy(new CreatedBy(UserIDFromStringId(Entity.getInvokedBy())));
 		
 		TargetObject targetObject = new TargetObject ();
@@ -85,7 +80,7 @@ public class DataConvertor {
     public EntityCommand BoundaryCommandToEntityCommand(BoundaryCommand bCommand) {
         EntityCommand entity = new EntityCommand();
         entity.setCommand(bCommand.getCommand());
-        entity.setCommandId(bCommand.getCommandId().getId());
+        entity.setCommandId(makeStringFromCommandId(bCommand.getCommandId()));
         entity.setMiniAppName(bCommand.getCommandId().getMiniApp());
         ObjectId TargetObject = bCommand.getTargetObject().getObjectId();
         String objectTarget = TargetObject.getId()+"__"+TargetObject.getSuperApp();
@@ -136,6 +131,19 @@ public class DataConvertor {
 		String email = id.split(" ")[0];
     	String superAppName = id.split(" ")[1];
 		return new UserId(superAppName, email);
+	}
+	public String makeStringFromCommandId(CommandId id)
+	{
+		return id.getId()+" "+id.getMiniApp()+" "+id.getSuperApp();
+	}
+	public CommandId makeCommandIdFromString(String id)
+	{
+		String arr [] = id.split(" ");
+		CommandId commandId  = new CommandId();
+		commandId.setId(arr[0]);
+		commandId.setMiniApp(arr[1]);
+		commandId.setSuperApp(arr[2]);
+		return commandId;
 	}
 	
 	

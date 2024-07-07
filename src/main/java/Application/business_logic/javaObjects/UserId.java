@@ -8,8 +8,8 @@ public class UserId {
 		
 	}
 	public UserId(String SuperAPP , String email) {
-		this.email = email;
 		this.SuperAPP= SuperAPP;
+		this.email = email;
 	}
 	
 	public String getSuperAPP() {

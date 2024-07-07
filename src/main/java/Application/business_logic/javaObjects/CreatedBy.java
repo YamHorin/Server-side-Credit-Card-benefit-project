@@ -11,7 +11,7 @@ public class CreatedBy {
 	}
 
 	public CreatedBy(String email , String superApp) {
-		this.userId = new UserId(email ,superApp);
+		this.userId = new UserId(superApp,email);
 	}
 
 	public UserId getUserId() {

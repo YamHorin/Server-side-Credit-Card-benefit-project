@@ -72,6 +72,7 @@ public class DataManagerUser implements ServicesUser{
 		System.err.println("\n\n* client requested to store: " + UserBoundary.toString());
 		//check email
 		isValidEmail(UserBoundary.getUserId().getEmail());
+		
 		//check for null \empty Strings
 		checkStringIsNullOrEmpty(UserBoundary.getUserName(), "userName");
 		checkStringIsNullOrEmpty(UserBoundary.getAvatar(), "avatar");

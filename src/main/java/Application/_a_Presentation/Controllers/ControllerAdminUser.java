@@ -29,24 +29,34 @@ public class ControllerAdminUser {
 	}
 	@DeleteMapping
 	(path  = {"/users"})
-	public void deleteAllUsers(@RequestParam("email") String email , @RequestParam("userSuperapp") String superapp) {
+	public void deleteAllUsers( 
+			@RequestParam("userSuperapp") String superapp,
+			@RequestParam("userEmail") String email) {
 		String id = email+" "+superapp;
 		this.servicesUser.deleteAllUsers(id);
 	}
 	@DeleteMapping(path = {"/objects"})
-	public void deleteAllObjects(@RequestParam("email") String email , @RequestParam("userSuperapp") String superapp) {
+	public void deleteAllObjects(
+			@RequestParam("userSuperapp") String superapp,
+			@RequestParam("userEmail") String email 
+			) {
 		String id = email+" "+superapp;
 		this.servicesObject.deleteAllObjs(id);
 	}
 	@DeleteMapping(path = {"/miniapp"})
-	public void deleteAllMiniAppsCommands(@RequestParam("email") String email , @RequestParam("userSuperapp") String superapp) {
+	public void deleteAllMiniAppsCommands(
+			 @RequestParam("userSuperapp") String superapp
+			,@RequestParam("userEmail") String email) {
 		String id = email+" "+superapp;
 		this.ServicesCommand.deleteAllminiAppCommandes(id);
 	}
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
 				path = {"/users"})
-	public BoundaryUser[] getAllUsers 
-	(@RequestParam("email") String email , @RequestParam("userSuperapp") String superapp,@RequestParam("size") int size,@RequestParam("page")int page) {
+	public BoundaryUser[] getAllUsers (
+			@RequestParam("userSuperapp") String superapp
+			,@RequestParam("userEmail") String email,
+			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
 		String id = email+" "+superapp;
 		return this.servicesUser
 			.getAllUsers(id, page, size)
@@ -55,7 +65,10 @@ public class ControllerAdminUser {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
 				path = {"/miniapp"})
 	public BoundaryCommand[] getAllMiniAppsCommands
-	(@RequestParam("email") String email , @RequestParam("userSuperapp") String superapp,@RequestParam("size") int size,@RequestParam("page")int page) {
+			(@RequestParam("userSuperapp") String superapp
+			,@RequestParam("userEmail") String email,
+			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
 		String id = email+" "+superapp;
 		return this.ServicesCommand
 				.getAllMiniAppsCommands(id, page, size)
@@ -65,7 +78,11 @@ public class ControllerAdminUser {
 			path = { "/miniapp/{miniAppName}" }, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public BoundaryCommand[] getSpecificCommandsFromMiniApp
-	(@PathVariable("miniAppName") String idMiniAppName, @RequestParam("email") String email , @RequestParam("userSuperapp") String superapp,@RequestParam("size") int size,@RequestParam("page")int page) {
+	(@PathVariable("miniAppName") String idMiniAppName,
+			@RequestParam("userSuperapp") String superapp
+			,@RequestParam("userEmail") String email
+			,@RequestParam(name = "size", required = false, defaultValue = "10") int size,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
 		String idUser = email+" "+superapp;
 		return this.ServicesCommand
 				.getAllCommandsOfSpecificMiniApp(idMiniAppName,idUser, page, size)

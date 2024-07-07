@@ -6,7 +6,7 @@ import Application.business_logic.javaObjects.UserId;
 public class NewUserBoundary {
 
     private String email;
-    private String role;
+    private RoleEnumBoundary role;
     private String userName;
     private String avatar;
 
@@ -20,11 +20,11 @@ public class NewUserBoundary {
         this.email = email;
     }
 
-    public void setRole(String role) {
+    public void setRole(RoleEnumBoundary role) {
         this.role = role;
     }
 
-    public String getRole() {
+    public RoleEnumBoundary getRole() {
         return role;
     }
 
@@ -49,13 +49,7 @@ public class NewUserBoundary {
     public BoundaryUser newUserToUserBoundary() {
     	BoundaryUser  Boundary = new BoundaryUser ();    	
     	RoleEnumBoundary Role;
-    	System.err.println("this.getRole() = "+this.getRole());
-    	try {
-		Role = RoleEnumBoundary.valueOf(this.getRole().toUpperCase());
-    	}
-    	catch (IllegalArgumentException e) {
-    	    Role = RoleEnumBoundary.UNDETERMINED;
-    	}
+		Role = RoleEnumBoundary.valueOf(this.getRole().name().toUpperCase());
     	Boundary.setRole(Role);
         Boundary.setUserName(this.getUserName() == null ? "Anonymous" : this.getUserName());
         Boundary.setAvatar(this.getAvatar() == null ? "F" : this.getAvatar());

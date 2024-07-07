@@ -238,7 +238,7 @@ public class Initializer implements CommandLineRunner{
 			Command.setCommandId(CommandId);
 			Command.setInvokedBy(CreatedBy);
 			Command.setTargetObject(new TargetObject(new ObjectId(ids_of_objects.get(i))));
-			this.ServicesCommand.createMiniAppCommand(Command);
+			this.ServicesCommand.createMiniAppCommand(Command ,"test mini app");
 		}
 	}
 

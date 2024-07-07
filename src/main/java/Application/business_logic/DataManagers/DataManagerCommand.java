@@ -142,7 +142,7 @@ public class DataManagerCommand implements ServicesCommand{
 	@Override
 	@Transactional(readOnly = false)
 
-	public BoundaryCommand createMiniAppCommand(BoundaryCommand CommandBoundary) {
+	public Object createMiniAppCommand(BoundaryCommand CommandBoundary ,String idMiniAppName) {
 		//checks if the object that the command does is in the table and if the user is in the table
 		String idObj = CommandBoundary.getTargetObject().getObjectId().getId()+"__"+this.superAppName;
 		EntityObject EntityObject = this.objDao.findById(idObj).orElseThrow(()->new BoundaryIsNotFoundException(
@@ -155,7 +155,7 @@ public class DataManagerCommand implements ServicesCommand{
 		command.setSuperApp(this.superAppName);
 		
 		if (CommandBoundary.getCommandId().getMiniApp()==null || CommandBoundary.getCommandId().getMiniApp().equalsIgnoreCase(""))
-			command.setMiniApp(this.miniAppNameDefault);
+			command.setMiniApp(idMiniAppName);
 		else
 			command.setMiniApp(CommandBoundary.getCommandId().getMiniApp());
 		command.setId(UUID.randomUUID().toString());
@@ -201,7 +201,6 @@ public class DataManagerCommand implements ServicesCommand{
 //		}
 		
 		//new func by Yam  :)
-		invokeCommand(CommandBoundary);
 		
 		EntityCommand entity = this.DataConvertor.BoundaryCommandToEntityCommand(CommandBoundary);
 		entity = this.miniAppCommandDao.save(entity);
@@ -211,7 +210,7 @@ public class DataManagerCommand implements ServicesCommand{
 		command.setSuperApp(this.superAppName);
 		rv.setCommandId(command);
 		System.err.println("* server stored: " + rv);
-		return rv;
+		return invokeCommand(CommandBoundary);
 	}
 	
 	

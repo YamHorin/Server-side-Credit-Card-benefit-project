@@ -42,7 +42,7 @@ public class ControllerObject {
 			@PathVariable("superapp") String superapp , 
 			@PathVariable("id") String id,
 			@RequestParam("userSuperapp") String userSuperapp , 
-			@RequestParam("email") String email) {
+			@RequestParam("userEmail") String email) {
 		
 		Optional<BoundaryObject> demoOp = this.servicesObject
 			.getSpecificObj(id ,superapp  , userSuperapp , email);
@@ -74,8 +74,8 @@ public class ControllerObject {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 		public BoundaryObject[] searchObjectsByType (
 			@PathVariable("type") String type , 
-			@RequestParam("superapp") String superapp ,
-			@RequestParam("email") String email, 
+			@RequestParam("userSuperapp") String superapp ,
+			@RequestParam("userEmail") String email, 
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
 			String id = email+" "+superapp;	
@@ -89,8 +89,8 @@ public class ControllerObject {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 		public BoundaryObject[] searchObjectsByExactAlias ( 
 				@PathVariable("alias") String alias , 
-				@RequestParam("superapp") String superapp , 
-				@RequestParam("email") String email, 
+				@RequestParam("userSuperapp") String superapp , 
+				@RequestParam("userEmail") String email, 
 				@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 				@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
 				String id = email+" "+superapp;	
@@ -103,9 +103,8 @@ public class ControllerObject {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 		public BoundaryObject[] searchObjectsByAliasPattern ( 
 				@PathVariable("pattern") String pattern , 
-				@RequestParam("superapp") String superapp , 
-				@RequestParam("email") String email, 
-				@RequestParam("email") String superAppUser, 
+				@RequestParam("userSuperapp") String superapp , 
+				@RequestParam("userEmail") String email, 
 				@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 				@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
 				String id = email+" "+superapp;
@@ -122,8 +121,8 @@ public class ControllerObject {
 			@PathVariable("lng") double lng , 
 			@PathVariable("distance") double distance ,
 			@RequestParam(name = "distanceUnits", required = false, defaultValue = "km") String distanceUnits, 
-			@RequestParam("superapp") String superapp , 
-			@RequestParam("email") String email,
+			@RequestParam("userSuperapp") String superapp , 
+			@RequestParam("userEmail") String email,
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
 			String id = email+" "+superapp;
@@ -141,7 +140,7 @@ public class ControllerObject {
 			@PathVariable("superapp") String superapp,
 			@RequestBody BoundaryObject update , 
 			@RequestParam("userSuperapp") String userSuperapp , 
-			@RequestParam("email") String email) {
+			@RequestParam("userEmail") String email) {
 		
 		this.servicesObject
 			.updateObj(id,superapp,update ,email , userSuperapp );

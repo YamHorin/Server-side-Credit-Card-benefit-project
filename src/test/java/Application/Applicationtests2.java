@@ -11,6 +11,7 @@ import Application.business_logic.*;
 import Application.business_logic.Boundaies.BoundaryObject;
 import Application.business_logic.Boundaies.BoundaryUser;
 import Application.business_logic.Boundaies.NewUserBoundary;
+import Application.business_logic.Boundaies.RoleEnumBoundary;
 import Application.business_logic.javaObjects.CreatedBy;
 import Application.business_logic.javaObjects.Location;
 import Application.business_logic.javaObjects.UserId;
@@ -54,7 +55,7 @@ class Applicationtests2 {
             String username = "admUser";
             NewUserBoundary user = new NewUserBoundary();
             user.setUserName(username);
-            user.setRole("ADM_USER");
+            user.setRole(RoleEnumBoundary.ADM_USER);
             user.setEmail(username + "@aa.com");
             user.setAvatar("houj");
             
@@ -100,7 +101,7 @@ class Applicationtests2 {
 		String username = "superUser";
 		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
-		user.setRole("SUPERAPP_USER");
+		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 		user.setEmail(username+"@aa.com");
 		user.setAvatar("houj");
 		//post a super app user 
@@ -171,7 +172,7 @@ class Applicationtests2 {
 		String username = "superUser";
 		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
-		user.setRole("SUPERAPP_USER");
+		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 		user.setEmail(username+"@aa.com");
 		user.setAvatar("houj");
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
@@ -180,7 +181,7 @@ class Applicationtests2 {
 		String username1 = "miniAppUser";
 		NewUserBoundary user1  = new NewUserBoundary();
 		user1.setUserName(username1);
-		user1.setRole("MINIAPP_USER");
+		user1.setRole(RoleEnumBoundary.MINIAPP_USER);
 		user1.setEmail(username1+"@aa.com");
 		user1.setAvatar("p");
 		System.err.println(user1.toString());
@@ -253,7 +254,7 @@ class Applicationtests2 {
 		String username = "superUser";
 		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
-		user.setRole("SUPERAPP_USER");
+		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 		user.setEmail(username+"@aa.com");
 		user.setAvatar("houj");
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);
@@ -261,7 +262,7 @@ class Applicationtests2 {
 		String username1 = "miniAppUser";
 		NewUserBoundary user1  = new NewUserBoundary();
 		user1.setUserName(username1);
-		user1.setRole("MINIAPP_USER");
+		user1.setRole(RoleEnumBoundary.MINIAPP_USER);
 		
 		user1.setEmail(username1+"@aa.com");
 		
@@ -306,7 +307,7 @@ class Applicationtests2 {
 		String username = "SuperAppUser";
 		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
-		user.setRole("SUPERAPP_USER");
+		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 		user.setEmail(username+"@aa.com");
 		
 		this.restClientUser.post().body(user).retrieve().body(BoundaryUser.class);

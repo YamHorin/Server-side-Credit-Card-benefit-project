@@ -19,6 +19,7 @@ import Application.business_logic.*;
 import Application.business_logic.Boundaies.BoundaryObject;
 import Application.business_logic.Boundaies.BoundaryUser;
 import Application.business_logic.Boundaies.NewUserBoundary;
+import Application.business_logic.Boundaies.RoleEnumBoundary;
 import Application.business_logic.javaObjects.CreatedBy;
 import Application.business_logic.javaObjects.Location;
 import Application.business_logic.javaObjects.UserId;
@@ -53,7 +54,7 @@ class ApplicationTests {
             String username = "admUser";
             NewUserBoundary user = new NewUserBoundary();
             user.setUserName(username);
-            user.setRole("ADM_USER");
+            user.setRole(RoleEnumBoundary.ADM_USER);
             user.setEmail(username + "@aa.com");
             user.setAvatar("houj");
             
@@ -90,7 +91,7 @@ class ApplicationTests {
         String username = "superUser";
 		NewUserBoundary user  = new NewUserBoundary();
 		user.setUserName(username);
-		user.setRole("SUPERAPP_USER");
+		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 		user.setEmail(username+"@aa.com");
 		user.setAvatar("testAvatar");
 		// WHEN I invoke POST /superapp/users
@@ -114,7 +115,7 @@ class ApplicationTests {
          String username = "superUser";
  		NewUserBoundary user  = new NewUserBoundary();
  		user.setUserName(username);
- 		user.setRole("SUPERAPP_USER");
+ 		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
  		user.setEmail(username+"@aa.com");
  		user.setAvatar("testAvatar");
  		// WHEN I invoke POST /superapp/users

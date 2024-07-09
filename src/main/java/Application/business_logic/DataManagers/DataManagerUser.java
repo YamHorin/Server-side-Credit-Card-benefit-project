@@ -107,11 +107,11 @@ public class DataManagerUser implements ServicesUser{
 				"Could not find User for update by id: " + id));
 
 		//check for null \empty Strings
-//		checkStringIsNullOrEmpty(update.getUserName(), "userName");
-//		checkStringIsNullOrEmpty(update.getAvatar(), "avatar");
+		checkStringIsNullOrEmpty(update.getUserName(), "userName");
+		checkStringIsNullOrEmpty(update.getAvatar(), "avatar");
 		
 		if (update.getUserId()!=null)
-			if (update.getUserId().getEmail()!=null)
+			if (!update.getUserId().getEmail().equalsIgnoreCase(userEntity.getId().split(" ")[0]))
 				throw new UnauthorizedException("can't update email for users :( ");
 		
 		if (update.getRole()!=null)

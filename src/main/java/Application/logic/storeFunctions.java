@@ -10,49 +10,8 @@ import Application.business_logic.javaObjects.UserId;
 
 public class storeFunctions {
 
-	//function already been made....
-//	public void addBenefitToStore(RestClient restClient ,UserId userId , int StoreNumber , int benefitNumber)
-//	{
-//	//restClient  = "http://localhost:" + port + "/superapp
-//		String storeId  = "S"+StoreNumber;
-//		String superApp = userId.getSuperAPP();
-//		String email = userId.getEmail();
-//		//fix url
-//		ObjectBoundary StoreObject =  restClient.get().uri("\"to_complite\" ",
-//				superApp,
-//				storeId,
-//				superApp , 
-//				email ).
-//				retrieve().body(ObjectBoundary.class);
-//		
-//		String benefitId  = "B"+benefitNumber;
-//		//fix url
-//		ObjectBoundary benefitObject =  restClient.get().uri("\"to_complite\" ",
-//				superApp,
-//				benefitId,
-//				superApp , 
-//				email ).
-//				retrieve().body(ObjectBoundary.class);
-//		
-//		List <Integer> benefits = getALiistFromMap(StoreObject.getObjectDetails(),"listOfBenefitOfStore");
-//		benefits.add(benefitNumber);
-//		Map<String, Object> objectDetails = StoreObject.getObjectDetails();
-//		objectDetails.put("listOfBenefitOfStore", objectDetails);
-//		StoreObject.setObjectDetails(objectDetails);
-//		System.out.println("benefit list of store has been updates :"+benefits.toString());
-//		
-//		//fix url
-//		StoreObject =  restClient.put().uri("\"to_complite\" ",
-//				superApp,
-//				storeId,
-//				superApp, 
-//				email).
-//				body(StoreObject).
-//				retrieve().body(ObjectBoundary.class);
-//		System.out.println("the updated club: \n"+StoreObject.toString());
-//	}
-//	
-//		
+//TODO a new add store function?
+	
 
 	public void printAllBenefitsOfStore(RestClient restClient ,UserId userId , int StoreNumber)
 	{
@@ -61,16 +20,18 @@ public class storeFunctions {
 		String superApp = userId.getSuperAPP();
 		String email = userId.getEmail();
 		//fix url
-		ObjectBoundary StoreObject =  restClient.get().uri("to_complite" ,
+		ObjectBoundary StoreObject =  restClient.get().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}",
+				superApp,
 				storeId,
 				superApp , 
 				email ).
 				retrieve().body(ObjectBoundary.class);
+		System.out.println("link url sent GET :/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}");
 		List <Integer> benefits = getALiistFromMap(StoreObject.getObjectDetails(), "listOfBenefitOfStore");
 		System.out.println("here are all the benefits in the store: \n\n");
 		for (Integer benefitNumber : benefits) {
 			//fix url
-			ObjectBoundary benefit =  restClient.get().uri("to_complite" ,
+			ObjectBoundary benefit =  restClient.get().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}" ,
 					superApp,
 					"B"+benefitNumber ,
 					superApp , 

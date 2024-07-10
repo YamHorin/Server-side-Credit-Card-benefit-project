@@ -135,7 +135,8 @@ public class Initializer implements CommandLineRunner{
 			Map<String, Object> obj_items = new HashMap<>();
 			obj_items.put("idClub",j);
 			int benefitsId []  = {j , j+1};
-			obj_items.put("listOfBenefitOfClub", benefitsId );
+			obj_items.put("listOfBenefitsOfClub", benefitsId );
+			obj_items.put("listOfStoresOfClub", benefitsId );
 			obj.setActive(true);
 			obj.setCreatedBy(new CreatedBy(UserId));
 			obj.setObjectDetails(obj_items);
@@ -156,9 +157,9 @@ public class Initializer implements CommandLineRunner{
 			int benefitsId []  = {j , j+1 , j+2};
 			if (stores[j].equalsIgnoreCase("Golda"))
 				 benefitsId   = null;
-			obj_items.put("listOfBenefitOfStore", benefitsId );
+			obj_items.put("listOfBenefitsOfStore", benefitsId );
 			int listOfClubOfStore []  ={j , j+1};
-			obj_items.put("listOfClubOfStore", listOfClubOfStore);
+			obj_items.put("listOfClubsOfStore", listOfClubOfStore);
 			obj.setActive(true);
 			obj.setCreatedBy(new CreatedBy(UserId));
 			obj.setObjectDetails(obj_items);
@@ -186,8 +187,12 @@ public class Initializer implements CommandLineRunner{
 			obj.setLocation(new Location(999,999));
 			obj.setAlias(benefit);
 			Map<String, Object> obj_items = new HashMap<>();
+			int benefitsId []  = {j , j+4 , j/2};
 			obj_items.put("idBenefit", j);
 			obj_items.put("description", salesMap.get(benefit));
+			//TODO add store id and club id
+			obj_items.put("listOfClubsOfBenefit", benefitsId );
+			obj_items.put("listOfStoresOfBenefit", benefitsId );
 			obj.setActive(true);
 			obj.setCreatedBy(new CreatedBy(UserId));
 			obj.setObjectDetails(obj_items);

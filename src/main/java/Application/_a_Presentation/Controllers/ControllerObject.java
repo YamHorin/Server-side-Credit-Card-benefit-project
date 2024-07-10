@@ -34,7 +34,6 @@ public class ControllerObject {
 		
 	}
 
-	//get specific object updated
 	@GetMapping(
 		path = { "/{superapp}/{id}" }, 
 		produces = MediaType.APPLICATION_JSON_VALUE)

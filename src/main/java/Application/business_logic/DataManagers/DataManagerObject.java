@@ -3,6 +3,7 @@ package Application.business_logic.DataManagers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,7 +57,7 @@ public class DataManagerObject implements ServicesObject {
 	@Transactional(readOnly = true)
 	public Optional<ObjectBoundary> getSpecificObj(String id, String superApp, String userSuperapp, String email) {
 		if (this.superAppName.compareTo(superApp) != 0)
-			throw new BoundaryIsNotFoundException("super app is not found...");
+			throw new BoundaryIsNotFoundException("super app is not our...");
 		// check what the role of the user
 		String id_user = email + " " + userSuperapp;
 		EntityUser userEntity = this.userDao.findById(id_user).orElseThrow(() -> new BoundaryIsNotFoundException(
@@ -71,7 +72,7 @@ public class DataManagerObject implements ServicesObject {
 				entityObject = this.objectDao.findByobjectIDAndActiveIsTrue(id_object);
 				boundaryObject = entityObject.map(this.DataConvertor::EntityObjectTOBoundaryObject);
 				if (boundaryObject.isEmpty())
-					System.err.println("* no user to return");
+					System.err.println("*\n*\n* no super app object to return *\n*\n*");
 				else
 					System.out.println(boundaryObject.toString());
 				return boundaryObject;
@@ -79,12 +80,11 @@ public class DataManagerObject implements ServicesObject {
 				entityObject = this.objectDao.findById(id_object);
 				boundaryObject = entityObject.map(this.DataConvertor::EntityObjectTOBoundaryObject);
 				if (boundaryObject.isEmpty())
-					System.err.println("* no user to return");
+					System.err.println("*\n*\n* no super app object to return *\n*\n*");
 				else
 					System.out.println(boundaryObject.toString());
 				return boundaryObject;
-			case undetermined:
-				throw new UnauthorizedException("undetermined can't get a Specific object ");
+
 			default:
 				break;
 
@@ -121,9 +121,6 @@ public class DataManagerObject implements ServicesObject {
 				}
 				System.err.println("all objects data from database: " + boundaries);
 				return boundaries;
-			case undetermined:
-				throw new UnauthorizedException("undetermined can't get objects....");
-
 			default:
 				break;
 
@@ -133,6 +130,7 @@ public class DataManagerObject implements ServicesObject {
 
 	@Override
 	@Transactional(readOnly = false)
+	//
 	public ObjectBoundary createObject(ObjectBoundary ObjectBoundary) {
 		// check for null \empty Strings
 		checkStringIsNullOrEmpty(ObjectBoundary.getType(), "type object");
@@ -158,6 +156,10 @@ public class DataManagerObject implements ServicesObject {
 		objId.setId(makeObjectId(ObjectBoundary));
 		ObjectBoundary.setObjectID(objId);
 		ObjectBoundary.setCreatedBy(new CreatedBy(ObjectBoundary.getCreatedBy().getUserId().getEmail(), this.superAppName));
+		
+		checkSyncListsInMap(ObjectBoundary.getObjectDetails(), ObjectBoundary.getType(),
+				this.superAppName, ObjectBoundary.getCreatedBy().getUserId().getEmail());
+		
 		EntityObject entity = this.DataConvertor.BoundaryObjectTOEntityObject(ObjectBoundary);
 		entity = this.objectDao.save(entity);
 		ObjectBoundary rv = this.DataConvertor.EntityObjectTOBoundaryObject(entity);
@@ -165,6 +167,7 @@ public class DataManagerObject implements ServicesObject {
 		return rv;
 	}
 
+	//chekcPoint
 	private String makeObjectId(ObjectBoundary objectBoundary) {
 		//also update the id to the last count
 		int counterObjectType = (int) this.objectDao.countByType(objectBoundary.getType());
@@ -295,6 +298,7 @@ public class DataManagerObject implements ServicesObject {
 			objectEntity.setAlias(update.getAlias());
 
 		if (update.getObjectDetails() != null)
+			//TODO check if there is new benefits \stores\clubs
 			objectEntity.setObjectDetails(update.getObjectDetails());
 		if (update.getLocation() != null) {
 			checkLocationOfObject(update.getLocation());
@@ -325,8 +329,7 @@ public class DataManagerObject implements ServicesObject {
 						.stream()
 						.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
 						.toList();	
-			case undetermined:
-				throw new UnauthorizedException("admin can't update object");
+
 			default:
 				break;
 		}
@@ -355,8 +358,6 @@ public class DataManagerObject implements ServicesObject {
 						.stream()
 						.map(entity -> this.DataConvertor.EntityObjectTOBoundaryObject(entity))
 						.toList();		
-			case undetermined:
-				throw new UnauthorizedException("admin can't update object");
 			default:
 				break;
 		}
@@ -435,16 +436,123 @@ public class DataManagerObject implements ServicesObject {
 				break;
 		}
 		return null;
-		
-	
-		
-		
+
 		
 	}
+	public void syncListsOfObject(Map<String, Object> ObjectDetails , 
+			String typeInput,String typeObjectToSync1 ,  String typeObjectToSync2 
+			, String userSuperapp, String email)
+	{
+		Map<String, Object> Details = new HashMap<>();
+		Integer ObjectNumber = (Integer) ObjectDetails.get(String.format("id%s", typeInput));
+		List<Integer> listOfobjectsType1InInputObject;
+		List<Integer> listOfobjectsType2InInputObject;
+		List<Integer> listOfInputTypeInType1;
+		List<Integer> listOfInputTypeInType2;
+//		try {
+			//check list of clubs and the list of store to see if they are exist 
+			listOfobjectsType1InInputObject =  getAListFromMap(ObjectDetails, String.format("listOf%ssOf%s",typeObjectToSync1  ,typeInput));
+			listOfobjectsType2InInputObject =  getAListFromMap(ObjectDetails, String.format("listOf%ssOf%s",typeObjectToSync2  ,typeInput));
+//		} catch (Exception e) {
+//			throw new BoundaryIsNotFilledCorrectException("map of new object is not good ,missing "+String.format("listOf%ssOf%s",typeObjectToSync1  ,typeInput)+" or "+
+//					String.format("listOf%ssOf%s",typeObjectToSync2  ,typeInput)+" keys.....");
+//		}
+		//list Of objects Type1 In Input Object check
+		for (Integer numberStore : listOfobjectsType1InInputObject) {
+			String id_obj = Character.toUpperCase(typeObjectToSync1.charAt(0))+""+numberStore;
+			Optional<ObjectBoundary> optional = getSpecificObj(id_obj, this.superAppName, userSuperapp, email);
+			ObjectBoundary object;
+			if (!optional.isPresent()|| !optional.get().getActive())
+				throw new BoundaryIsNotFilledCorrectException(String.format("%s number "
+						+ "%d in listOfStoresOfBenefit in ObjectDetails in the object Boundary "
+						+ "is not present /active anymore in the"
+						+ " databse send a new %s.... , ",typeObjectToSync1, numberStore ,typeInput));
+			else
+			{
+				object = optional.get();
+				
+				listOfInputTypeInType1 = getAListFromMap(object.getObjectDetails(), String.format("listOf%ssOf%s ",typeInput,typeObjectToSync1));
+				if (!listOfInputTypeInType1.contains(ObjectNumber))
+					listOfInputTypeInType1.add(ObjectNumber);
+				Details.putAll(object.getObjectDetails());
+				Details.put("listOf%sOfStore", listOfInputTypeInType1);
+				object.setObjectDetails(Details);
+				updateObj(id_obj, this.superAppName, object, email, userSuperapp);
+				
+			}
+				//and also add the benefit number to the list of benefit in the store and in the club 
+				//if it don't exist before...
+		}
+		Details.clear();
 
+		//list Of objects Type2 In Input Object check
+		for (Integer numberStore : listOfobjectsType2InInputObject) {
+			String id_obj = Character.toUpperCase(typeObjectToSync2.charAt(0))+""+numberStore;
+			Optional<ObjectBoundary> optional = getSpecificObj(id_obj, this.superAppName, userSuperapp, email);
+			ObjectBoundary object;
+			if (!optional.isPresent()|| !optional.get().getActive())
+				throw new BoundaryIsNotFilledCorrectException(String.format("%s number "
+						+ "%d in listOfStoresOfBenefit in ObjectDetails in the object Boundary "
+						+ "is not present /active anymore in the"
+						+ " databse send a new %s.... , ",typeObjectToSync2, numberStore ,typeInput));
+			else
+			{
+				object = optional.get();
+				
+				listOfInputTypeInType2 = getAListFromMap(object.getObjectDetails(), String.format("listOf%ssOf%s ",typeInput,typeObjectToSync1));
+				if (!listOfInputTypeInType2.contains(ObjectNumber))
+					listOfInputTypeInType2.add(ObjectNumber);
+				Details.putAll(object.getObjectDetails());
+				Details.put("listOf%sOfStore", listOfInputTypeInType2);
+				object.setObjectDetails(Details);
+				updateObj(id_obj, this.superAppName, object, email, userSuperapp);
+				
+			}
+				
+		}
+	}
 	
+	//TODO function check for benefit if the id of store and club are in the system and sync between the two
+	public void checkSyncListsInMap(Map<String, Object> ObjectDetails , String type , 
+			String userSuperapp, String email)
+	{
 
+		int numberOfElementsStore = (int) this.objectDao.countByType("store");
+		int numberOfElementsClub = (int) this.objectDao.countByType("club");
+		int numberOfElementsBenefit = (int) this.objectDao.countByType("benefit");
+		//Initializer is still working... 
+		if (numberOfElementsStore ==0 || numberOfElementsBenefit==0 || numberOfElementsClub==0)
+			return;
 
+		switch (type) {
+		case "benefit": {
+			syncListsOfObject(ObjectDetails, "Benefit", "Store","Club", userSuperapp, email);
+			break;
+		}
+		case "store": {
+			syncListsOfObject(ObjectDetails, "Store", "Benefit","Club", userSuperapp, email);
+			break;
+		}
+		case "club": {
+			syncListsOfObject(ObjectDetails, "Club", "Benefit","Store", userSuperapp, email);
+			break;
+		}
+		default:
+			break;
+		}
+	
+	}
+	
+	//fuction helper to get list of the intgers from a map
+	public List<Integer> getAListFromMap(Map<String, Object> objectDetails , String key)
+	{
+		List<Object> objects = (List)(objectDetails.get(key));
+		List <Integer> numbers = 	objects.stream().map(Object::toString)
+				.map(str->Integer.parseInt(str))
+				.toList();
+		LinkedList<Integer> numbersLink = new LinkedList<>(numbers);
+		return numbersLink;
+	}
 
 
 }

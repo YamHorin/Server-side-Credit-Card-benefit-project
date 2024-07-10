@@ -68,6 +68,8 @@ public class AdminMain {
 				
 			}
 			case 3: {
+				
+				//TODO delete benefit
 				System.out.println("\nenter the store number you want to see the benefits:");
 				int storeNum = Integer.parseInt(scanner.next());
 				try {

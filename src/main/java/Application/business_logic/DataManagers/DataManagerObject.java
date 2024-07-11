@@ -177,6 +177,7 @@ public class DataManagerObject implements ServicesObject {
 		{
 		case "store":
 			objectDetails.put("idStore",counterObjectType);
+			System.err.println(objectDetails.toString());
 			objectBoundary.setObjectDetails(objectDetails);
 			return "S"+objectBoundary.getObjectDetails().get("idStore");
 		case "benefit":
@@ -281,14 +282,7 @@ public class DataManagerObject implements ServicesObject {
 	public void updateObjectInAction(EntityObject objectEntity, ObjectBoundary update) {
 		if (update.getType() != null && update.getType() != "")
 			objectEntity.setType(update.getType());
-		if (update.getCreationTimeStamp() != null)
-			objectEntity.setCreationTimeStamp(update.getCreationTimeStamp());
 
-		if (update.getCreatedBy() != null) {
-			String email1 = update.getCreatedBy().getUserId().getEmail();
-			isValidEmail(email1);
-			objectEntity.setCreatedBy(email1 + " " + this.superAppName);
-		}
 
 		
 		if (update.getActive() != null)
@@ -449,14 +443,14 @@ public class DataManagerObject implements ServicesObject {
 		List<Integer> listOfobjectsType2InInputObject;
 		List<Integer> listOfInputTypeInType1;
 		List<Integer> listOfInputTypeInType2;
-//		try {
+		try {
 			//check list of clubs and the list of store to see if they are exist 
 			listOfobjectsType1InInputObject =  getAListFromMap(ObjectDetails, String.format("listOf%ssOf%s",typeObjectToSync1  ,typeInput));
 			listOfobjectsType2InInputObject =  getAListFromMap(ObjectDetails, String.format("listOf%ssOf%s",typeObjectToSync2  ,typeInput));
-//		} catch (Exception e) {
-//			throw new BoundaryIsNotFilledCorrectException("map of new object is not good ,missing "+String.format("listOf%ssOf%s",typeObjectToSync1  ,typeInput)+" or "+
-//					String.format("listOf%ssOf%s",typeObjectToSync2  ,typeInput)+" keys.....");
-//		}
+		} catch (Exception e) {
+			throw new BoundaryIsNotFilledCorrectException("map of new object is not good ,missing "+String.format("listOf%ssOf%s",typeObjectToSync1  ,typeInput)+" or "+
+					String.format("listOf%ssOf%s",typeObjectToSync2  ,typeInput)+" keys.....");
+		}
 		//list Of objects Type1 In Input Object check
 		for (Integer numberStore : listOfobjectsType1InInputObject) {
 			String id_obj = Character.toUpperCase(typeObjectToSync1.charAt(0))+""+numberStore;
@@ -471,11 +465,12 @@ public class DataManagerObject implements ServicesObject {
 			{
 				object = optional.get();
 				
-				listOfInputTypeInType1 = getAListFromMap(object.getObjectDetails(), String.format("listOf%ssOf%s ",typeInput,typeObjectToSync1));
+				Details.putAll(object.getObjectDetails());
+				
+				listOfInputTypeInType1 = getAListFromMap(Details, String.format("listOf%ssOf%s",typeInput,typeObjectToSync1));
 				if (!listOfInputTypeInType1.contains(ObjectNumber))
 					listOfInputTypeInType1.add(ObjectNumber);
-				Details.putAll(object.getObjectDetails());
-				Details.put("listOf%sOfStore", listOfInputTypeInType1);
+				Details.put(String.format("listOf%ssOf%s ",typeInput,typeObjectToSync1), listOfInputTypeInType1);
 				object.setObjectDetails(Details);
 				updateObj(id_obj, this.superAppName, object, email, userSuperapp);
 				
@@ -499,11 +494,11 @@ public class DataManagerObject implements ServicesObject {
 			{
 				object = optional.get();
 				
-				listOfInputTypeInType2 = getAListFromMap(object.getObjectDetails(), String.format("listOf%ssOf%s ",typeInput,typeObjectToSync1));
+				listOfInputTypeInType2 = getAListFromMap(object.getObjectDetails(), String.format("listOf%ssOf%s",typeInput,typeObjectToSync2));
 				if (!listOfInputTypeInType2.contains(ObjectNumber))
 					listOfInputTypeInType2.add(ObjectNumber);
 				Details.putAll(object.getObjectDetails());
-				Details.put("listOf%sOfStore", listOfInputTypeInType2);
+				Details.put(String.format("listOf%ssOf%s ",typeInput,typeObjectToSync2), listOfInputTypeInType2);
 				object.setObjectDetails(Details);
 				updateObj(id_obj, this.superAppName, object, email, userSuperapp);
 				
@@ -521,7 +516,7 @@ public class DataManagerObject implements ServicesObject {
 		int numberOfElementsClub = (int) this.objectDao.countByType("club");
 		int numberOfElementsBenefit = (int) this.objectDao.countByType("benefit");
 		//Initializer is still working... 
-		if (numberOfElementsStore ==0 || numberOfElementsBenefit==0 || numberOfElementsClub==0)
+		if (numberOfElementsStore <6 || numberOfElementsBenefit<10 || numberOfElementsClub<6)
 			return;
 
 		switch (type) {
@@ -545,13 +540,17 @@ public class DataManagerObject implements ServicesObject {
 	
 	//fuction helper to get list of the intgers from a map
 	public List<Integer> getAListFromMap(Map<String, Object> objectDetails , String key)
-	{
-		List<Object> objects = (List)(objectDetails.get(key));
-		List <Integer> numbers = 	objects.stream().map(Object::toString)
-				.map(str->Integer.parseInt(str))
-				.toList();
-		LinkedList<Integer> numbersLink = new LinkedList<>(numbers);
-		return numbersLink;
+	{		
+		if (objectDetails.containsKey(key))
+		{
+			List<Object> objects = (List)(objectDetails.get(key));
+			List <Integer> numbers = 	objects.stream().map(Object::toString)
+					.map(str->Integer.parseInt(str))
+					.toList();
+			LinkedList<Integer> numbersLink = new LinkedList<>(numbers);
+			return numbersLink;
+		}
+		return null;
 	}
 
 

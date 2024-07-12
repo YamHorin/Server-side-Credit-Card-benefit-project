@@ -22,10 +22,6 @@ public class printAllClubs implements MiniappInterface{
 		ServicesObject = servicesObject;
 	}
 
-
-
-
-
 	//i assume that it's all clubs for the user in the mini app commands
 	//i assume that the user is saying how much benefits he wnats to see  in the mini app commands
 	@Override

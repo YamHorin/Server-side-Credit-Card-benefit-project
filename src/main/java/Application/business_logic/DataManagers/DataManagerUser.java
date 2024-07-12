@@ -74,7 +74,7 @@ public class DataManagerUser implements ServicesUser{
 		isValidEmail(UserBoundary.getUserId().getEmail());
 		
 		//check for null \empty Strings
-		checkStringIsNullOrEmpty(UserBoundary.getUserName(), "userName");
+		checkStringIsNullOrEmpty(UserBoundary.getUsername(), "userName");
 		checkStringIsNullOrEmpty(UserBoundary.getAvatar(), "avatar");
 		
 		UserId userId = UserBoundary.getUserId();
@@ -107,7 +107,7 @@ public class DataManagerUser implements ServicesUser{
 				"Could not find User for update by id: " + id));
 
 		//check for null \empty Strings
-		checkStringIsNullOrEmpty(update.getUserName(), "userName");
+		checkStringIsNullOrEmpty(update.getUsername(), "userName");
 		checkStringIsNullOrEmpty(update.getAvatar(), "avatar");
 		
 		if (update.getUserId()!=null)
@@ -116,8 +116,8 @@ public class DataManagerUser implements ServicesUser{
 		
 		if (update.getRole()!=null)
 			userEntity.setRole(RoleEnumEntity.valueOf(update.getRole().name().toLowerCase()));
-		if (update.getUserName()!=null)
-			userEntity.setUserName(update.getUserName());
+		if (update.getUsername()!=null)
+			userEntity.setUsername(update.getUsername());
 		if (update.getAvatar()!=null)
 			userEntity.setAvatar(update.getAvatar());
 

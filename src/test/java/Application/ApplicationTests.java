@@ -53,7 +53,7 @@ class ApplicationTests {
         try {
             String username = "admUser";
             NewUserBoundary user = new NewUserBoundary();
-            user.setUserName(username);
+            user.setUsername(username);
             user.setRole(RoleEnumBoundary.ADM_USER);
             user.setEmail(username + "@aa.com");
             user.setAvatar("houj");
@@ -90,7 +90,7 @@ class ApplicationTests {
         UserBoundary BoundaryUser  = new UserBoundary();
         String username = "superUser";
 		NewUserBoundary user  = new NewUserBoundary();
-		user.setUserName(username);
+		user.setUsername(username);
 		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 		user.setEmail(username+"@aa.com");
 		user.setAvatar("testAvatar");
@@ -100,7 +100,7 @@ class ApplicationTests {
         
 		// THEN the server responds with the same user
  		assertThat(BoundaryUser).isNotNull();
- 		assertThat(BoundaryUser.getUserName()).isEqualTo("superUser");
+ 		assertThat(BoundaryUser.getUsername()).isEqualTo("superUser");
  		assertThat(BoundaryUser.getRole().name()).isEqualTo("SUPERAPP_USER");
  		assertThat(BoundaryUser.getAvatar()).isEqualTo("testAvatar");
 	
@@ -114,7 +114,7 @@ class ApplicationTests {
     	 UserBoundary BoundaryUser  = new UserBoundary();
          String username = "superUser";
  		NewUserBoundary user  = new NewUserBoundary();
- 		user.setUserName(username);
+ 		user.setUsername(username);
  		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
  		user.setEmail(username+"@aa.com");
  		user.setAvatar("testAvatar");

@@ -12,6 +12,13 @@ public class NewUserBoundary {
 
     public NewUserBoundary() {}
 
+    public NewUserBoundary(RoleEnumBoundary role, String username, String avatar, String email) {
+        this.role = role;
+        this.username = username;
+        this.avatar = avatar;
+        this.email = email;
+    }
+    
     public String getEmail() {
         return email;
     }
@@ -28,11 +35,11 @@ public class NewUserBoundary {
         return role;
     }
 
-    public String getUserName() {
+    public String getUsername() {
         return username;
     }
 
-    public void setUserName(String userName) {
+    public void setUsername(String userName) {
         this.username = userName;
     }
 
@@ -51,7 +58,7 @@ public class NewUserBoundary {
     	RoleEnumBoundary Role;
 		Role = RoleEnumBoundary.valueOf(this.getRole().name().toUpperCase());
     	Boundary.setRole(Role);
-        Boundary.setUserName(this.getUserName() == null ? "Anonymous" : this.getUserName());
+        Boundary.setUsername(this.getUsername() == null ? "Anonymous" : this.getUsername());
         Boundary.setAvatar(this.getAvatar() == null ? "F" : this.getAvatar());
         Boundary.setUserId(new UserId("",this.getEmail()));
         

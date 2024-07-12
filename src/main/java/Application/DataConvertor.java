@@ -33,7 +33,7 @@ public class DataConvertor {
 //    	String email = entity.getId().split("_")[0];
 //    	String superAppName = entity.getId().split("_")[1];
 //    	boun.setUserId(new UserId(superAppName, email));
-    	boun.setUserName(entity.getUserName());
+    	boun.setUsername(entity.getUsername());
     	return boun;
     }
     public  ObjectBoundary EntityObjectTOBoundaryObject (EntityObject entity)
@@ -114,7 +114,7 @@ public class DataConvertor {
 		userEntity.setId(stringIdFromUserID(bUser.getUserId()));
 		RoleEnumEntity  role = RoleEnumEntity.valueOf(bUser.getRole().name().toLowerCase());
 		userEntity.setRole(role);
-		userEntity.setUserName(bUser.getUserName());
+		userEntity.setUsername(bUser.getUsername());
 		userEntity.setAvatar(bUser.getAvatar());
 		return userEntity;
 

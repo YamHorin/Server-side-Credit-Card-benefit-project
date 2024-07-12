@@ -11,7 +11,7 @@ import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.DataService.ServicesObject;
 import Application.logic.MiniappInterface;
 
-@Component("printAllBenefitOfStore")
+@Component("Store Inerface_printAllBenefitOfStore")
 public class printAllBenefitOfStore implements MiniappInterface {
 	private ServicesObject ServicesObject;
 	

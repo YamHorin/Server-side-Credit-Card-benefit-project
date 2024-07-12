@@ -16,7 +16,7 @@ import Application.business_logic.DataService.ServicesObject;
 import Application.business_logic.DataService.ServicesUser;
 import Application.logic.MiniappInterface;
 
-@Component("addBenefitToStore")
+@Component("Store Inerface_addBenefitToStore")
 public class addBenefitToStore implements MiniappInterface {
 
 private ServicesObject ServicesObject;
@@ -67,7 +67,8 @@ private ServicesUser ServicesUser;
 		objectDetails.put("listOfBenefitOfStore", benefits);
 		store.setObjectDetails(objectDetails);
 		
-		this.ServicesObject.updateObj(storeId, superApp, store, email, userSuperapp);
+		
+		this.ServicesObject.updateObj(storeId, superApp, store, id_user);
 		System.out.println("update is down add new Benefit To Store \n\nreturn update store..");
 
 		update.setRole(RoleEnumBoundary.MINIAPP_USER);

@@ -20,7 +20,7 @@ public interface ServicesObject {
 	public List<ObjectBoundary> searchByLocation(String id,double lat, double lng, double distance,String distanceUnits,int size, int page);
 	public void deleteAllObjs (String id);
 	
-	public void updateObj (String id,String superApp, ObjectBoundary update, String email, String userSuperapp);
+	public void updateObj (String id,String superApp, ObjectBoundary update, String id_user );
 	
 	
 }

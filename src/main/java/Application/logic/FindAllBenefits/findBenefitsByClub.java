@@ -13,7 +13,7 @@ import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.DataService.ServicesObject;
 import Application.logic.MiniappInterface;
 
-@Component("findBenefitsByClub")
+@Component("find Your Benefit_findBenefitsByClub")
 public class findBenefitsByClub implements MiniappInterface {
 	private ServicesObject ServicesObject;
 	

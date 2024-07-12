@@ -10,7 +10,7 @@ import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.DataService.ServicesObject;
 import Application.logic.MiniappInterface;
 
-@Component("printAllClubs")
+@Component("find Your Benefit_printAllClubs")
 public class printAllClubs implements MiniappInterface{
 	private ServicesObject ServicesObject;
 

@@ -44,7 +44,7 @@ public class ControllerObject {
 			@RequestParam("userEmail") String email) {
 		
 		Optional<ObjectBoundary> demoOp = this.servicesObject
-			.getSpecificObj(id ,superapp  , userSuperapp , email);
+			.getSpecificObj(id ,superapp ,userSuperapp,email);
 		
 		if (demoOp.isPresent()) {
 			return demoOp.get();
@@ -141,8 +141,9 @@ public class ControllerObject {
 			@RequestParam("userSuperapp") String userSuperapp , 
 			@RequestParam("userEmail") String email) {
 		
+		String id_user = email+" "+ userSuperapp;
 		this.servicesObject
-			.updateObj(id,superapp,update ,email , userSuperapp );
+			.updateObj(id,superapp,update ,id_user);
 	}
 	
 }

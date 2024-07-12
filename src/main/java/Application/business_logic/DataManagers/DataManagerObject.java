@@ -3,10 +3,12 @@ package Application.business_logic.DataManagers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -219,7 +221,7 @@ public class DataManagerObject implements ServicesObject {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void updateObj(String id, String superApp, ObjectBoundary update, String email, String userSuperapp) {
+	public void updateObj(String id, String superApp, ObjectBoundary update,String id_user) {
 		if (this.superAppName.compareTo(superApp) != 0) {
 			System.err.println("\n" + this.superAppName.compareTo(superApp) + "\n");
 
@@ -232,7 +234,7 @@ public class DataManagerObject implements ServicesObject {
 		EntityObject objectEntity = this.objectDao.findById(id).orElseThrow(() -> new BoundaryIsNotFoundException(
 				"Could not find object for update by id: " + id2));
 		// check role
-		String id_user = email + " " + userSuperapp;
+		
 		EntityUser EntityUser = this.userDao.findById(id_user).orElseThrow(() -> new BoundaryIsNotFoundException(
 				"Could not find user for update by id: " + id_user));
 		switch (EntityUser.getRole()) {
@@ -242,6 +244,8 @@ public class DataManagerObject implements ServicesObject {
 				throw new UnauthorizedException("mini app user can't update object");
 			case superapp_user:
 				updateObjectInAction(objectEntity, update);
+//				checkSyncListsInMap(objectEntity.getObjectDetails(), 
+//						objectEntity.getType(), userSuperapp, email);
 				break;
 			default:
 				break;
@@ -288,12 +292,14 @@ public class DataManagerObject implements ServicesObject {
 		if (update.getActive() != null)
 			objectEntity.setActive(update.getActive());		
 		
-		if (update.getAlias() != null && update.getAlias() != "")
+		if (update.getAlias() != null || update.getAlias() != "")
 			objectEntity.setAlias(update.getAlias());
 
 		if (update.getObjectDetails() != null)
-			//TODO check if there is new benefits \stores\clubs
-			objectEntity.setObjectDetails(update.getObjectDetails());
+		{
+			objectEntity.setObjectDetails(updateMapOfObject(objectEntity, 
+					update.getObjectDetails()));
+		}
 		if (update.getLocation() != null) {
 			checkLocationOfObject(update.getLocation());
 			objectEntity.setLocation_lat(update.getLocation().getLat());
@@ -453,7 +459,7 @@ public class DataManagerObject implements ServicesObject {
 		}
 		//list Of objects Type1 In Input Object check
 		for (Integer numberStore : listOfobjectsType1InInputObject) {
-			String id_obj = Character.toUpperCase(typeObjectToSync1.charAt(0))+""+numberStore;
+			String id_obj = typeObjectToSync1.charAt(0)+""+numberStore;
 			Optional<ObjectBoundary> optional = getSpecificObj(id_obj, this.superAppName, userSuperapp, email);
 			ObjectBoundary object;
 			if (!optional.isPresent()|| !optional.get().getActive())
@@ -472,7 +478,8 @@ public class DataManagerObject implements ServicesObject {
 					listOfInputTypeInType1.add(ObjectNumber);
 				Details.put(String.format("listOf%ssOf%s ",typeInput,typeObjectToSync1), listOfInputTypeInType1);
 				object.setObjectDetails(Details);
-				updateObj(id_obj, this.superAppName, object, email, userSuperapp);
+				String id_user = email+" "+ userSuperapp;
+				updateObj(id_obj, this.superAppName, object, id_user );
 				
 			}
 				//and also add the benefit number to the list of benefit in the store and in the club 
@@ -500,7 +507,8 @@ public class DataManagerObject implements ServicesObject {
 				Details.putAll(object.getObjectDetails());
 				Details.put(String.format("listOf%ssOf%s ",typeInput,typeObjectToSync2), listOfInputTypeInType2);
 				object.setObjectDetails(Details);
-				updateObj(id_obj, this.superAppName, object, email, userSuperapp);
+				String id_user = email+" "+ userSuperapp;
+				updateObj(id_obj, this.superAppName, object, id_user );
 				
 			}
 				
@@ -551,6 +559,17 @@ public class DataManagerObject implements ServicesObject {
 			return numbersLink;
 		}
 		return null;
+	}
+	public Map<String ,Object> updateMapOfObject(EntityObject objectEntity, Map<String ,Object> updateObjectMap)
+	{
+		Map<String ,Object> map = new HashMap<>(updateObjectMap);
+		//for every key in the entity map if the update does not have it put it in the map 
+		for (String key : objectEntity.getObjectDetails().keySet())
+		{
+			if (!map.containsKey(key))
+				map.put(key, objectEntity.getObjectDetails().get(key));
+		}
+		return map;
 	}
 
 

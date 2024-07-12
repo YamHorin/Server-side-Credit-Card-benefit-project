@@ -192,8 +192,9 @@ public class DataManagerCommand implements ServicesCommand{
 	public ObjectBoundary[] invokeCommand(MiniAppCommandBoundary CommandBoundary)
 	{
 		MiniappInterface app = null;
-		String command = CommandBoundary.getCommand();
-		System.err.println("command = "+command);
+		String command = CommandBoundary.getCommandId().getMiniApp()+"_"+CommandBoundary.getCommand();
+		System.err.println("command = "+CommandBoundary.getCommand());
+		System.err.println("miniApp = "+CommandBoundary.getCommandId().getMiniApp());
 		try {
 			app = this.applicationContext.getBean( command, MiniappInterface.class);
 		} catch (Exception e) {

@@ -14,7 +14,12 @@ public class UserBoundary {
 	public UserBoundary() {
 	}
 
-
+    public UserBoundary(UserId userId, RoleEnumBoundary role, String username, String avatar) {
+        this.userId = userId;
+        this.role = role;
+        this.username = username;
+        this.avatar = avatar;
+    }
 
 	public UserId getUserId() {
 		return userId;
@@ -32,11 +37,11 @@ public class UserBoundary {
 		this.role = role;
 	}
 
-	public String getUserName() {
+	public String getUsername() {
 		return username;
 	}
 
-	public void setUserName(String userName) {
+	public void setUsername(String userName) {
 		this.username = userName;
 	}
 

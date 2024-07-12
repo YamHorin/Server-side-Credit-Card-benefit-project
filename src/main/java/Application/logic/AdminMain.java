@@ -217,7 +217,7 @@ public class AdminMain {
 		}
 		//sent a post of new user 
 		NewUserBoundary newUserBoundary = new NewUserBoundary();
-		newUserBoundary.setUserName(user);
+		newUserBoundary.setUsername(user);
 		newUserBoundary.setEmail(email);
 		newUserBoundary.setRole(roleEnumBoundary);
 		newUserBoundary.setAvatar(avatar);

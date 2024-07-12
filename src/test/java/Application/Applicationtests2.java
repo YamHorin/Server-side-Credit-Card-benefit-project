@@ -54,7 +54,7 @@ class Applicationtests2 {
         try {
             String username = "admUser";
             NewUserBoundary user = new NewUserBoundary();
-            user.setUserName(username);
+            user.setUsername(username);
             user.setRole(RoleEnumBoundary.ADM_USER);
             user.setEmail(username + "@aa.com");
             user.setAvatar("houj");
@@ -100,7 +100,7 @@ class Applicationtests2 {
 		// AND the database contains 1 super app user
 		String username = "superUser";
 		NewUserBoundary user  = new NewUserBoundary();
-		user.setUserName(username);
+		user.setUsername(username);
 		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 		user.setEmail(username+"@aa.com");
 		user.setAvatar("houj");
@@ -171,7 +171,7 @@ class Applicationtests2 {
 		// AND the database contains 1 super app user
 		String username = "superUser";
 		NewUserBoundary user  = new NewUserBoundary();
-		user.setUserName(username);
+		user.setUsername(username);
 		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 		user.setEmail(username+"@aa.com");
 		user.setAvatar("houj");
@@ -180,7 +180,7 @@ class Applicationtests2 {
 		
 		String username1 = "miniAppUser";
 		NewUserBoundary user1  = new NewUserBoundary();
-		user1.setUserName(username1);
+		user1.setUsername(username1);
 		user1.setRole(RoleEnumBoundary.MINIAPP_USER);
 		user1.setEmail(username1+"@aa.com");
 		user1.setAvatar("p");
@@ -253,7 +253,7 @@ class Applicationtests2 {
 		// AND the database contains 1 super app user
 		String username = "superUser";
 		NewUserBoundary user  = new NewUserBoundary();
-		user.setUserName(username);
+		user.setUsername(username);
 		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 		user.setEmail(username+"@aa.com");
 		user.setAvatar("houj");
@@ -261,7 +261,7 @@ class Applicationtests2 {
 
 		String username1 = "miniAppUser";
 		NewUserBoundary user1  = new NewUserBoundary();
-		user1.setUserName(username1);
+		user1.setUsername(username1);
 		user1.setRole(RoleEnumBoundary.MINIAPP_USER);
 		
 		user1.setEmail(username1+"@aa.com");
@@ -306,7 +306,7 @@ class Applicationtests2 {
 		// AND the database contains 1 super app user
 		String username = "SuperAppUser";
 		NewUserBoundary user  = new NewUserBoundary();
-		user.setUserName(username);
+		user.setUsername(username);
 		user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 		user.setEmail(username+"@aa.com");
 		

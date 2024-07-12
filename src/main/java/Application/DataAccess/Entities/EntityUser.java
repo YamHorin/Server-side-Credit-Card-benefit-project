@@ -12,7 +12,7 @@ public class EntityUser {
 
     @Id
     private String id;
-    private String userName;
+    private String username;
 
     @Enumerated(EnumType.STRING)
     private RoleEnumEntity role;
@@ -30,12 +30,12 @@ public class EntityUser {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     public String getAvatar() {
@@ -58,7 +58,7 @@ public class EntityUser {
     public String toString() {
         return "UserEntity{" +
                 "id='" + id + '\'' +
-                ", userName='" + userName + '\'' +
+                ", userName='" + username + '\'' +
                 ", role=" + role +
                 ", avatar='" + avatar + '\'' +
                  +

@@ -68,8 +68,8 @@ public class Initializer implements CommandLineRunner{
 		i ->{
 			UserBoundary user =   new UserBoundary();
 			String new_name = addSpace(names.get(i));
-			user.setUserName(new_name);
-			if (i%2==0 || user.getUserName().equalsIgnoreCase("Sarah Taylor")) {
+			user.setUsername(new_name);
+			if (i%2==0 || user.getUsername().equalsIgnoreCase("Sarah Taylor")) {
 				user.setRole(RoleEnumBoundary.SUPERAPP_USER);
 				user.setAvatar(manUrl);
 			}

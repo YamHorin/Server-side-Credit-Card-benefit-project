@@ -26,28 +26,6 @@ public class ControllerCommand {
 
 	public ObjectBoundary[] store_command(@PathVariable("MiniAppName") String idMiniAppName ,@RequestBody MiniAppCommandBoundary message) {
 
-			return this.ServicesCommand.createMiniAppCommand(message , idMiniAppName);
-
-	
-		
+			return this.ServicesCommand.createMiniAppCommand(message , idMiniAppName);		
 	}
-
-
-	
-	
-	
-
-	
-	
-
-	
-	
-	
-	
-	
-
 }
-
-
-
-

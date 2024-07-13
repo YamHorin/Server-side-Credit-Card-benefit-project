@@ -292,7 +292,7 @@ public class DataManagerObject implements ServicesObject {
 		if (update.getActive() != null)
 			objectEntity.setActive(update.getActive());		
 		
-		if (update.getAlias() != null || update.getAlias() != "")
+		if (update.getAlias() != null)
 			objectEntity.setAlias(update.getAlias());
 
 		if (update.getObjectDetails() != null)

@@ -1,8 +1,12 @@
 package Application.logic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.IntFunction;
 
 import org.springframework.stereotype.Component;
@@ -31,7 +35,7 @@ public class ClubFunctions {
 				retrieve().body(ObjectBoundary.class);
 		System.out.println("link passed");
 
-		List <Integer> benefits = getALiistFromMap(clubObject.getObjectDetails(), "listOfBenefitOfClub");
+		List <Integer> benefits = getALiistFromMap(clubObject.getObjectDetails(), "listOfBenefitsOfClub");
 		System.out.println("here are all the benefits in the club: \n\n");
 		for (Integer benefitNumber : benefits) {
 			ObjectBoundary benefit =  restClient.get().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}" ,
@@ -72,180 +76,53 @@ public class ClubFunctions {
 				retrieve().body(ObjectBoundary.class);
 		System.out.println("link passed");
 
-		List <Integer> benefits = getALiistFromMap(clubObject.getObjectDetails(),"listOfBenefitOfClub");
-		benefits.add(benefitNumber);
-		Map<String, Object> objectDetails = clubObject.getObjectDetails();
-		objectDetails.put("listOfBenefitOfClub", objectDetails);
+		List <Integer> benefits = getALiistFromMap(clubObject.getObjectDetails(),"listOfBenefitsOfClub");
+		List <Integer> clubs = getALiistFromMap(benefitObject.getObjectDetails(),"listOfClubsOfBenefit");
+
+		//update club
+		Set<Integer> set = new HashSet<>(benefits);
+        set.add(benefitNumber);
+		HashMap<String, Object> objectDetails = (HashMap<String, Object>) clubObject.getObjectDetails();
+		objectDetails.put("listOfBenefitsOfClub", new ArrayList<>(set));
 		clubObject.setObjectDetails(objectDetails);
-		System.out.println("benefit list of club has been updates :"+benefits.toString());
+		System.out.println("benefit list of club has been updated :"+set.toString());
 		
+		set.clear();
+		
+		//update benefit 
+		set.addAll(clubs);
+		set.add(clubNumber);
+		objectDetails = (HashMap<String, Object>) benefitObject.getObjectDetails();
+		objectDetails.put("listOfClubsOfBenefit", new ArrayList<>(set));
+		benefitObject.setObjectDetails(objectDetails);
+		System.out.println("clubs list of benefit has been updated :"+set.toString());
+
 		//can be a bug because put do not return nothing....
 		//fix url
 		restClient.put().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}" ,
+				superApp,
 				club ,
 				superApp , 
 				email ).
 				body(clubObject).
 				retrieve();
 		System.out.println("link passed");
-
-		System.out.println("the updated club: \n"+clubObject.toString());
-	}
-	
-	public void addBenefitToClubStringClubStringBenefit(RestClient restClient ,UserId userId , String ClubName , String benefitName)
-	{
-		//restClient  = "http://localhost:" + port + "/superapp
-		//get club and benefit
 		
-		String superApp = userId.getSuperapp();
-		String email = userId.getEmail();
-		//fix url
-		ObjectBoundary clubObject =  restClient.get().uri("/objects/search"
-				+ "/byAlias/{alias}"
-				+ "{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}"
-				+ "&size={size}&page={page}" ,
-				ClubName ,
-				superApp , 
-				email,
-				1,
-				0).
-				retrieve().body(ObjectBoundary.class);
-		System.out.println("link passed");
-
-		//fix url
-		ObjectBoundary benefitObject = restClient.get().uri("/objects/search"
-				+ "/byAlias/{alias}"
-				+ "{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}"
-				+ "&size={size}&page={page}" ,
-				benefitName ,
-				superApp , 
-				email,
-				1,
-				0).
-				retrieve().body(ObjectBoundary.class);
-		System.out.println("link passed");
-
-		List <Integer> benefits = getALiistFromMap(clubObject.getObjectDetails(),"listOfBenefitOfClub");
-		benefits.add((Integer) benefitObject.getObjectDetails().get("idBenefit"));
-		Map<String, Object> objectDetails = clubObject.getObjectDetails();
-		objectDetails.put("listOfBenefitOfClub", objectDetails);
-		clubObject.setObjectDetails(objectDetails);
-		System.out.println("benefit list of club has been updates :"+benefits.toString());
-		
-		//can be a bug because put do not return nothing....
-		//fix url
 		restClient.put().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}" ,
-				clubObject.getObjectID().getId() ,
+				superApp,
+				BenefitId ,
 				superApp , 
 				email ).
-				body(clubObject).
+				body(benefitObject).
 				retrieve();
 		System.out.println("link passed");
 
 		System.out.println("the updated club: \n"+clubObject.toString());
+
+		System.out.println("the updated benefit: \n"+benefitObject.toString());
 	}
 	
-	
-	public void addBenefitToClubintClubStringBenefit(RestClient restClient ,UserId userId , int ClubNumber , String benefitName)
-	{
-		//restClient  = "http://localhost:" + port + "/superapp
-		//get club and benefit
-		String club = "C"+ClubNumber;
-		String superApp = userId.getSuperapp();
-		String email = userId.getEmail();
-		//fix url
-		ObjectBoundary clubObject =  restClient.get().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}" ,
-				superApp ,
-				club ,
-				superApp , 
-				email ).
-				retrieve().body(ObjectBoundary.class);
-		System.out.println("link passed");
 
-		//fix url
-		ObjectBoundary benefitObject = restClient.get().uri("/objects/search"
-				+ "/byAlias/{alias}"
-				+ "{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}"
-				+ "&size={size}&page={page}" ,
-				benefitName ,
-				superApp , 
-				email,
-				1,
-				0).
-				retrieve().body(ObjectBoundary.class);
-		System.out.println("link passed");
-
-		List <Integer> benefits = getALiistFromMap(clubObject.getObjectDetails(),"listOfBenefitOfClub");
-		benefits.add((Integer) benefitObject.getObjectDetails().get("idBenefit"));
-		Map<String, Object> objectDetails = clubObject.getObjectDetails();
-		objectDetails.put("listOfBenefitOfClub", objectDetails);
-		clubObject.setObjectDetails(objectDetails);
-		System.out.println("benefit list of club has been updates :"+benefits.toString());
-		
-		//can be a bug because put do not return nothing....
-		//fix url
-		restClient.put().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}" ,
-				clubObject.getObjectID().getId() ,
-				superApp , 
-				email ).
-				body(clubObject).
-				retrieve();
-		System.out.println("link passed");
-
-		System.out.println("the updated club: \n"+clubObject.toString());
-	}
-	//4
-	public void addBenefitToClubStringClubintBenefit(RestClient restClient ,UserId userId , String ClubName ,int benefitNumber)
-	{
-		//restClient  = "http://localhost:" + port + "/superapp
-				//get club and benefit
-				
-				String superApp = userId.getSuperapp();
-				String email = userId.getEmail();
-				//fix url
-				ObjectBoundary clubObject =  restClient.get().uri("/objects/search"
-						+ "/byAlias/{alias}"
-						+ "{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}"
-						+ "&size={size}&page={page}" ,
-						ClubName ,
-						superApp , 
-						email,
-						1,
-						0).
-						retrieve().body(ObjectBoundary.class);
-				System.out.println("link passed");
-
-				String BenefitId = "B"+benefitNumber;
-				//fix url
-				ObjectBoundary benefitObject =  restClient.get().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}" ,
-						superApp, 
-						BenefitId,
-						superApp, 
-						email ).
-						retrieve().body(ObjectBoundary.class);
-				System.out.println("link passed");
-
-				List <Integer> benefits = getALiistFromMap(clubObject.getObjectDetails(),"listOfBenefitOfClub");
-				benefits.add(benefitNumber);
-				Map<String, Object> objectDetails = clubObject.getObjectDetails();
-				objectDetails.put("listOfBenefitOfClub", objectDetails);
-				clubObject.setObjectDetails(objectDetails);
-				System.out.println("benefit list of club has been updates :"+benefits.toString());
-				
-				//can be a bug because put do not return nothing....
-				//fix url
-				restClient.put().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}" ,
-						clubObject.getObjectID().getId() ,
-						superApp , 
-						email ).
-						body(clubObject).
-						retrieve();
-				System.out.println("link passed");
-
-				System.out.println("the updated club: \n"+clubObject.toString());
-	}
-	
-	
 	
 	
 	public List<Integer> getALiistFromMap(Map<String, Object> objectDetails , String key)
@@ -254,8 +131,9 @@ public class ClubFunctions {
 		List <Integer> numbers = 	objects.stream().map(Object::toString)
 				.map(str->Integer.parseInt(str))
 				.toList();
-		return numbers;
+		return new LinkedList<Integer>(numbers) ;
 	}
+	
 	
 	
 	

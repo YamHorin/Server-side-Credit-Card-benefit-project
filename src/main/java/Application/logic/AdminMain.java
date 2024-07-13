@@ -1,5 +1,6 @@
 package Application.logic;
 
+import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -7,6 +8,7 @@ import org.springframework.web.client.RestClient;
 
 import Application._a_Presentation.Exceptions.BoundaryIsNotFilledCorrectException;
 import Application.business_logic.Boundaies.NewUserBoundary;
+import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.Boundaies.RoleEnumBoundary;
 import Application.business_logic.Boundaies.UserBoundary;
 import Application.business_logic.javaObjects.UserId;
@@ -28,8 +30,7 @@ public class AdminMain {
 		 RestClient restClient = null;
 		 int port = 8085;
 		 restClient = setPort(port);
-		//TODO add logger (how eyal did this thing???)
-		 AdminFunctions adminFunctions = new AdminFunctions();
+	 	AdminFunctions adminFunctions = new AdminFunctions();
 		ClubFunctions clubFunctions = new ClubFunctions();
 		storeFunctions storeFunctions = new storeFunctions();
 		benefitsFunctions benefitsFunctions = new benefitsFunctions();
@@ -41,6 +42,9 @@ public class AdminMain {
 			choise = menu();
 			switch (choise) {
 			case 1: {
+				System.out.println("here is all the clubs:");
+				//get All by type
+				printAllObjectByType("club", restClient, userid);
 				System.out.println("\nenter the club number you want to delete:");
 				int clubNum = Integer.parseInt(scanner.next());
 				try {
@@ -54,6 +58,8 @@ public class AdminMain {
 				break;
 			}
 			case 2: {
+				//get All by type
+				printAllObjectByType("store", restClient, userid);
 				System.out.println("\nenter the store number you want to delete:");
 				int storeNum = Integer.parseInt(scanner.next());
 				try {
@@ -67,10 +73,10 @@ public class AdminMain {
 				break;
 				
 			}
-			case 3: {
-				
-				//TODO delete benefit
+			case 3: {				
 				System.out.println("\nenter the store number you want to see the benefits:");
+				//get All by type
+				printAllObjectByType("store", restClient, userid);
 				int storeNum = Integer.parseInt(scanner.next());
 				try {
 					storeFunctions.printAllBenefitsOfStore(restClient, userid, storeNum);
@@ -82,7 +88,9 @@ public class AdminMain {
 				
 				break;
 			}
-			case 4: {				
+			case 4: {
+				//get All by type
+				printAllObjectByType("club", restClient, userid);
 				System.out.println("\nenter the club number you want to see the benefits:");
 				int choiseClub = Integer.parseInt(scanner.next());
 				try {
@@ -96,17 +104,17 @@ public class AdminMain {
 				break;
 			}
 			case 5: {
-				//TODO int benefit string benefit check 
+				//get All by type
+				printAllObjectByType("benefit", restClient, userid);
 				System.out.println("\nenter the benefit number\name you want to see int the club \nif it's a new benefit enter 99:");
 				int benefit = Integer.parseInt(scanner.next());
-				System.out.println("add the club number:");
-    			scanner.nextLine();
-
+				//get All by type
+				printAllObjectByType("club", restClient, userid);
+				System.out.println("eneter the club number:");
+				scanner.nextLine();
 				int club = Integer.parseInt(scanner.next());
 				if (benefit==99)
 					benefit = benefitsFunctions.addBenefit(restClient, userid);
-				
-				
 				try {
 					clubFunctions.addBenefitToClub(restClient, userid, club, benefit);
 					
@@ -127,10 +135,12 @@ public class AdminMain {
 				    System.out.println("Exception caught: " + e.getClass().getSimpleName());
 				    System.out.println("Message: " + e.getMessage());
 				}
-				
+
+				scanner.nextLine();
 				break;
 			}
 			case 7: {
+
 				System.out.println("bye bye... :( ");
 				break;
 			}
@@ -231,5 +241,22 @@ public class AdminMain {
 		return user1.getUserId();
 		
 	}
-
+	private static void printAllObjectByType(String type , RestClient restClient , UserId userid)
+	{
+		ObjectBoundary[] objects  = restClient.get().uri("/objects/search/byType/{type}?"
+				+ "userSuperapp={userSuperapp}&userEmail={email}&size={size}&page={page}",
+				type,
+				applicationName, 
+				userid.getEmail() ,
+				20,
+				0).retrieve().body(ObjectBoundary[].class);
+		
+		for (int i = 0; i < objects.length; i++) {
+			System.out.println(String.format("%d) %s \nactive =%s\n",
+					Character.getNumericValue(objects[i].getObjectID().getId().charAt(1)) 
+					, objects[i].getAlias(),objects[i].getActive()));
+			if (type.equalsIgnoreCase("benefit"))
+				System.out.println("description: "+objects[i].getObjectDetails().get("description"));
+		}
+	}
 }

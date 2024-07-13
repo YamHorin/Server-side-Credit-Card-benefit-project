@@ -1,5 +1,6 @@
 package Application.logic;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,11 @@ public class benefitsFunctions {
 		benefit.setType("benefit");
 		benefit.setAlias(name);
 		benefit.setActive(true);
-		benefit.setObjectDetails(Collections.singletonMap("description", description));
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("description", description);
+		map.put("listOfClubsOfBenefit",  Arrays.asList());
+		map.put("listOfStoresOfBenefit",  Arrays.asList());
+		benefit.setObjectDetails(map);
 		benefit.setCreatedBy(new CreatedBy(userId));
 		
 		benefit.setLocation(new Location(999,999));
@@ -37,8 +42,7 @@ public class benefitsFunctions {
 				.retrieve()
 				.body(ObjectBoundary.class);
 		
-		scn.close();
-		System.out.println("we have a ne benefit yeah babyn\n\n"+benefit.toString());
+		System.out.println("we have a ne benefit :)\n\n"+benefit.toString());
 		return getNumberFromId(benefit.getObjectID().getId());
 		
 	}

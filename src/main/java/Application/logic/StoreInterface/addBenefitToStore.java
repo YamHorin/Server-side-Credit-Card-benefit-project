@@ -35,7 +35,7 @@ private ServicesUser ServicesUser;
 	public List<ObjectBoundary> activateCommand(MiniAppCommandBoundary miniappCommandBoundary) {
 		//update user to super app user to update the object to update it back to mini app user 
 		//this is really stupid....  i know
-		String userSuperapp = miniappCommandBoundary.getInvokedBy().getUserId().getSuperAPP();
+		String userSuperapp = miniappCommandBoundary.getInvokedBy().getUserId().getSuperapp();
 		String email = miniappCommandBoundary.getInvokedBy().getUserId().getEmail();
 		
 		String id_user = email+" "+userSuperapp;

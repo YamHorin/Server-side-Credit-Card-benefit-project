@@ -28,7 +28,7 @@ public class printAllBenefitOfStore implements MiniappInterface {
 
 		String storeId = miniappCommandBoundary.getTargetObject().getObjectId().getId();
 		String superApp = miniappCommandBoundary.getTargetObject().getObjectId().getSuperApp();
-		String userSuperapp = miniappCommandBoundary.getInvokedBy().getUserId().getSuperAPP();
+		String userSuperapp = miniappCommandBoundary.getInvokedBy().getUserId().getSuperapp();
 		String email = miniappCommandBoundary.getInvokedBy().getUserId().getEmail();
 		
 		ObjectBoundary boundaryObject = null;

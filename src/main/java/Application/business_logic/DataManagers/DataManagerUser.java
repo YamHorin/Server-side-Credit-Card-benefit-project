@@ -78,7 +78,7 @@ public class DataManagerUser implements ServicesUser{
 		checkStringIsNullOrEmpty(UserBoundary.getAvatar(), "avatar");
 		
 		UserId userId = UserBoundary.getUserId();
-		userId.setSuperAPP(name_super_app);
+		userId.setSuperapp(name_super_app);
 		UserBoundary.setUserId(userId);
 		EntityUser entity = this.DataConvertor.BoundaryUserTOEntityUser(UserBoundary);
 		entity = this.UserDao.save(entity);

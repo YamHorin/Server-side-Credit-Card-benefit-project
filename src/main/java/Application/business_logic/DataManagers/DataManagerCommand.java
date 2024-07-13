@@ -128,7 +128,7 @@ public class DataManagerCommand implements ServicesCommand{
 		String idObj = CommandBoundary.getTargetObject().getObjectId().getId()+"__"+this.superAppName;
 		EntityObject EntityObject = this.objDao.findById(idObj).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find object for command by id: " + idObj));
-		String idUser = CommandBoundary.getInvokedBy().getUserId().getEmail() +" "+ CommandBoundary.getInvokedBy().getUserId().getSuperAPP();
+		String idUser = CommandBoundary.getInvokedBy().getUserId().getEmail() +" "+ CommandBoundary.getInvokedBy().getUserId().getSuperapp();
 		EntityUser userEntity = this.userDao.findById(idUser).orElseThrow(()->new BoundaryIsNotFoundException(
 				"Could not find User for command by id: " + idUser));
 		//from eyal notes 7.7

@@ -119,7 +119,7 @@ class Applicationtests2 {
 			CreatedBy CreatedBy  = new CreatedBy();
 			UserId UserId1 = new UserId();
 			UserId1.setEmail(createdBy);
-			UserId1.setSuperAPP(this.superAppName);
+			UserId1.setSuperapp(this.superAppName);
 			CreatedBy.setUserId(UserId1);
 			obj.setCreatedBy(CreatedBy);
 			obj.setObjectDetails(Collections.singletonMap("person", "Jane #" + i));
@@ -137,7 +137,7 @@ class Applicationtests2 {
 			CreatedBy CreatedBy  = new CreatedBy();
 			UserId UserId1 = new UserId();
 			UserId1.setEmail(createdBy);
-			UserId1.setSuperAPP(this.superAppName);
+			UserId1.setSuperapp(this.superAppName);
 			CreatedBy.setUserId(UserId1);
 			obj.setCreatedBy(CreatedBy);
 			obj.setObjectDetails(Collections.singletonMap("non_active", "non_active #" + i));
@@ -200,7 +200,7 @@ class Applicationtests2 {
 			CreatedBy CreatedBy  = new CreatedBy();
 			UserId UserId1 = new UserId();
 			UserId1.setEmail(createdBy);
-			UserId1.setSuperAPP("");
+			UserId1.setSuperapp("");
 			CreatedBy.setUserId(UserId1);
 			obj.setCreatedBy(CreatedBy);
 			obj.setObjectDetails(Collections.singletonMap("person", "Jane #" + i));
@@ -219,7 +219,7 @@ class Applicationtests2 {
 			CreatedBy CreatedBy  = new CreatedBy();
 			UserId UserId1 = new UserId();
 			UserId1.setEmail(createdBy);
-			UserId1.setSuperAPP("");
+			UserId1.setSuperapp("");
 			CreatedBy.setUserId(UserId1);
 			obj.setCreatedBy(CreatedBy);
 			obj.setObjectDetails(Collections.singletonMap("non_active", "non_active #" + i));
@@ -279,7 +279,7 @@ class Applicationtests2 {
 		CreatedBy CreatedBy  = new CreatedBy();
 		UserId UserId1 = new UserId();
 		UserId1.setEmail(createdBy);
-		UserId1.setSuperAPP("");
+		UserId1.setSuperapp("");
 		CreatedBy.setUserId(UserId1);
 		obj.setCreatedBy(CreatedBy);
 		obj.setObjectDetails(Collections.singletonMap("person", "Jane #"));
@@ -323,7 +323,7 @@ class Applicationtests2 {
 		CreatedBy CreatedBy  = new CreatedBy();
 		UserId UserId1 = new UserId();
 		UserId1.setEmail(createdBy);
-		UserId1.setSuperAPP("");
+		UserId1.setSuperapp("");
 		CreatedBy.setUserId(UserId1);
 		obj.setCreatedBy(CreatedBy);
 		obj.setObjectDetails(Collections.singletonMap("person", "Jane #"));
@@ -338,7 +338,7 @@ class Applicationtests2 {
 		CreatedBy CreatedBy1  = new CreatedBy();
 		UserId UserId11 = new UserId();
 		UserId11.setEmail(createdBy);
-		UserId11.setSuperAPP("");
+		UserId11.setSuperapp("");
 		CreatedBy1.setUserId(UserId11);
 		obj1.setCreatedBy(CreatedBy1);
 		obj1.setObjectDetails(Collections.singletonMap("person", "Jane #"));

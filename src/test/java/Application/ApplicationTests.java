@@ -133,7 +133,7 @@ class ApplicationTests {
 		CreatedBy CreatedBy  = new CreatedBy();
 		UserId UserId1 = new UserId();
 		UserId1.setEmail(username+"@aa.com");
-		UserId1.setSuperAPP(this.superAppName);
+		UserId1.setSuperapp(this.superAppName);
 		CreatedBy.setUserId(UserId1);
 		obj.setCreatedBy(CreatedBy);
 		obj.setObjectDetails(Collections.singletonMap("test", "test"));

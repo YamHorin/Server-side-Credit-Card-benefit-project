@@ -123,7 +123,7 @@ public class DataConvertor {
 	public String stringIdFromUserID(UserId UserId)
 	{
 		String email = UserId.getEmail();
-		String superAppName = UserId.getSuperAPP();
+		String superAppName = UserId.getSuperapp();
 		return email+" "+superAppName;
 	}
 	public UserId UserIDFromStringId(String id)

@@ -114,7 +114,7 @@ public class Initializer implements CommandLineRunner{
 		String type = "club";
 		UserId UserId = new UserId();
 		UserId.setEmail("SarahTaylor@gmail.com");
-		UserId.setSuperAPP(this.superAppName);
+		UserId.setSuperapp(this.superAppName);
         List<String> creditCardClubs = new ArrayList<>();
 
         creditCardClubs.add("Hever");
@@ -228,7 +228,7 @@ public class Initializer implements CommandLineRunner{
 		}
 		//make 10 mini app commands
 		UserId.setEmail(names.get(1)+"@gmail.com");
-		UserId.setSuperAPP(BoundaryObject.getObjectID().getSuperApp());
+		UserId.setSuperapp(BoundaryObject.getObjectID().getSuperApp());
 		CreatedBy.setUserId(UserId);
 		String id = "command";
 		for (int i =0; i<10 ; i++) {

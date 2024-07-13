@@ -28,7 +28,7 @@ public class printAllClubs implements MiniappInterface{
 	public List<ObjectBoundary> activateCommand(MiniAppCommandBoundary miniappCommandBoundary) {
 
 		String id = miniappCommandBoundary.getInvokedBy().getUserId().getEmail()+" "+
-				miniappCommandBoundary.getInvokedBy().getUserId().getSuperAPP();
+				miniappCommandBoundary.getInvokedBy().getUserId().getSuperapp();
 		String command = miniappCommandBoundary.getCommand();
 		int numberBenefits = 10;
 		//TODO how much clubs to shoe the user????? set defult to 10?

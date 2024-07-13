@@ -20,7 +20,7 @@ public class ClubFunctions {
 	{
 		//restClient  = "http://localhost:" + port + "/superapp
 		String club = "C"+clubNumber;
-		String superApp = userId.getSuperAPP();
+		String superApp = userId.getSuperapp();
 		String email = userId.getEmail();
 		//fix url
 		ObjectBoundary clubObject =  restClient.get().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}" ,
@@ -51,7 +51,7 @@ public class ClubFunctions {
 		//restClient  = "http://localhost:" + port + "/superapp
 		//get club and benefit
 		String club = "C"+clubNumber;
-		String superApp = userId.getSuperAPP();
+		String superApp = userId.getSuperapp();
 		String email = userId.getEmail();
 		//fix url
 		ObjectBoundary clubObject =  restClient.get().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}" ,
@@ -97,7 +97,7 @@ public class ClubFunctions {
 		//restClient  = "http://localhost:" + port + "/superapp
 		//get club and benefit
 		
-		String superApp = userId.getSuperAPP();
+		String superApp = userId.getSuperapp();
 		String email = userId.getEmail();
 		//fix url
 		ObjectBoundary clubObject =  restClient.get().uri("/objects/search"
@@ -151,7 +151,7 @@ public class ClubFunctions {
 		//restClient  = "http://localhost:" + port + "/superapp
 		//get club and benefit
 		String club = "C"+ClubNumber;
-		String superApp = userId.getSuperAPP();
+		String superApp = userId.getSuperapp();
 		String email = userId.getEmail();
 		//fix url
 		ObjectBoundary clubObject =  restClient.get().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}" ,
@@ -200,7 +200,7 @@ public class ClubFunctions {
 		//restClient  = "http://localhost:" + port + "/superapp
 				//get club and benefit
 				
-				String superApp = userId.getSuperAPP();
+				String superApp = userId.getSuperapp();
 				String email = userId.getEmail();
 				//fix url
 				ObjectBoundary clubObject =  restClient.get().uri("/objects/search"

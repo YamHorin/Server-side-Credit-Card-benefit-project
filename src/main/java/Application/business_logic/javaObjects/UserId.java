@@ -7,15 +7,15 @@ public class UserId {
 	public UserId() {
 		
 	}
-	public UserId(String SuperAPP , String email) {
-		this.superapp= SuperAPP;
+	public UserId(String superapp , String email) {
+		this.superapp= superapp;
 		this.email = email;
 	}
 	
-	public String getSuperAPP() {
+	public String getSuperapp() {
 		return superapp;
 	}
-	public void setSuperAPP(String superAPP) {
+	public void setSuperapp(String superAPP) {
 		this.superapp = superAPP;
 	}
 	public String getEmail() {
@@ -26,7 +26,7 @@ public class UserId {
 	}
 	@Override
 	public String toString() {
-		return "UserId [SuperAPP=" + superapp + ", email=" + email + "]";
+		return "UserId [superapp=" + superapp + ", email=" + email + "]";
 	}
 	
 

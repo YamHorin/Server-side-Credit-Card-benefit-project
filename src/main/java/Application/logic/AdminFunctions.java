@@ -13,7 +13,7 @@ public class AdminFunctions {
 	public void deleteClub(RestClient restClient ,UserId userId , int clubNumber)
 	{
 		String idClub = "C"+clubNumber;
-		String superApp = userId.getSuperAPP();
+		String superApp = userId.getSuperapp();
 		String email = userId.getEmail();
 		//get user and change the role to super app so it will be can change the object
 		UserBoundary user = restClient.get().uri("/users/login/"
@@ -64,7 +64,7 @@ public class AdminFunctions {
 	public void deleteStore(RestClient restClient ,UserId userId , int storeNumber)
 	{
 		String idStore = "C"+storeNumber;
-		String superApp = userId.getSuperAPP();
+		String superApp = userId.getSuperapp();
 		String email = userId.getEmail();
 		//get user and change the role to super app so it will be can change the object
 		UserBoundary user = restClient.get().uri("/users/login/"

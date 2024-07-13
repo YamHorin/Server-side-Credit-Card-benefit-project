@@ -17,7 +17,7 @@ public class storeFunctions {
 	{
 		//restClient  = "http://localhost:" + port + "/superapp
 		String storeId  = "S"+StoreNumber;
-		String superApp = userId.getSuperAPP();
+		String superApp = userId.getSuperapp();
 		String email = userId.getEmail();
 		//fix url
 		ObjectBoundary StoreObject =  restClient.get().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}",

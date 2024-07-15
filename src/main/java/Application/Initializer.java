@@ -223,12 +223,12 @@ public class Initializer implements CommandLineRunner{
 			obj.setCreatedBy(CreatedBy);
 			obj.setObjectDetails(Collections.singletonMap("person", "Jane #" + j));
 			BoundaryObject = this.ServicesObject.createObject(obj);
-			ids_of_objects.add( BoundaryObject.getObjectID().getId());	
+			ids_of_objects.add( BoundaryObject.getObjectId().getId());	
 			
 		}
 		//make 10 mini app commands
 		UserId.setEmail(names.get(1)+"@gmail.com");
-		UserId.setSuperapp(BoundaryObject.getObjectID().getSuperapp());
+		UserId.setSuperapp(BoundaryObject.getObjectId().getSuperapp());
 		CreatedBy.setUserId(UserId);
 		String id = "command";
 		for (int i =0; i<10 ; i++) {

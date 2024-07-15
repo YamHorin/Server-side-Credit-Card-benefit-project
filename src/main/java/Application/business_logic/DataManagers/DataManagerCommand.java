@@ -138,8 +138,8 @@ public class DataManagerCommand implements ServicesCommand{
 			throw new BoundaryIsNotFilledCorrectException("Target Object must be active....");
 		
 		CommandId command = new CommandId();
-		command.setSuperApp(this.superAppName);
-		command.setMiniApp(idMiniAppName);
+		command.setSuperapp(this.superAppName);
+		command.setMiniapp(idMiniAppName);
 		command.setId(UUID.randomUUID().toString());
 		
 		CommandBoundary.setCommandId(command);
@@ -155,7 +155,7 @@ public class DataManagerCommand implements ServicesCommand{
 		System.err.println("***\n"+entity.toString()+"\n\n\n");
 		MiniAppCommandBoundary rv  = DataConvertor.EntityCommandToBoundaryCommand(entity);
 		command = rv.getCommandId();
-		command.setSuperApp(this.superAppName);
+		command.setSuperapp(this.superAppName);
 		rv.setCommandId(command);
 		System.err.println("* server stored: " + rv);
 		return invokeCommand(CommandBoundary);
@@ -192,9 +192,9 @@ public class DataManagerCommand implements ServicesCommand{
 	public ObjectBoundary[] invokeCommand(MiniAppCommandBoundary CommandBoundary)
 	{
 		MiniappInterface app = null;
-		String command = CommandBoundary.getCommandId().getMiniApp()+"_"+CommandBoundary.getCommand();
+		String command = CommandBoundary.getCommandId().getMiniapp()+"_"+CommandBoundary.getCommand();
 		System.err.println("command = "+CommandBoundary.getCommand());
-		System.err.println("miniApp = "+CommandBoundary.getCommandId().getMiniApp());
+		System.err.println("miniApp = "+CommandBoundary.getCommandId().getMiniapp());
 		try {
 			app = this.applicationContext.getBean( command, MiniappInterface.class);
 		} catch (Exception e) {

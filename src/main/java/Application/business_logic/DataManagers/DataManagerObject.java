@@ -156,7 +156,7 @@ public class DataManagerObject implements ServicesObject {
 		ObjectId objId = new ObjectId();
 		objId.setSuperapp(this.superAppName);
 		objId.setId(makeObjectId(ObjectBoundary));
-		ObjectBoundary.setObjectID(objId);
+		ObjectBoundary.setObjectId(objId);
 		ObjectBoundary.setCreatedBy(new CreatedBy(ObjectBoundary.getCreatedBy().getUserId().getEmail(), this.superAppName));
 		
 		checkSyncListsInMap(ObjectBoundary.getObjectDetails(), ObjectBoundary.getType(),

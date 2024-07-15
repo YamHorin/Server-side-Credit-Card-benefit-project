@@ -291,9 +291,9 @@ class Applicationtests2 {
 		// THEN I get the active object
 
 		ObjectBoundary obj_return  = this.restClientObj.get().uri("/{superapp}/{id}?userSuperapp={userSuperApp}&email={email}",
-				this.superAppName,obj.getObjectID().getId(),this.superAppName ,username1+"@aa.com").retrieve().body(ObjectBoundary.class);
+				this.superAppName,obj.getObjectId().getId(),this.superAppName ,username1+"@aa.com").retrieve().body(ObjectBoundary.class);
 		assertThat(obj_return).isNotNull();
-		assertThat(obj_return.getObjectID().getId()).isEqualTo(obj.getObjectID().getId());
+		assertThat(obj_return.getObjectId().getId()).isEqualTo(obj.getObjectId().getId());
 	}
 	
 	@Test
@@ -349,9 +349,9 @@ class Applicationtests2 {
 		// THEN I get an object
 
 		ObjectBoundary obj_return  = this.restClientObj.get().uri("/{superapp}/{id}?userSuperapp={userSuperapp}&email={email}",
-				this.superAppName,obj.getObjectID().getId(),this.superAppName ,username+"@aa.com").retrieve().body(ObjectBoundary.class);
+				this.superAppName,obj.getObjectId().getId(),this.superAppName ,username+"@aa.com").retrieve().body(ObjectBoundary.class);
 		assertThat(obj_return).isNotNull();
-		assertThat(obj_return.getObjectID().getId()).isEqualTo(obj.getObjectID().getId());
+		assertThat(obj_return.getObjectId().getId()).isEqualTo(obj.getObjectId().getId());
 	}
 	
 

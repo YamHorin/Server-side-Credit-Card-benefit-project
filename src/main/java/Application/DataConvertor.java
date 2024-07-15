@@ -52,7 +52,7 @@ public class DataConvertor {
     	ObjectId ObjectId = new ObjectId();
     	ObjectId.setId(entity.getObjectID().split("__")[0]);
     	ObjectId.setSuperapp(entity.getObjectID().split("__")[1]);
-    	bounObj.setObjectID(ObjectId);
+    	bounObj.setObjectId(ObjectId);
     	bounObj.setType(entity.getType());
     	return bounObj;
     	
@@ -81,7 +81,7 @@ public class DataConvertor {
         EntityCommand entity = new EntityCommand();
         entity.setCommand(bCommand.getCommand());
         entity.setCommandId(makeStringFromCommandId(bCommand.getCommandId()));
-        entity.setMiniAppName(bCommand.getCommandId().getMiniApp());
+        entity.setMiniAppName(bCommand.getCommandId().getMiniapp());
         ObjectId TargetObject = bCommand.getTargetObject().getObjectId();
         String objectTarget = TargetObject.getId()+"__"+TargetObject.getSuperapp();
         entity.setTargetObject(objectTarget);
@@ -94,7 +94,7 @@ public class DataConvertor {
     
     public EntityObject BoundaryObjectTOEntityObject(ObjectBoundary bObject) {
     	EntityObject objectEntity = new EntityObject();
-        objectEntity.setObjectID(bObject.getObjectID().getId() + "__" + bObject.getObjectID().getSuperapp());
+        objectEntity.setObjectID(bObject.getObjectId().getId() + "__" + bObject.getObjectId().getSuperapp());
         objectEntity.setType(bObject.getType());
         objectEntity.setCreationTimeStamp(bObject.getCreationTimeStamp());
 //        String email = bObject.getCreatedBy().getUserId().getEmail();
@@ -134,15 +134,15 @@ public class DataConvertor {
 	}
 	public String makeStringFromCommandId(CommandId id)
 	{
-		return id.getId()+" "+id.getMiniApp()+" "+id.getSuperApp();
+		return id.getId()+" "+id.getMiniapp()+" "+id.getSuperapp();
 	}
 	public CommandId makeCommandIdFromString(String id)
 	{
 		String arr [] = id.split(" ");
 		CommandId commandId  = new CommandId();
 		commandId.setId(arr[0]);
-		commandId.setMiniApp(arr[1]);
-		commandId.setSuperApp(arr[2]);
+		commandId.setMiniapp(arr[1]);
+		commandId.setSuperapp(arr[2]);
 		return commandId;
 	}
 	

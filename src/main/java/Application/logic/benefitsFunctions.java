@@ -43,7 +43,7 @@ public class benefitsFunctions {
 				.body(ObjectBoundary.class);
 		
 		System.out.println("we have a ne benefit :)\n\n"+benefit.toString());
-		return getNumberFromId(benefit.getObjectID().getId());
+		return getNumberFromId(benefit.getObjectId().getId());
 		
 	}
 	

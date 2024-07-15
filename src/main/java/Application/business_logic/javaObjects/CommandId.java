@@ -9,19 +9,19 @@ public class CommandId {
 	
 	
 
-	public String getSuperApp() {
+	public String getSuperapp() {
 		return superapp;
 	}
 
-	public void setSuperApp(String superApp) {
+	public void setSuperapp(String superApp) {
 		this.superapp = superApp;
 	}
 
-	public String getMiniApp() {
+	public String getMiniapp() {
 		return miniapp;
 	}
 
-	public void setMiniApp(String miniApp) {
+	public void setMiniapp(String miniApp) {
 		this.miniapp = miniApp;
 	}
 
@@ -36,8 +36,8 @@ public class CommandId {
 	@Override
 	public String toString() {
 		return "CommandId:/n "
-				+ "{superApp=" + superapp + "/n"
-						+ ", miniApp=" + miniapp 
+				+ "{superapp=" + superapp + "/n"
+						+ ", miniapp=" + miniapp 
 						+ "/n, id=" + id + "}";
 	}
 

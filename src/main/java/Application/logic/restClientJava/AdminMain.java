@@ -253,7 +253,7 @@ public class AdminMain {
 		
 		for (int i = 0; i < objects.length; i++) {
 			System.out.println(String.format("%d) %s \nactive =%s\n",
-					Character.getNumericValue(objects[i].getObjectID().getId().charAt(1)) 
+					Character.getNumericValue(objects[i].getObjectId().getId().charAt(1)) 
 					, objects[i].getAlias(),objects[i].getActive()));
 			if (type.equalsIgnoreCase("benefit"))
 				System.out.println("description: "+objects[i].getObjectDetails().get("description"));

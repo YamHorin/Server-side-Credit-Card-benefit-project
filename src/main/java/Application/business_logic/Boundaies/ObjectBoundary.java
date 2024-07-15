@@ -35,11 +35,11 @@ public class ObjectBoundary {
 		this.location = location;
 	}
 
-	public ObjectId getObjectID() {
+	public ObjectId getObjectId() {
         return objectId;
     }
 
-    public void setObjectID(ObjectId objectID) {
+    public void setObjectId(ObjectId objectID) {
         this.objectId = objectID;
     }
 
@@ -96,7 +96,7 @@ public class ObjectBoundary {
     @Override
     public String toString() {
         return "ObjectBoundary{" +
-                "objectID=" + objectId.toString() +
+                "objectId=" + objectId.toString() +
                 ", type='" + type + '\'' +
                 ", alias='" + alias + '\'' +
                 ", loction='" + location + '\'' +

@@ -145,7 +145,7 @@ public class DataManagerCommand implements ServicesCommand{
 		CommandBoundary.setCommandId(command);
 		CommandBoundary.setInvocationTimeStamp(new Date());
 		ObjectId obj = CommandBoundary.getTargetObject().getObjectId();
-		obj.setSuperApp(superAppName);
+		obj.setSuperapp(superAppName);
 		CommandBoundary.setTargetObject(new TargetObject(obj));
 		
 		//new func by Yam  :)

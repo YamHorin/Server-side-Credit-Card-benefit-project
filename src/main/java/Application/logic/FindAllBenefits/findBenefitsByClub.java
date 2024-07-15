@@ -26,7 +26,7 @@ public class findBenefitsByClub implements MiniappInterface {
 	public List<ObjectBoundary> activateCommand(MiniAppCommandBoundary miniappCommandBoundary) {
 		
 		String clubId = miniappCommandBoundary.getTargetObject().getObjectId().getId();
-		String superApp = miniappCommandBoundary.getTargetObject().getObjectId().getSuperApp();
+		String superApp = miniappCommandBoundary.getTargetObject().getObjectId().getSuperapp();
 		String userSuperapp = miniappCommandBoundary.getInvokedBy().getUserId().getSuperapp();
 		String email = miniappCommandBoundary.getInvokedBy().getUserId().getEmail();
 		ObjectBoundary boundaryObject = null;

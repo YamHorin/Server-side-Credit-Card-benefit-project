@@ -15,8 +15,8 @@ public class UserId {
 	public String getSuperapp() {
 		return superapp;
 	}
-	public void setSuperapp(String superAPP) {
-		this.superapp = superAPP;
+	public void setSuperapp(String superapp) {
+		this.superapp = superapp;
 	}
 	public String getEmail() {
 		return email;

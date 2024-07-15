@@ -44,7 +44,7 @@ private ServicesUser ServicesUser;
 		this.ServicesUser.updateUser(id_user, update);
 		ObjectBoundary store = null;
 		String storeId = miniappCommandBoundary.getTargetObject().getObjectId().getId();
-		String superApp = miniappCommandBoundary.getTargetObject().getObjectId().getSuperApp();
+		String superApp = miniappCommandBoundary.getTargetObject().getObjectId().getSuperapp();
 		Optional<ObjectBoundary> club = this.ServicesObject
 		.getSpecificObj(storeId ,superApp  , userSuperapp , email);
 		

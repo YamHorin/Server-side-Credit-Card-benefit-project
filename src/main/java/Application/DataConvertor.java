@@ -51,7 +51,7 @@ public class DataConvertor {
     	bounObj.setObjectDetails(entity.getObjectDetails());
     	ObjectId ObjectId = new ObjectId();
     	ObjectId.setId(entity.getObjectID().split("__")[0]);
-    	ObjectId.setSuperApp(entity.getObjectID().split("__")[1]);
+    	ObjectId.setSuperapp(entity.getObjectID().split("__")[1]);
     	bounObj.setObjectID(ObjectId);
     	bounObj.setType(entity.getType());
     	return bounObj;
@@ -70,7 +70,7 @@ public class DataConvertor {
 		TargetObject targetObject = new TargetObject ();
 		ObjectId ObjectId = new ObjectId();
     	ObjectId.setId(Entity.getTargetObject().split("__")[0]);
-    	ObjectId.setSuperApp(Entity.getTargetObject().split("__")[1]);
+    	ObjectId.setSuperapp(Entity.getTargetObject().split("__")[1]);
     	targetObject.setObjectId(ObjectId);
 		boun.setTargetObject(targetObject);
 		return boun;
@@ -83,7 +83,7 @@ public class DataConvertor {
         entity.setCommandId(makeStringFromCommandId(bCommand.getCommandId()));
         entity.setMiniAppName(bCommand.getCommandId().getMiniApp());
         ObjectId TargetObject = bCommand.getTargetObject().getObjectId();
-        String objectTarget = TargetObject.getId()+"__"+TargetObject.getSuperApp();
+        String objectTarget = TargetObject.getId()+"__"+TargetObject.getSuperapp();
         entity.setTargetObject(objectTarget);
         entity.setCommandAttributes(bCommand.getCommandAttributes());
         UserId bUser = bCommand.getInvokedBy().getUserId();
@@ -94,7 +94,7 @@ public class DataConvertor {
     
     public EntityObject BoundaryObjectTOEntityObject(ObjectBoundary bObject) {
     	EntityObject objectEntity = new EntityObject();
-        objectEntity.setObjectID(bObject.getObjectID().getId() + "__" + bObject.getObjectID().getSuperApp());
+        objectEntity.setObjectID(bObject.getObjectID().getId() + "__" + bObject.getObjectID().getSuperapp());
         objectEntity.setType(bObject.getType());
         objectEntity.setCreationTimeStamp(bObject.getCreationTimeStamp());
 //        String email = bObject.getCreatedBy().getUserId().getEmail();

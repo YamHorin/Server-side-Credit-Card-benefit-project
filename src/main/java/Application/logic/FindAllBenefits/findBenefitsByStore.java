@@ -13,7 +13,7 @@ import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.DataService.ServicesObject;
 import Application.logic.MiniappInterface;
 
-@Component("find Your Benefit_findBenefitsByStore")
+@Component("findYourBenefit_findBenefitsByStore")
 public class findBenefitsByStore implements MiniappInterface {
 	private ServicesObject ServicesObject;
 	
@@ -26,7 +26,7 @@ public class findBenefitsByStore implements MiniappInterface {
 	public List<ObjectBoundary> activateCommand(MiniAppCommandBoundary miniappCommandBoundary) {
 		
 		String storeId = miniappCommandBoundary.getTargetObject().getObjectId().getId();
-		String superApp = miniappCommandBoundary.getTargetObject().getObjectId().getSuperApp();
+		String superApp = miniappCommandBoundary.getTargetObject().getObjectId().getSuperapp();
 		String userSuperapp = miniappCommandBoundary.getInvokedBy().getUserId().getSuperapp();
 		String email = miniappCommandBoundary.getInvokedBy().getUserId().getEmail();
 		

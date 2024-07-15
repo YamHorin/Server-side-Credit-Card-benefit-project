@@ -10,8 +10,8 @@ public class ObjectId {
     	
     }
     
-    public ObjectId(String superApp, String id) {
-		this.superapp = superApp;
+    public ObjectId(String superapp, String id) {
+		this.superapp = superapp;
 		this.id = id;
 	}
 
@@ -20,11 +20,11 @@ public class ObjectId {
 		
 	}
 
-	public void setSuperApp(String superApp) {
-        this.superapp = superApp;
+	public void setSuperapp(String superapp) {
+        this.superapp = superapp;
     }
 
-    public String getSuperApp() {
+    public String getSuperapp() {
         return this.superapp;
     }
 
@@ -40,7 +40,7 @@ public class ObjectId {
     public String toString() {
         return "ObjectId{" +
                 "id='" + id + "/n" +
-                ", superApp='" + superapp + "/n" +
+                ", superapp='" + superapp + "/n" +
                 '}';
     }
 

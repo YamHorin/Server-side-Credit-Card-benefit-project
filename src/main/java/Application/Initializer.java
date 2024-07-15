@@ -228,7 +228,7 @@ public class Initializer implements CommandLineRunner{
 		}
 		//make 10 mini app commands
 		UserId.setEmail(names.get(1)+"@gmail.com");
-		UserId.setSuperapp(BoundaryObject.getObjectID().getSuperApp());
+		UserId.setSuperapp(BoundaryObject.getObjectID().getSuperapp());
 		CreatedBy.setUserId(UserId);
 		String id = "command";
 		for (int i =0; i<10 ; i++) {

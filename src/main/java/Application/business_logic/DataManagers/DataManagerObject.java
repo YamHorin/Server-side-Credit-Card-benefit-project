@@ -154,7 +154,7 @@ public class DataManagerObject implements ServicesObject {
 
 		ObjectBoundary.setCreationTimeStamp(new Date());
 		ObjectId objId = new ObjectId();
-		objId.setSuperApp(this.superAppName);
+		objId.setSuperapp(this.superAppName);
 		objId.setId(makeObjectId(ObjectBoundary));
 		ObjectBoundary.setObjectID(objId);
 		ObjectBoundary.setCreatedBy(new CreatedBy(ObjectBoundary.getCreatedBy().getUserId().getEmail(), this.superAppName));

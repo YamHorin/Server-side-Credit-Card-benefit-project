@@ -16,6 +16,7 @@ import Application.business_logic.DataService.ServicesObject;
 import Application.business_logic.DataService.ServicesUser;
 import Application.logic.MiniappInterface;
 
+
 @Component("Store Inerface_addBenefitToStore")
 public class addBenefitToStore implements MiniappInterface {
 
@@ -56,7 +57,7 @@ private ServicesUser ServicesUser;
 		
 		int benefitNumber = (int) miniappCommandBoundary.getCommandAttributes().get("benefit");
 		Map<String, Object> objectDetails = store.getObjectDetails();
-		List<Integer> benefits = getAListFromMap(objectDetails, "listOfBenefitOfStore");
+		List<Integer> benefits = getAListFromMap(objectDetails, "listOfBenefitsOfStore");
 		
 		
 		//TODO check if the benefit is already in the list

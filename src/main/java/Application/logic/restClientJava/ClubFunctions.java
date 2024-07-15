@@ -1,4 +1,4 @@
-package Application.logic;
+package Application.logic.restClientJava;
 
 import java.util.ArrayList;
 import java.util.HashMap;

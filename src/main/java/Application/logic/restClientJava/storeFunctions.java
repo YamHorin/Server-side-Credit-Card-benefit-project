@@ -1,4 +1,4 @@
-package Application.logic;
+package Application.logic.restClientJava;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +19,6 @@ public class storeFunctions {
 		String storeId  = "S"+StoreNumber;
 		String superApp = userId.getSuperapp();
 		String email = userId.getEmail();
-		//fix url
 		ObjectBoundary StoreObject =  restClient.get().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}",
 				superApp,
 				storeId,
@@ -30,7 +29,6 @@ public class storeFunctions {
 		List <Integer> benefits = getALiistFromMap(StoreObject.getObjectDetails(), "listOfBenefitsOfStore");
 		System.out.println("here are all the benefits in the store: \n\n");
 		for (Integer benefitNumber : benefits) {
-			//fix url
 			ObjectBoundary benefit =  restClient.get().uri("/objects/{superapp}/{id}?userSuperapp={userSuperapp}&userEmail={email}" ,
 					superApp,
 					"B"+benefitNumber,

@@ -1,4 +1,4 @@
-package Application.logic;
+package Application.logic.restClientJava;
 
 import org.springframework.web.client.RestClient;
 

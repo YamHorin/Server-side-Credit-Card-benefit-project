@@ -549,16 +549,14 @@ public class DataManagerObject implements ServicesObject {
 	//fuction helper to get list of the intgers from a map
 	public List<Integer> getAListFromMap(Map<String, Object> objectDetails , String key)
 	{		
-		if (objectDetails.containsKey(key))
-		{
+
 			List<Object> objects = (List)(objectDetails.get(key));
 			List <Integer> numbers = 	objects.stream().map(Object::toString)
 					.map(str->Integer.parseInt(str))
 					.toList();
 			LinkedList<Integer> numbersLink = new LinkedList<>(numbers);
 			return numbersLink;
-		}
-		return null;
+
 	}
 	public Map<String ,Object> updateMapOfObject(EntityObject objectEntity, Map<String ,Object> updateObjectMap)
 	{

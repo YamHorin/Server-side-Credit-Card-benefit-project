@@ -1,4 +1,4 @@
-package Application.logic;
+package Application.logic.restClientJava;
 
 import java.util.Arrays;
 import java.util.Collections;

@@ -2,15 +2,13 @@ package Application.logic.FindAllBenefits;
 
 
 import java.util.List;
-
 import org.springframework.stereotype.Component;
-
 import Application.business_logic.Boundaies.MiniAppCommandBoundary;
 import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.DataService.ServicesObject;
 import Application.logic.MiniappInterface;
 
-@Component("find Your Benefit_printAllClubs")
+@Component("findYourBenefit_printAllClubs")
 public class printAllClubs implements MiniappInterface{
 	private ServicesObject ServicesObject;
 

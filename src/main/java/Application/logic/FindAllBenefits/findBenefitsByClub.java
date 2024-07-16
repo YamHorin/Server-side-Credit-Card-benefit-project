@@ -13,7 +13,7 @@ import Application.business_logic.Boundaies.ObjectBoundary;
 import Application.business_logic.DataService.ServicesObject;
 import Application.logic.MiniappInterface;
 
-@Component("find Your Benefit_findBenefitsByClub")
+@Component("findYourBenefit_findBenefitsByClub")
 public class findBenefitsByClub implements MiniappInterface {
 	private ServicesObject ServicesObject;
 	
@@ -36,7 +36,7 @@ public class findBenefitsByClub implements MiniappInterface {
 		if (club.isPresent()) {
 			boundaryObject = club.orElse(null);
 		}
-		List<Integer> benefits = getAListFromMap(boundaryObject.getObjectDetails(),"listOfBenefitOfClub");
+		List<Integer> benefits = getAListFromMap(boundaryObject.getObjectDetails(),"listOfBenefitsOfClub");
 		List<ObjectBoundary> benefits_objects = new ArrayList<>();
 		for (Integer benefit : benefits) {
 			Optional<ObjectBoundary> benefitObj =this.ServicesObject.getSpecificObj("B"+benefit, superApp, userSuperapp, email);

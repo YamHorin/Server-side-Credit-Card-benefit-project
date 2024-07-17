@@ -37,7 +37,11 @@ options for instaltion will showup.
 
 -Accessing Database-
 
-1. Download Spring Tool Suite in the following link: https://spring.io/tools.
+ You may access the databace through H2 console in the link: http://localhost:8085/h2-console .
+ 
+-Insalling Workspace- 
+
+1. Download Spring Tool Suite in the following link: (https://spring.io/tools/).
 
 2. Select the appropriate version for your operating system (Windows, macOS, or Linux) and download the installer.
 

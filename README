@@ -1,4 +1,5 @@
 ***Benefit App*** - Integrative Project 2024B 
+
 This repository contains the code and resources for the Benefit App Project, conducted by our team at Afeka College.
 Team members and roles: 
 Gal Angel- Team leader
@@ -18,11 +19,6 @@ The project consists of a server-side component called "SuperApp" and a client a
 There are two clints in our program: A java clint, and an android client.
 All the MiniApps designed for browsing and exploring points of interests.
 The miniapp communicate with the SuperApp server to retrieve data from the database. 
-
-*Table of Contents*
- - Installation
- - Usage
- - Project Structure
  
  
  *Installation*
@@ -64,28 +60,12 @@ Run the STS executable to start the IDE.
 4. Launch Spring Tool Suite: after installation, launch STS from the Start menu (Windows), Applications folder (macOS), or terminal (Linux).
 On the first run, select a workspace directory where your projects will be stored.
 
+
 *Usage*
 To use this project, clone the repository and navigate to the relevant directories for code, data, and documentation.
 
 git clone https://Diana_Gurvit@bitbucket.org/nubibusintellecto/2024b.integrative.thu1300.yahav.ler.hostes.at.eyae.at.afeka.git
 cd 2024b.integrative.thu1300.yahav.ler.hostes.at.eyae.at.afeka.
 
-*Project Structure* 
-2024b.integrative.thu1300.yahav.ler.hostes.at.eyae.at.afeka/
-├── data/                   # Data files and datasets
-├── docs/                   # Documentation files
-├── src/                    # Source code files
-│   ├── __init__.py
-│   ├── module1.py
-│   ├── module2.py
-│   └── ...
-├── tests/                  # Unit tests
-│   ├── __init__.py
-│   ├── test_module1.py
-│   ├── test_module2.py
-│   └── ...
-├── README.md               # Project README file
-├── requirements.txt        # Project dependencies
-├── main.py                 # Main entry point for the project
 
 

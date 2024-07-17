@@ -1,1 +1,91 @@
-*Benefit App* - Integrative Project 2024B 
+***Benefit App*** - Integrative Project 2024B 
+This repository contains the code and resources for the Benefit App Project, conducted by our team at Afeka College.
+Team members and roles: 
+Gal Angel- Team leader
+Yahav Ler- Team manager 
+Yam Horin- QA Engineer/ UIX Engineer
+Diana Gurvits- System Architect/ Technical Writer
+Shaked Ben guy- Product Owner/ DevOps
+Yarden Krispel- DBA
+Alon Bitran- Team member
+
+The project was developed in agile method, thus the project divided into 4 sprints. In the end of each sprint 
+we wrote a repotrt that containes the compleated tasks, difficulties, and unfinished tasks. 
+
+*Project Overvie* 
+The aim of the app is to give the user a platform for all the benefits he has from different cunsomer clubs or stores.
+The project consists of a server-side component called "SuperApp" and a client application known as "MiniApp".
+There are two clints in our program: A java clint, and an android client.
+All the MiniApps designed for browsing and exploring points of interests.
+The miniapp communicate with the SuperApp server to retrieve data from the database. 
+
+*Table of Contents*
+ - Installation
+ - Usage
+ - Project Structure
+ 
+ 
+ *Installation*
+-Installation Instructions-
+
+1. Visit the official DOCKER website: (https://www.docker.com/).
+
+2. Choose the appropriate DOCKER version for your operating system. If you have macOs or linux, put your mouse cursore ov the doemlouad botton, and two
+options for instaltion will showup. 
+
+3. Open the the link from the downloads and install run the instaltion on your computer. 
+
+4. Once the installation is complete, Docker should be ready to use.
+
+5. Befor running the program, make shure that the Docker is running on your computer. 
+
+-Accessing Database-
+
+1. Download Spring Tool Suite in the following link: https://spring.io/tools.
+
+2. Select the appropriate version for your operating system (Windows, macOS, or Linux) and download the installer.
+
+3. install Spring on your computer according your oprating system.
+For Windows:
+
+Run the downloaded .exe installer.
+Follow the prompts to complete the installation.
+You can choose the installation directory or go with the default one.
+For macOS:
+
+Open the downloaded .dmg file.
+Drag the STS application to the Applications folder.
+For Linux:
+
+Extract the downloaded .tar.gz file to the desired directory.
+Open a terminal and navigate to the STS directory.
+Run the STS executable to start the IDE.
+
+4. Launch Spring Tool Suite: after installation, launch STS from the Start menu (Windows), Applications folder (macOS), or terminal (Linux).
+On the first run, select a workspace directory where your projects will be stored.
+
+*Usage*
+To use this project, clone the repository and navigate to the relevant directories for code, data, and documentation.
+
+git clone https://Diana_Gurvit@bitbucket.org/nubibusintellecto/2024b.integrative.thu1300.yahav.ler.hostes.at.eyae.at.afeka.git
+cd 2024b.integrative.thu1300.yahav.ler.hostes.at.eyae.at.afeka.
+
+*Project Structure* 
+2024b.integrative.thu1300.yahav.ler.hostes.at.eyae.at.afeka/
+├── data/                   # Data files and datasets
+├── docs/                   # Documentation files
+├── src/                    # Source code files
+│   ├── __init__.py
+│   ├── module1.py
+│   ├── module2.py
+│   └── ...
+├── tests/                  # Unit tests
+│   ├── __init__.py
+│   ├── test_module1.py
+│   ├── test_module2.py
+│   └── ...
+├── README.md               # Project README file
+├── requirements.txt        # Project dependencies
+├── main.py                 # Main entry point for the project
+
+

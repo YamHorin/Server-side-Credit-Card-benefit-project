@@ -1,75 +1,58 @@
-# Benefit App - Integrative Project 2024B 
+Benefit App - Integrative Project 2024B
 
 This repository contains the code and resources for the Benefit App Project, conducted by our team at Afeka College.
-Team members and roles: 
-Gal Angel- Team leader /Team 
-Yahav Ler- SCRUM Master /Team 
-Yam Horin- QA Engineer/ Product Owner /Team 
-Diana Gurvits- System Architect/ Technical Writer /Team 
-Shaked Ben guy- DevOps /Team 
-Yarden Krispel- DBA /Team 
-Alon Bitran- UIX Engineer /Team 
+Team Members and Roles
 
-The project was developed in agile method, thus the project divided into 4 sprints. In the end of each sprint 
-we wrote a repotrt that containes the compleated tasks, difficulties, and unfinished tasks. 
+    Gal Angel - Team Leader
+    Yahav Ler - SCRUM Master
+    Yam Horin - QA Engineer / Product Owner
+    Diana Gurvits - System Architect / Technical Writer
+    Shaked Ben Guy - DevOps
+    Yarden Krispel - DBA
+    Alon Bitran - UIX Engineer
 
-*Project Overvie* 
-The aim of the app is to give the user a platform for all the benefits he has from different cunsomer clubs or stores.
-The project consists of a server-side component called "SuperApp" and a client application known as "MiniApp".
-There are two clints in our program: A java clint, and an android client.
-All the MiniApps designed for browsing and exploring points of interests.
-The miniapp communicate with the SuperApp server to retrieve data from the database. 
- 
- 
- *Installation*
--Installation Instructions-
+Project Overview
 
-1. Visit the official DOCKER website: (https://www.docker.com/).
+The aim of the app is to provide users with a platform for managing benefits from different consumer clubs or stores. The project consists of a server-side component called "SuperApp" and a client application known as "MiniApp". There are two clients in our program: a Java client and an Android client. All MiniApps are designed for browsing and exploring points of interest. The MiniApp communicates with the SuperApp server to retrieve data from the database.
+Development Methodology
 
-2. Choose the appropriate DOCKER version for your operating system. If you have macOs or linux, put your mouse cursore ov the doemlouad botton, and two
-options for instaltion will showup. 
+The project was developed using the agile method, divided into four sprints. At the end of each sprint, we wrote a report that contained the completed tasks, difficulties, and unfinished tasks.
+Installation
+Docker Installation
 
-3. Open the the link from the downloads and install run the instaltion on your computer. 
+    Visit the official Docker website.
+    Choose the appropriate Docker version for your operating system. For macOS or Linux, hover over the download button, and two options for installation will show up.
+    Open the download link and run the installation on your computer.
+    Once the installation is complete, Docker should be ready to use.
+    Before running the server of the program, make sure Docker is running on your computer.
 
-4. Once the installation is complete, Docker should be ready to use.
+Accessing the Database
 
-5. Befor running the server of the program, make shure that the Docker is running on your computer.
+You may access the database through the H2 console at http://localhost:8085/h2-console.
+Installing Workspace
 
--Accessing Database-
+    Download Spring Tool Suite from the following link.
+    Select the appropriate version for your operating system (Windows, macOS, or Linux) and download the installer.
+    Install Spring on your computer according to your operating system:
+        For Windows:
+            Run the downloaded .exe installer.
+            Follow the prompts to complete the installation.
+            Choose the installation directory or go with the default one.
+        For macOS:
+            Open the downloaded .dmg file.
+            Drag the STS application to the Applications folder.
+        For Linux:
+            Extract the downloaded .tar.gz file to the desired directory.
+            Open a terminal and navigate to the STS directory.
+            Run the STS executable to start the IDE.
+    Launch Spring Tool Suite: after installation, launch STS from the Start menu (Windows), Applications folder (macOS), or terminal (Linux). On the first run, select a workspace directory where your projects will be stored.
 
- You may access the databace through H2 console in the link: http://localhost:8085/h2-console .
- 
--Insalling Workspace- 
-
-1. Download Spring Tool Suite in the following link: (https://spring.io/tools/).
-
-2. Select the appropriate version for your operating system (Windows, macOS, or Linux) and download the installer.
-
-3. install Spring on your computer according your oprating system.
-For Windows:
-
-Run the downloaded .exe installer.
-Follow the prompts to complete the installation.
-You can choose the installation directory or go with the default one.
-For macOS:
-
-Open the downloaded .dmg file.
-Drag the STS application to the Applications folder.
-For Linux:
-
-Extract the downloaded .tar.gz file to the desired directory.
-Open a terminal and navigate to the STS directory.
-Run the STS executable to start the IDE.
-
-4. Launch Spring Tool Suite: after installation, launch STS from the Start menu (Windows), Applications folder (macOS), or terminal (Linux).
-On the first run, select a workspace directory where your projects will be stored.
-
-
-*Usage*
+Usage
 
 To use this project, clone the repository and navigate to the relevant directories for code, data, and documentation.
 
-git clone
+sh
 
+git clone <repository_url>
 
-
+Feel free to explore and contribute to the project!

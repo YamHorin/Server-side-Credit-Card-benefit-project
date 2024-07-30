@@ -20,7 +20,12 @@ The project was developed using the agile method, divided into four sprints. At 
 ## Installation
 
 ### Docker Installation
+</p>
+<div align="center">
+ <img alt="docker" height="200px" src="https://pbs.twimg.com/card_img/1813758439010742272/v9FtXldC?format=jpg&name=4096x4096">
+</div>
 
+the project use a docker image of postgre sql , you need to install docker
 1. Visit the official [Docker website](https://www.docker.com/).
 2. Choose the appropriate Docker version for your operating system. For macOS or Linux, hover over the download button, and two options for installation will show up.
 3. Open the download link and run the installation on your computer.
@@ -31,7 +36,11 @@ The project was developed using the agile method, divided into four sprints. At 
 
 You may access the database through the H2 console at [http://localhost:8085/h2-console](http://localhost:8085/h2-console).
 
-### Installing Workspace
+### Installing Workspace (recommanded)
+</p>
+<div align="center">
+ <img alt="spring boot" height="200px" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1636832404785/mTXlsmro-.png?w=1600&h=840&fit=crop&crop=entropy&auto=compress,format&format=webp">
+</div>
 
 1. Download Spring Tool Suite from the following [link](https://spring.io/tools/).
 2. Select the appropriate version for your operating system (Windows, macOS, or Linux) and download the installer.
@@ -52,6 +61,11 @@ You may access the database through the H2 console at [http://localhost:8085/h2-
 ## Usage
 
 To use this project, clone the repository and navigate to the relevant directories for code, data, and documentation.
-
-```sh
+1. active docker
+2. clone the project
+```console
 git clone <repository_url>
+```
+3. run the project by clicking the green play button on eclips spring boot workspace
+4. if you run this on VSC you need to download the <a href="https://code.visualstudio.com/docs/java/java-spring-boot">VSC extention for spring boot </a>
+

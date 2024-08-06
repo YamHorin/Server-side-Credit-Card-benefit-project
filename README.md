@@ -20,6 +20,7 @@ The project was developed using the agile method, divided into four sprints. At 
 ## Installation
 
 ### Docker Installation
+
 </p>
 <div align="center">
  <img alt="docker" height="200px" src="https://pbs.twimg.com/card_img/1813758439010742272/v9FtXldC?format=jpg&name=4096x4096">

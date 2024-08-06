@@ -23,7 +23,7 @@ The project was developed using the agile method, divided into four sprints. At 
 
 </p>
 <div align="center">
- <img alt="docker" height="200px" src="https://pbs.twimg.com/card_img/1813758439010742272/v9FtXldC?format=jpg&name=4096x4096">
+ <img alt="docker" height="200px" src="https://logos-world.net/wp-content/uploads/2021/02/Docker-Logo.png">
 </div>
 
 the project use a docker image of postgre sql , you need to install docker

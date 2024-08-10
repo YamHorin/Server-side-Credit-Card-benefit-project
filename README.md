@@ -59,7 +59,7 @@ You may access the database through the H2 console at [http://localhost:8085/h2-
      - Run the STS executable to start the IDE.
 4. Launch Spring Tool Suite: after installation, launch STS from the Start menu (Windows), Applications folder (macOS), or terminal (Linux). On the first run, select a workspace directory where your projects will be stored.
 
-## Usage
+## how to run?
 
 To use this project, clone the repository and navigate to the relevant directories for code, data, and documentation.
 1. active docker
@@ -67,6 +67,15 @@ To use this project, clone the repository and navigate to the relevant directori
 ```console
 git clone <repository_url>
 ```
-3. run the project by clicking the green play button on eclips spring boot workspace
-4. if you run this on VSC you need to download the <a href="https://code.visualstudio.com/docs/java/java-spring-boot">VSC extention for spring boot </a>
+3. in eclipse click on the "add gradle nature" option:
+
+</p>
+<div align="center">
+ <img alt="spring boot" height="200px" src="https://i.imgur.com/pimNdn7.png">
+</div>
+
+4. run the project by clicking the green play button on eclips spring boot workspace
+5. to put objects in the server use the swagger ui :http://localhost:8085/swagger-ui/index.html#/
+6. to review the data use the h2 console: localhost:8085/h2-console
+7. if you run this on VSC you need to download the <a href="https://code.visualstudio.com/docs/java/java-spring-boot">VSC extention for spring boot </a>
 

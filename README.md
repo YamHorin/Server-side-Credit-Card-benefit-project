@@ -9,7 +9,7 @@ This repository contains the code and resources for the Benefit App Project, con
 - **Diana Gurvits** - System Architect / Technical Writer
 - **Shaked Ben Guy** - DevOps
 - **Yarden Krispel** - DBA
-- **Alon Bitran** - UIX Engineer
+- **Alon Bitran** - UI UX Engineer
 
 ## Project Overview
 The aim of the app is to provide users with a platform for managing benefits from different consumer clubs or stores. The project consists of a server-side component called "SuperApp" and a client application known as "MiniApp". There are two clients in our program: a Java client and an Android client. All MiniApps are designed for browsing and exploring points of interest. The MiniApp communicates with the SuperApp server to retrieve data from the database.
